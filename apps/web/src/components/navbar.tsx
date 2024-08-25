@@ -14,7 +14,7 @@ export default function Navbar() {
                 <div className='flex flex-col-reverse gap-4 md:flex-row justify-center items-center md:mb-4 md:justify-between'>
                     <div className='w-3/4'>
                         <form className='relative'>
-                            <input type="search"  className='py-2 px-6 outline-none rounded-2xl w-full shadow-sm placeholder:italic focus:shadow-md' placeholder='search your event here...'/>
+                            <input type="search"  className='focus:ring-1 py-2 px-6 outline-none rounded-2xl w-full shadow-sm placeholder:italic' placeholder='search your event here...'/>
                             <button type='submit' className='absolute top-[8px] right-[12px]'>
                                 <Image
                                 src={'./ico-search.svg'}
