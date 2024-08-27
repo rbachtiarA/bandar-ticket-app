@@ -22,8 +22,7 @@ export default function Carousel() {
   return (
   <div className='w-screen mx-auto'>
       <div className='overflow-hidden relative'>          
-          <div className=''>
-              
+          <div className='transition-transform'>
                   <Image        
                   src={images[curr]}
                   alt='city'
@@ -32,7 +31,6 @@ export default function Carousel() {
                   sizes='100vw'
                   style={{width: '100%', height: 'auto'}}
                   />
-              
           </div>
           <button onClick={next}>Next</button>
           <button onClick={prev}>Prev</button>
