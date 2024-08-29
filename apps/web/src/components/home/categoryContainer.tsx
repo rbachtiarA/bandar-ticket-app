@@ -7,7 +7,6 @@ import Image from 'next/image'
 
 
 export default function CategoryContainer({category}: { category: ICategory }) {
-
   const containerRef = useRef<HTMLInputElement>(null)
   const [disableButton, setDisableButton] = useState('min')
   const handleScroll = (offset: number) => {
@@ -21,23 +20,29 @@ export default function CategoryContainer({category}: { category: ICategory }) {
         case 0:
           setDisableButton('min')
           break;
-        case maxScroll:
-          setDisableButton('max')
-          break;
-      
-        default:
-          setDisableButton('none')
-          break;
-      }
-      
-    }
-  }
-
+          case maxScroll:
+            setDisableButton('max')
+            break;
+            
+            default:
+              setDisableButton('none')
+              break;
+            }
+            
+          }
+        }
+        
+  // section width desktop need to be multiplier of offset handleScroll (ex: handleScroll offset = 200px, container widht should be 200/400/800 px etc ) 
+  // 
   return (
     <section className='relative w-screen md:w-[750px] md:mx-auto lg:w-[1000px] flex flex-col overflow-hidden'>
         <h1 className='text-lg font-extrabold text-center'>{category.name}</h1>
 
-        <div ref={containerRef} id='concert-container' className='flex items-start w-full snap-x md:snap-none md:scroll-smooth overflow-x-scroll md:overflow-hidden'>
+        <div ref={containerRef} id='concert-container' 
+        className='grid py-2
+        snap-x pl-[calc(50vw-110px)] pr-[calc(50vw-110px)] overflow-x-scroll 
+        md:snap-none md:px-0 md:scroll-smooth md:overflow-hidden containerScroll-hidden'
+        style={{gridTemplateColumns: `repeat(${category.events.length}, 250px)`}}>
             
             {category.events.map((event, idx) => (
                 <EventCard 
@@ -66,6 +71,8 @@ export default function CategoryContainer({category}: { category: ICategory }) {
             height={24}
             />
         </button>}
+
+        <button></button>
         
 
 </section>
