@@ -5,9 +5,10 @@ import ConcertHero from '@/components/home/concertHero'
 import Carousel from '@/components/carousel'
 import { ICategory } from './interfaceType'
 import CategoryContainer from '@/components/home/categoryContainer'
+import { getEvents } from '@/lib/event'
 
 
-export default function Home() {
+export default async function Home() {
 
   const categories: ICategory[] = [
     { 
@@ -106,16 +107,13 @@ export default function Home() {
      },
   ]
 
+  const allEvent = await getEvents(); 
+  
   return (
     <>
-    <CategoriesNav />
-    {/* <Carousel />     */}
-    <CategoryContainer 
-    category={categories[0]}
-    />
-    <CategoryContainer 
-    category={categories[1]}
-    />
+      <CategoriesNav />
+      {/* <Carousel />     */}
+      <CategoryContainer category={allEvent} />
     </>
   )
 }

@@ -6,7 +6,16 @@ import { Request, Response } from "express";
 
 export class EventController {
     async getEvent(req:Request, res:Response) {
-        const EventData = await prisma.event.findMany()
+        const EventData = await prisma.event.findMany({
+            include: {
+                city: {
+                    include: {
+                        province:true
+                    }
+                }
+                
+            }
+        })
 
         return res.status(200).send({
             status: 'ok',
