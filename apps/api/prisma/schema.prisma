@@ -19,3 +19,80 @@ model Sample {
 
   @@map("samples") // if you want to use snake_case format
 }
+
+model Provinces {
+  id       Int    @id @default(autoincrement())
+  province String @unique
+  cities   City[]
+}
+
+model City {
+  id         Int       @id @default(autoincrement())
+  city       String
+  province   Provinces @relation(fields: [provinceID], references: [id])
+  provinceID Int
+  Event      Event[]
+}
+
+enum EventCatergory {
+  Seminar
+  Entertainment
+  Sport
+  Music
+  Gallery
+}
+
+model Event {
+  id           Int            @id @default(autoincrement())
+  category     EventCatergory
+  name         String
+  location     String
+  city         City           @relation(fields: [cityId], references: [id])
+  date_start   DateTime
+  date_end     DateTime
+  img_poster   String
+  ticket_type  TicketType[]
+  max_quota    Int
+  Review       Review[]
+  DiscountType DiscountType[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt()
+  cityId       Int
+}
+
+model TicketType {
+  id      Int    @id @default(autoincrement())
+  name    String @unique
+  price   Int
+  event   Event  @relation(fields: [eventID], references: [id])
+  eventID Int
+
+  @@map("ticket_type")
+}
+
+model DiscountType {
+  id        Int     @id @default(autoincrement())
+  name      String
+  isNominal Boolean
+  discount  Int
+  event     Event   @relation(fields: [eventID], references: [id])
+  eventID   Int
+}
+
+model Review {
+  id         Int      @id @default(autoincrement())
+  review     String
+  rating     Int
+  event      Event    @relation(fields: [eventID], references: [id])
+  eventID    Int
+  customer   Customer @relation(fields: [customerId], references: [id])
+  customerId Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt()
+}
+
+model Customer {
+  id     Int      @id @default(autoincrement())
+  name   String
+  Review Review[]
+}
