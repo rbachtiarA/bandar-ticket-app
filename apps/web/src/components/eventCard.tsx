@@ -25,12 +25,12 @@ export default function EventCard({ eventId, eventImg, eventTitle, eventDate, ev
             <h2 className='font-extrabold'>{eventTitle}</h2>
             <p className=''>
             {
-              eventDate.toLocaleDateString('en-us', {
+              `${eventDate.toLocaleDateString('en-us', {
                 weekday: 'short',
                 day: 'numeric',
                 month: 'short',
                 year: 'numeric'
-              })
+            })} ` 
             }
             </p>
             <p className='text-slate-500 text-sm'>{eventLocation}</p>

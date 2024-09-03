@@ -2,26 +2,35 @@
 //this router used to add necessery data for exercise
 
 import prisma from "@/prisma";
+import { EventCatergory } from "@prisma/client";
 import { Request, Response } from "express";
 
 export class EventController {
     async getEvent(req:Request, res:Response) {
-        const EventData = await prisma.event.findMany({
-            include: {
-                city: {
-                    include: {
-                        province:true
+        
+        try {
+            const EventData = await prisma.event.findMany({
+                include: {
+                    city: {
+                        include: {
+                            province:true
+                        }
                     }
+                    
                 }
-                
-            }
-        })
-
-        return res.status(200).send({
-            status: 'ok',
-            msg: 'Get all event',
-            result: EventData
-        })
+            })
+            
+            return res.status(200).send({
+                status: 'ok',
+                msg: 'Get all event',
+                result: EventData
+            })
+        } catch (error) {
+            res.status(400).send({
+                status: 'error',
+                msg: error
+            })
+        }
     }
 
     async createEvent(req:Request, res:Response){
@@ -69,5 +78,94 @@ export class EventController {
         }
         
     }
+
+    async getEventCategory(req:Request, res:Response) {
+        try {
+            const category = req.params.category[0].toUpperCase()+req.params.category.slice(1) 
+            const EventData = await prisma.event.findMany({
+                where: { category:  category as EventCatergory},
+                include: { 
+                    city: {
+                    include: { 
+                        province: true 
+                        } 
+                    }
+                }
+            })
+            
+            return res.status(200).send({
+                status: 'ok',
+                msg: 'Get all event',
+                result: EventData
+            })
+        } catch (error) {
+            res.status(400).send({
+                status: 'error',
+                msg: error
+            })
+        }
+    }
+
+    async getEventId(req:Request, res:Response) {
+        
+        try {
+            const EventData = await prisma.event.findUnique({
+                where: {
+                    id: +req.params.id
+                },
+                include: {
+                    city: {
+                        include: {
+                            province: true
+                        }
+                    }
+                }
+            })
+            
+            return res.status(200).send({
+                status: 'ok',
+                msg: `Get event id ${req.params.id}`,
+                result: EventData
+            })
+        } catch (error) {
+            res.status(400).send({
+                status: 'error',
+                msg: error
+            })
+        }
+    }
+
+    async getUpcomingEvent(req:Request, res:Response) {
+        
+        try {
+            const EventData = await prisma.event.findMany({
+                where: {
+                    date_start: {
+                        gt: new Date(Date.now())
+                    }
+                },
+                include: {
+                    city: {
+                        include: {
+                            province: true
+                        }
+                    }
+                }
+            })
+            
+            return res.status(200).send({
+                status: 'ok',
+                msg: 'Get all upcoming event',
+                result: EventData
+            })
+        } catch (error) {
+            res.status(400).send({
+                status: 'error',
+                msg: error
+            })
+        }
+    }
+    
+
 }
 

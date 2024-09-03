@@ -43,7 +43,7 @@ export default function Navbar() {
                         <Link href={'/'}>Sport</Link>
                     </div>
                     <div className='flex items-center justify-center w-1/4'>
-                        <Link href={'/'}>Event List</Link>
+                        <Link href={'/'}>Create Event</Link>
                     </div>
                 </div>
                 
