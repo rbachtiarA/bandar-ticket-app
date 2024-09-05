@@ -1,5 +1,7 @@
 'use server'
 
+import { PostEvent } from "@/app/interfaceType";
+
 export const getEvents = async () => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}event`, {next: {revalidate: 60}})
     const data = await res.json()
@@ -23,9 +25,25 @@ export const getEventUpcoming = async () => {
     return {name:'Upcoming Event', data: data.result}
 }
 
-export const getEventId = async (id: number) => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}event/e/${id}`)
+export const getEventSlug = async (slug: string) => {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}event/e/${slug}`, {next: {revalidate: 10}})
     const data = await res.json()
 
-    return {name:`event ${id}`, data: data.result}
+    return {name:`event ${slug}`, data: data.result}
+}
+
+export const postEvent = async (data: PostEvent) => {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}event/web`, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+            "Content-Type":"application/json"
+        }
+    })
+
+    const result = await res.json()
+    console.log(result);
+    
+
+    return { result, ok: res.ok }
 }

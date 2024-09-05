@@ -11,6 +11,7 @@ export interface ICategory {
 
 export interface IEvent {
     id: number
+    slug: string
     name: string
     location: string
     cityId: number
@@ -25,12 +26,27 @@ export interface IEvent {
 
 export interface ICity {
     id: number
-    city: string
+    name: string
     provinceId: number
     province: IProvince
 }
 
 export interface IProvince {
     id: number
-    province: string
+    name: string
+}
+
+export interface PostEvent {
+    eventName: string,
+    eventCategory: string,
+    eventDateStart: string,
+    eventDateEnd: string,
+    eventTimeStart: string,
+    eventTimeEnd: string,
+    eventDescription: string,
+    eventAddress: string,
+    eventProvince: string,
+    eventCity: number,
+    eventPoster: string
+    eventQuota: number
 }

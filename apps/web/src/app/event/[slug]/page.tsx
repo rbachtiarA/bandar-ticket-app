@@ -1,10 +1,10 @@
 import Switcher from '@/components/event/switcher';
-import { getEventId } from '@/lib/event'
+import { getEventSlug } from '@/lib/event'
 import Image from 'next/image';
 import React, { useState } from 'react'
 
-export default async function page({ params }: { params: { id: number } }) {
-  const { name, data  } = await getEventId(params.id)
+export default async function page({ params }: { params: { slug: string } }) {
+  const { name, data  } = await getEventSlug(params.slug)
   if(data === null) {
     return (
       <section>

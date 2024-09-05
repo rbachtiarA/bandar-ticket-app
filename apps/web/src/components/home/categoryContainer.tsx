@@ -45,10 +45,11 @@ export default function CategoryContainer({category: {name, data}}: { category: 
                   <EventCard
                   key={event.id}
                   eventId = {event.id}
+                  eventSlug = {event.slug}
                   eventTitle={event.name}
                   eventImg={event.img_poster}
                   eventDate={new Date(event.date_start)}
-                  eventLocation={`${event.location}, ${event.city.province.province}`}
+                  eventLocation={`${event.location}, ${event.city.province.name}`}
                   />
               ))}
           </div>

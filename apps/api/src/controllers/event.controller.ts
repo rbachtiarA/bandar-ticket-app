@@ -1,6 +1,7 @@
 //this file need to be removed before development
 //this router used to add necessery data for exercise
 
+import { string_to_slug } from "@/lib/slugGenerate";
 import prisma from "@/prisma";
 import { EventCatergory } from "@prisma/client";
 import { Request, Response } from "express";
@@ -47,7 +48,7 @@ export class EventController {
             const imgLink = `http://localhost:8000/api/public/eventPoster/${req?.file?.filename}`
             
             const existCity = await prisma.city.findFirst({
-                where: { city: city }
+                where: { name: city }
             })
 
             if(!existCity) throw 'City not found'
@@ -106,12 +107,12 @@ export class EventController {
         }
     }
 
-    async getEventId(req:Request, res:Response) {
+    async getEventSlug(req:Request, res:Response) {
         
         try {
-            const EventData = await prisma.event.findUnique({
+            const EventData = await prisma.event.findFirst({
                 where: {
-                    id: +req.params.id
+                    slug: req.params.slug
                 },
                 include: {
                     city: {
@@ -166,6 +167,59 @@ export class EventController {
         }
     }
     
+    async createEventWeb(req:Request, res:Response){
+        try {           
+            const { 
+                eventName,
+                eventCategory,
+                eventDateStart,
+                eventDateEnd, 
+                eventTimeStart, 
+                eventTimeEnd, 
+                eventDescription, 
+                eventAddress,
+                eventProvince,
+                eventCity,
+                EventPoster
+            } = req.body
+            const imgLink = `http://localhost:8000/api/public/eventPoster/${req?.file?.filename}`
+            
+            const existCity = await prisma.city.findFirst({
+                where: { id: Number(eventCity) }
+            })
 
+            if(!existCity) throw 'City not found'
+
+            const eventData = await prisma.event.create({
+                data: {
+                    name: eventName,
+                    slug: string_to_slug(eventName),
+                    description: eventDescription,
+                    category: eventCategory,
+                    location: eventAddress,
+                    cityId: existCity.id ,
+                    date_start: (new Date(eventDateStart)).toISOString(),
+                    date_end: (new Date(eventDateEnd)).toISOString(),
+                    time_start: eventTimeStart,
+                    time_end: eventTimeEnd,
+                    img_poster: imgLink,
+                    max_quota: 1
+                }
+            })
+
+            res.status(200).send({
+                status: 'ok',
+                msg: 'event created !',
+                eventData
+            })
+            
+        } catch (error) {
+            res.status(400).send({
+                status: 'error',
+                msg: error
+            })
+        }
+        
+    }
 }
 
