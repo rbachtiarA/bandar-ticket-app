@@ -1,4 +1,4 @@
-import Switcher from '@/components/event/switcher';
+import EventSwitcher from '@/components/event/eventSwitcher';
 import { getEventSlug } from '@/lib/event'
 import Image from 'next/image';
 import React, { useState } from 'react'
@@ -64,11 +64,11 @@ export default async function page({ params }: { params: { slug: string } }) {
           </div>
 
           <div>
-            <h2>{data.location}, {data.city.city}, {data.city.province.province}</h2>
+            <h2>{data.location}, {data.city.name}, {data.city.province.name}</h2>
           </div>
         </div>
 
-        <Switcher />
+        <EventSwitcher description={data.description}/>
 
       </div>
     </section>

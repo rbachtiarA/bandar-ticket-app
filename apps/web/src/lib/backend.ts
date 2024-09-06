@@ -2,8 +2,7 @@
 
 export const getProvince = async () => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}backend/province`, {next: {revalidate: 10}})
-    const data = await res.json()  
-    console.log(data);
+    const data = await res.json()
     
     return data.result
 }

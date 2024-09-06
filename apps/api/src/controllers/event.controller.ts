@@ -168,7 +168,9 @@ export class EventController {
     }
     
     async createEventWeb(req:Request, res:Response){
-        try {           
+        try {                      
+            console.log(req.body);
+            
             const { 
                 eventName,
                 eventCategory,
@@ -182,12 +184,14 @@ export class EventController {
                 eventCity,
                 EventPoster
             } = req.body
+            if(!req.file) throw 'No File Uploaded'; 
             const imgLink = `http://localhost:8000/api/public/eventPoster/${req?.file?.filename}`
-            
+        
             const existCity = await prisma.city.findFirst({
-                where: { id: Number(eventCity) }
+                where: { id: +eventCity}
             })
-
+            console.log(typeof req.body.eventCity);
+            
             if(!existCity) throw 'City not found'
 
             const eventData = await prisma.event.create({
@@ -204,6 +208,7 @@ export class EventController {
                     time_end: eventTimeEnd,
                     img_poster: imgLink,
                     max_quota: 1
+                    
                 }
             })
 

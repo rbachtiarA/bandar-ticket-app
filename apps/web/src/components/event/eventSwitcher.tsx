@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react'
 
-export default function Switcher() {
+export default function EventSwitcher({ description }: { description: string }) {
     const [switcher, setSwitcher] = useState('desc')
     const handleTab = (condition: string) => {
         setSwitcher(condition)
@@ -15,6 +15,7 @@ export default function Switcher() {
 
             {switcher === 'desc' && 
             <div>
+              <p>{description}</p>
               <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam rerum id voluptates obcaecati facere! Quaerat error porro suscipit? Placeat unde ipsum quas eum, facere quidem veritatis quasi laboriosam necessitatibus deserunt optio, voluptatum culpa vero incidunt, repudiandae nostrum possimus tenetur sit.</p>
             </div>}
             {switcher === 'ticket' && 

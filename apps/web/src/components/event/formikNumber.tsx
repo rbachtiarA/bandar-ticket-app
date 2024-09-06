@@ -4,7 +4,7 @@ import React from 'react'
 export default function FormikNumber(props: { name: string, label: string}) {
   const {name, label, ...rest} = props
   return (
-    <div>
+    <div className='mt-4'>
         <label htmlFor={name}>{label}</label>
         <div>        
             <Field name={name} {...rest} type='number' id={name}/>
