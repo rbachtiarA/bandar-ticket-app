@@ -71,6 +71,7 @@ model TicketType {
   price       Int
   event       Event   @relation(fields: [eventID], references: [id])
   eventID     Int
+  quota       Int
 
   @@map("ticket_type")
 }
