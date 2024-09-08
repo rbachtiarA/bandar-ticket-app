@@ -1,3 +1,3 @@
 export const Footer = () => {
-  return <div>Footer</div>;
+  return <div className="font-extrabold bg-black">Footer</div>;
 };
