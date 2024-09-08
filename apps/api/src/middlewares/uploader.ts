@@ -6,8 +6,7 @@ type FileNameCallback = (error:Error | null, filename: string) => void
 
 export const uploader = (filePrefix: string, foldername?:string) => {
     const defaultDir = path.join(__dirname, "../../public")
-    console.log('Hello');
-    
+        
     const storage = multer.diskStorage({
         destination: (
             req:Request,

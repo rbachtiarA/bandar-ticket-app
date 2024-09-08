@@ -13,6 +13,7 @@ import { SampleRouter } from './routers/sample.router';
 import { BackendRouter } from './routers/backend.router';
 import path from 'path'
 import { EventRouter } from './routers/event.router';
+import { TicketRouter } from './routers/ticket.router';
 export default class App {
   private app: Express;
 
@@ -59,6 +60,7 @@ export default class App {
     const sampleRouter = new SampleRouter();
     const backendRouter = new BackendRouter();
     const eventRouter = new EventRouter();
+    const ticketRouter = new TicketRouter()
     this.app.get('/api', (req: Request, res: Response) => {
       res.send(`Hello, Purwadhika Student API!`);
     });
@@ -66,6 +68,7 @@ export default class App {
     this.app.use('/api/samples', sampleRouter.getRouter());
     this.app.use('/api/backend', backendRouter.getRouter());
     this.app.use('/api/event', eventRouter.getRouter());
+    this.app.use('/api/ticket', ticketRouter.getRouter())
   }
 
   public start(): void {

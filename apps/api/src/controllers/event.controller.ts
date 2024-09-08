@@ -16,8 +16,7 @@ export class EventController {
                         include: {
                             province:true
                         }
-                    }
-                    
+                    }                    
                 }
             })
             
@@ -120,13 +119,18 @@ export class EventController {
                             province: true
                         }
                     }
+                }                
+            })
+            const TicketData = await prisma.ticketType.findMany({
+                where: {
+                    eventID: EventData?.id
                 }
             })
-            
             return res.status(200).send({
                 status: 'ok',
                 msg: `Get event id ${req.params.id}`,
-                result: EventData
+                event: EventData,
+                ticket: TicketData
             })
         } catch (error) {
             res.status(400).send({
@@ -168,9 +172,7 @@ export class EventController {
     }
     
     async createEventWeb(req:Request, res:Response){
-        try {                      
-            console.log(req.body);
-            
+        try {                                 
             const { 
                 eventName,
                 eventCategory,
@@ -190,7 +192,6 @@ export class EventController {
             const existCity = await prisma.city.findFirst({
                 where: { id: +eventCity}
             })
-            console.log(typeof req.body.eventCity);
             
             if(!existCity) throw 'City not found'
 

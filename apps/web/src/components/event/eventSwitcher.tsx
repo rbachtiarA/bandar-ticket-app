@@ -1,8 +1,9 @@
 'use client'
 import React, { useState } from 'react'
 import TicketForm from '../ticket/ticketForm';
+import { ITicketType } from '@/app/interfaceType';
 
-export default function EventSwitcher({ description, eventId }: { description: string, eventId: number }) {
+export default function EventSwitcher({ description, eventId, ticket }: { description: string, eventId: number,ticket: ITicketType[] }) {
     const isAdmin = true;
     const [switcher, setSwitcher] = useState('desc')
     const [formType, setFormType] = useState('none')
@@ -38,6 +39,18 @@ export default function EventSwitcher({ description, eventId }: { description: s
                   </div>
                 }
                 <p>Ticket List</p>
+                { ticket.length === 0 && <p className='text-red-500'>There is no ticket available on this event right now</p> }
+                {
+                  ticket.length !==0 && 
+                  ticket.map((ticket) => (
+                    <div key={ticket.id}>
+                      <h1>{ticket.name}</h1>
+                      <h2>{ticket.description}</h2>
+                      <h2>{ticket.price}</h2>
+                      <h3>{ticket.quota}</h3>
+                    </div>
+                  )) 
+                }
             </div>}
                 {
                   isAdmin && formType ==='ticket' && 

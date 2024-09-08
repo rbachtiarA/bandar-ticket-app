@@ -3,10 +3,8 @@
 import { PostEvent } from "@/app/interfaceType";
 
 export const getEvents = async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}event`, {next: { revalidate: 10 }})
-    const data = await res.json()
-    console.log(process.env.NEXT_PUBLIC_BASE_API_URL);
-    
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}event`, {next: { revalidate: 5 }})
+    const data = await res.json()    
 
     return { name: 'all event', data: data.result}
 }
@@ -26,10 +24,10 @@ export const getEventUpcoming = async () => {
 }
 
 export const getEventSlug = async (slug: string) => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}event/e/${slug}`, {next: {revalidate: 10}})
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}event/e/${slug}`, {next: {revalidate: 5}})
     const data = await res.json()
 
-    return {name:`event ${slug}`, data: data.result}
+    return {name:`event ${slug}`, event: data.event, ticket: data.ticket}
 }
 
 export const postEvent = async (data: PostEvent) => {
@@ -55,9 +53,7 @@ export const postEvent = async (data: PostEvent) => {
         body: formData,
     })
 
-    const result = await res.json()
-    console.log(result);
-    
+    const result = await res.json()    
 
     return { result, ok: res.ok }
 }

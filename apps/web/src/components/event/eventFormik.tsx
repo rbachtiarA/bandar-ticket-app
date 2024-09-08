@@ -25,8 +25,7 @@ export default function EventFormik({ mainData }: {mainData: {id: number, name:s
     const onCreate = async (data: PostEvent, action: FormikHelpers<PostEvent>) => {
         try {
             const { result, ok } = await postEvent(data)
-            console.log(result);
-            // action.resetForm()
+            action.resetForm()
         } catch (error) {
             console.log(error);
             
@@ -59,7 +58,6 @@ export default function EventFormik({ mainData }: {mainData: {id: number, name:s
                 }}
                 validationSchema={createEventSchema}
                 onSubmit={(values, action) => {
-                    console.log(values);
                     onCreate(values, action);                
                 } }
             >

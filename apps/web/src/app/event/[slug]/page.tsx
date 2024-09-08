@@ -4,10 +4,11 @@ import Image from 'next/image';
 import React, { useState } from 'react'
 
 export default async function page({ params }: { params: { slug: string } }) {
-  const { name, data  } = await getEventSlug(params.slug)
-  console.log(data);
+  const { name, event, ticket  } = await getEventSlug(params.slug)
+  console.log(event);
+  console.log(ticket);
   
-  if(data === null) {
+  if(event === null) {
     return (
       <section>
         <div>
@@ -18,8 +19,8 @@ export default async function page({ params }: { params: { slug: string } }) {
   }
 
   
-  const date_start = new Date(data.date_start)
-  const date_end = new Date(data.date_end)
+  const date_start = await new Date(event.date_start)
+  const date_end = await new Date(event.date_end)
   return (
     <section className='relative'>
       <div className='event-header p-4'>
@@ -29,8 +30,8 @@ export default async function page({ params }: { params: { slug: string } }) {
 
         <div className='image-container w-screen md:w-[400px] h-[300px] md:h-[100%]'>
           <Image 
-          src={data.img_poster}
-          alt={`poster ${data.name}`}
+          src={event.img_poster}
+          alt={`poster ${event.name}`}
           width={0}
           height={0}
           sizes='100vw'
@@ -41,7 +42,7 @@ export default async function page({ params }: { params: { slug: string } }) {
         <div className='info-container rounded-lg'>
 
           <div>
-            <h1 className=''>{data.name}</h1>
+            <h1 className=''>{event.name}</h1>
           </div>
 
           <div>
@@ -66,11 +67,11 @@ export default async function page({ params }: { params: { slug: string } }) {
           </div>
 
           <div>
-            <h2>{data.location}, {data.city.name}, {data.city.province.name}</h2>
+            <h2>{event.location}, {event.city.name}, {event.city.province.name}</h2>
           </div>
         </div>
 
-        <EventSwitcher description={data.description} eventId={data.id}/>
+        <EventSwitcher description={event.description} eventId={event.id} ticket={ticket}/>
 
       </div>
     </section>
