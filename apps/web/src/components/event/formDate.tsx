@@ -1,5 +1,5 @@
 import React from 'react'
-import FormikControl from './formikControl'
+import FormikControl from '../formikControl/formikControl'
 
 export default function FormDate(props: {className: string}) {
     const { className } = props

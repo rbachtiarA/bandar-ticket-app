@@ -3,7 +3,7 @@
 import { PostEvent } from "@/app/interfaceType";
 
 export const getEvents = async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}event`, {next: {revalidate: 60}})
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}event`, {next: { revalidate: 10 }})
     const data = await res.json()
     console.log(process.env.NEXT_PUBLIC_BASE_API_URL);
     
@@ -12,14 +12,14 @@ export const getEvents = async () => {
 }
 
 export const getEventCategory = async (category: string) => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}event/cat/${category}`)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}event/cat/${category}`, {next: {revalidate: 10}})
     const data = await res.json()
 
     return {name:category, data: data.result}
 }
 
 export const getEventUpcoming = async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}event/upcoming`)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}event/upcoming`, {next: { revalidate: 10 }})
     const data = await res.json()
 
     return {name:'Upcoming Event', data: data.result}

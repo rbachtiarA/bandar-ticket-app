@@ -5,6 +5,8 @@ import React, { useState } from 'react'
 
 export default async function page({ params }: { params: { slug: string } }) {
   const { name, data  } = await getEventSlug(params.slug)
+  console.log(data);
+  
   if(data === null) {
     return (
       <section>
@@ -19,7 +21,7 @@ export default async function page({ params }: { params: { slug: string } }) {
   const date_start = new Date(data.date_start)
   const date_end = new Date(data.date_end)
   return (
-    <section>
+    <section className='relative'>
       <div className='event-header p-4'>
         <div className='breadcrumbs'>
 
@@ -68,7 +70,7 @@ export default async function page({ params }: { params: { slug: string } }) {
           </div>
         </div>
 
-        <EventSwitcher description={data.description}/>
+        <EventSwitcher description={data.description} eventId={data.id}/>
 
       </div>
     </section>

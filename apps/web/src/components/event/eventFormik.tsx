@@ -1,11 +1,11 @@
 'use client'
 import { PostEvent } from '@/app/interfaceType';
 import FormDate from '@/components/event/formDate';
-import FormikControl from '@/components/event/formikControl';
+import FormikControl from '@/components/formikControl/formikControl';
 import FormProvinceCity from '@/components/event/formProvinceCity';
 import FormTime from '@/components/event/formTime';
 import { postEvent } from '@/lib/event';
-import { Field, Form, Formik, FormikHelpers, FormikState } from 'formik';
+import { Form, Formik, FormikHelpers } from 'formik';
 import React from 'react'
 import * as yup from 'yup';
 import FormCatergory from './formCategory';
@@ -21,7 +21,7 @@ const createEventSchema = yup.object().shape({
     eventQuota: yup.number().min(1, 'Atleast quota need to be 1')
 })
 
-export default function FormFormik({ mainData }: {mainData: {id: number, name:string, cities: { id: number, name: string }[]}[] }) {   
+export default function EventFormik({ mainData }: {mainData: {id: number, name:string, cities: { id: number, name: string }[]}[] }) {   
     const onCreate = async (data: PostEvent, action: FormikHelpers<PostEvent>) => {
         try {
             const { result, ok } = await postEvent(data)

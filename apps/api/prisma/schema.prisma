@@ -65,11 +65,12 @@ model Event {
 }
 
 model TicketType {
-  id      Int    @id @default(autoincrement())
-  name    String @unique
-  price   Int
-  event   Event  @relation(fields: [eventID], references: [id])
-  eventID Int
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String?
+  price       Int
+  event       Event   @relation(fields: [eventID], references: [id])
+  eventID     Int
 
   @@map("ticket_type")
 }
