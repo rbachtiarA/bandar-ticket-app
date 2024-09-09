@@ -36,11 +36,11 @@ export default function Navbar() {
                 <div className='hidden md:flex justify-around underline-hover'>
                     <div className='flex justify-between w-3/4 pr-12 border-r-2'>
                         {/* diisi sesuai category yang ada */}
-                        <Link href={'/category/music'}>Music Concert</Link>
-                        <Link href={'/category/seminar'}>Seminar</Link>
-                        <Link href={'/category/gallery'}>Art Gallery</Link>
-                        <Link href={'/category/entertainment'}>Entertainment</Link>
-                        <Link href={'/category/sport'}>Sport</Link>
+                        <Link href={'/event?category=Music'}>Music Concert</Link>
+                        <Link href={'/event?category=Seminar'}>Seminar</Link>
+                        <Link href={'/event?category=Gallery'}>Art Gallery</Link>
+                        <Link href={'/event?category=Entertainment'}>Entertainment</Link>
+                        <Link href={'/event?category=Sport'}>Sport</Link>
                     </div>
                     <div className='flex items-center justify-center w-1/4'>
                         <Link href={'/createEvent'}>Create Event</Link>

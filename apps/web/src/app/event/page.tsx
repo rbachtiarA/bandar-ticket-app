@@ -1,5 +1,6 @@
 'use client'
 import EventCard from '@/components/eventCard'
+import Pagination from '@/components/pagination'
 import { getEvents } from '@/lib/event'
 // import { CardBlog } from '@/components/card'
 // import Wrapper from '@/components/wrapper'
@@ -13,6 +14,8 @@ export default function Page() {
   const searchParams = useSearchParams()
   const querySearch = searchParams.get('search')
   const queryCategory = searchParams.get('category')
+  const [pages, setPages] = useState(1)
+  const [page, setPage] = useState(1)
   const [search, setSearch] = useState<string>(querySearch || '')
   const [data, setData] = useState([])
   const [category, setCategory] = useState<string>(queryCategory || '')
@@ -20,6 +23,31 @@ export default function Page() {
   const [cat] = useDebounce(category, 1000)
   const router = useRouter()
 
+  const handlePage = (val: number) => {
+
+      const tempPage = page+val
+
+      if(tempPage < 1) {
+        setPage(1)
+      } else if(tempPage > pages) {
+        setPage(pages)
+      } else {
+        setPage(tempPage)
+      }
+    }
+  
+  const handlePageInstant = (val: number) => {
+
+    const tempPage = val
+
+    if(tempPage < 1) {
+      setPage(1)
+    } else if(tempPage > pages) {
+      setPage(pages)
+    } else {
+      setPage(tempPage)
+    }
+  }
   const handleChangeRadio = (e: any) => {
     setCategory(e.target.value)
   }
@@ -34,7 +62,7 @@ export default function Page() {
       router.push(`?search=${val}&category=${category}`)
       const {name, data} = await getEvents(val, cat)
       setData(data)
-      
+      setPages(Math.ceil(data.length/8))
     } catch (error) {
       console.log(error);
     }
@@ -88,7 +116,7 @@ export default function Page() {
                 <h1 className='text-xl font-semibold text-center'>Events</h1>
                 <div className="grid " style={{gridTemplateColumns: `repeat(4, 250px)`}}>
                     {
-                    data.map((event: any) => {
+                    data.slice((page*8)-8, 8*page).map((event: any) => {
                         return (
                             <EventCard
                                 key={event.id}
@@ -102,6 +130,11 @@ export default function Page() {
                         )
                     })
                     }
+
+                </div>
+
+                <div>
+                    <Pagination pages={pages} handlePageInstant={handlePageInstant} handlePage={handlePage}/>
                 </div>
             </div>
         </div>
@@ -110,7 +143,10 @@ export default function Page() {
         <div className='flex flex-col'>
           <h1>Debug Search & filter</h1>
           <div>State: {search}, {category}</div>
+          <div>Pages: {pages}</div>
+          <div>Page: {page}</div>
           <div>Debounce: {val}, {cat}</div>
+          
         </div>
 
         

@@ -16,6 +16,10 @@
   .btn-primary {
     @apply px-4 py-2 rounded-lg bg-cyan-200 hover:text-white hover:bg-cyan-600
   }
+
+  .btn-pagination {
+    @apply bg-slate-400 px-2 py-1 rounded-md
+  }
 }
 /* 
 .containerScroll-hidden::-webkit-scrollbar {
