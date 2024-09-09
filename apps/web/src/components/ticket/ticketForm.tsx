@@ -8,7 +8,7 @@ export default function TicketForm({ handleFormClose, eventId }: { handleFormClo
       <div className='flex justify-center items-center w-full h-full'>  
         <div className='relative w-1/2 p-4 rounded-md bg-white [&_label]:font-semibold'>
           <h1 className='text-3xl font-bold text-center'>Create Ticket</h1>
-          <TicketFormik eventId={eventId}/>
+          <TicketFormik eventId={eventId} handleClose={handleFormClose}/>
           <button onClick={handleFormClose} className='absolute top-2 right-2'>X</button>
         </div>
 

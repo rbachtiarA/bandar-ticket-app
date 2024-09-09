@@ -10,7 +10,7 @@ const createTicketSchema =  yup.object().shape({
     ticketQuota: yup.number().min(1, 'Minimum of ticket quota should be 1')
   })
 
-export default function TicketFormik({eventId}: {eventId: number}) {
+export default function TicketFormik({eventId, handleClose}: {eventId: number, handleClose: any}) {
   return (
     <Formik
         initialValues={{
@@ -23,7 +23,8 @@ export default function TicketFormik({eventId}: {eventId: number}) {
         validationSchema={createTicketSchema}
         onSubmit={(values, action) => {
           postTicketType(values)
-          console.log(values, `for event ${eventId}`);  
+          action.resetForm()
+          handleClose()
         }}
         >
           {

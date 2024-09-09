@@ -113,7 +113,7 @@ export default function EventFormik({ mainData }: {mainData: {id: number, name:s
                                 </div>
 
                                 <div className='flex justify-center'>
-                                    <button type='submit' className='w-1/2 mt-4 bg-[rgb(77,170,212)] hover:bg-[rgb(44,96,121)] hover:text-white  shadow-md rounded-lg'>Submit</button>
+                                    <button type='submit' className='w-1/2 mt-4 btn-primary'>Submit</button>
                                 </div>
                             </Form>
                         )

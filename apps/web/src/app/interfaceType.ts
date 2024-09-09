@@ -13,6 +13,7 @@ export interface IEvent {
     id: number
     slug: string
     name: string
+    description: string
     location: string
     cityId: number
     date_start: Date

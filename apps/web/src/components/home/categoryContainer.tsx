@@ -32,8 +32,8 @@ export default function CategoryContainer({category: {name, data}}: { category: 
         
   // section width desktop need to be multiplier of offset handleScroll (ex: handleScroll offset = 200px, container widht should be 200/400/800 px etc ) 
   return (
-    <section className='relative'>
-        <div className='w-screen md:w-[750px] md:mx-auto lg:w-[1000px] flex flex-col overflow-hidden'>
+    <section className=''>
+        <div className='relative w-full md:w-[750px] md:mx-auto lg:w-[1000px] flex flex-col overflow-hidden'>
           <h1 className='text-lg font-extrabold text-center'>{name}</h1>
           <div ref={containerRef} id='concert-container'
           className='grid py-2
@@ -54,13 +54,12 @@ export default function CategoryContainer({category: {name, data}}: { category: 
               ))}
           </div>
           
-        </div>
-        {
+          {
           disableButton !== 'min' 
           && data.length>4 
           && 
           <button onClick={() => handleScroll(-(250))} 
-          className='absolute hidden md:block p-2 left-[23%] top-1/3 shadow-md bg-slate-200/90 hover:bg-slate-500/70 text-5xl rounded-full'>
+          className='absolute hidden md:block p-2 left-0 top-1/3 shadow-md bg-slate-200/90 hover:bg-slate-500/70 text-5xl rounded-full'>
               <Image
               src={'/ico-prev.svg'}
               alt={'prev button'}
@@ -74,7 +73,7 @@ export default function CategoryContainer({category: {name, data}}: { category: 
           && data.length>4 
           &&  
           <button onClick={() => handleScroll(250)} 
-          className='absolute hidden md:block p-2 right-[23%] top-1/3 shadow-md bg-slate-200/90 hover:bg-slate-500/70 text-5xl rounded-full'>
+          className='absolute hidden md:block p-2 right-0 top-1/3 shadow-md bg-slate-200/90 hover:bg-slate-500/70 text-5xl rounded-full'>
               <Image
               src={'/ico-next.svg'}
               alt={'next button'}
@@ -83,6 +82,8 @@ export default function CategoryContainer({category: {name, data}}: { category: 
               />
           </button>
         }
+        </div>
+        
 
         <button></button>
         
