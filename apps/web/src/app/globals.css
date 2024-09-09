@@ -10,6 +10,13 @@
 .buttonHide {
   display: none;
 }
+
+/* px-4 py-2 rounded-lg bg-cyan-200 hover:text-white hover:bg-cyan-600 */
+@layer components {
+  .btn-primary {
+    @apply px-4 py-2 rounded-lg bg-cyan-200 hover:text-white hover:bg-cyan-600
+  }
+}
 /* 
 .containerScroll-hidden::-webkit-scrollbar {
   display: none;

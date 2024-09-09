@@ -17,8 +17,8 @@ export default function Navbar() {
                             <input type="search"  className='focus:ring-1 py-2 px-6 outline-none rounded-2xl w-full shadow-sm placeholder:italic' placeholder='search your event here...'/>
                             <button type='submit' className='absolute top-[8px] right-[12px]'>
                                 <Image
-                                src={'./ico-search.svg'}
-                                alt=''
+                                src={'/ico-search.svg'}
+                                alt='search'
                                 width={24}
                                 height={24}
                                 draggable='false' />
@@ -36,14 +36,14 @@ export default function Navbar() {
                 <div className='hidden md:flex justify-around underline-hover'>
                     <div className='flex justify-between w-3/4 pr-12 border-r-2'>
                         {/* diisi sesuai category yang ada */}
-                        <Link href={'/'}>Music Concert</Link>
-                        <Link href={'/'}>Seminar</Link>
-                        <Link href={'/'}>Art Gallery</Link>
-                        <Link href={'/'}>Entertainment</Link>
-                        <Link href={'/'}>Sport</Link>
+                        <Link href={'/category/music'}>Music Concert</Link>
+                        <Link href={'/category/seminar'}>Seminar</Link>
+                        <Link href={'/category/gallery'}>Art Gallery</Link>
+                        <Link href={'/category/entertainment'}>Entertainment</Link>
+                        <Link href={'/category/sport'}>Sport</Link>
                     </div>
                     <div className='flex items-center justify-center w-1/4'>
-                        <Link href={'/'}>Event List</Link>
+                        <Link href={'/createEvent'}>Create Event</Link>
                     </div>
                 </div>
                 

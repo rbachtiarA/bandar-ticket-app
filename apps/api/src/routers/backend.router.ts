@@ -12,7 +12,8 @@ export class BackendRouter {
     }
 
     private initializeRoutes(): void {
-        this.router.get('/', this.backendController.getCity)
+        this.router.get('/city', this.backendController.getCity)
+        this.router.get('/province', this.backendController.getProvince)
         this.router.post('/province', this.backendController.postProvince)
         this.router.post('/city', this.backendController.postCity)
     }
