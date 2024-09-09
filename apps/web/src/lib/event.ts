@@ -2,8 +2,10 @@
 
 import { PostEvent } from "@/app/interfaceType";
 
-export const getEvents = async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}event`, {next: { revalidate: 5 }})
+export const getEvents = async (search='', category='') => {
+    // const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}event${search !== ''? `?search=${search}` : ''}${category !== ''}&category=${category}`, {next: { revalidate: 5 }})
+    
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}event?search=${search}&category=${category}`, {next: { revalidate: 5 }})
     const data = await res.json()    
 
     return { name: 'all event', data: data.result}

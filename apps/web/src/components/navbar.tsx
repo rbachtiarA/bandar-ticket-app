@@ -17,7 +17,7 @@ export default function Navbar() {
                             <input type="search"  className='focus:ring-1 py-2 px-6 outline-none rounded-2xl w-full shadow-sm placeholder:italic' placeholder='search your event here...'/>
                             <button type='submit' className='absolute top-[8px] right-[12px]'>
                                 <Image
-                                src={'./ico-search.svg'}
+                                src={'/ico-search.svg'}
                                 alt='search'
                                 width={24}
                                 height={24}

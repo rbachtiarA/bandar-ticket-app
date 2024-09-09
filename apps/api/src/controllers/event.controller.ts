@@ -3,14 +3,28 @@
 
 import { string_to_slug } from "@/lib/slugGenerate";
 import prisma from "@/prisma";
-import { EventCatergory } from "@prisma/client";
+import { EventCatergory, Prisma } from "@prisma/client";
 import { Request, Response } from "express";
 
 export class EventController {
     async getEvent(req:Request, res:Response) {
         
         try {
+            const { search, category } = req.query
+            let filter: Prisma.EventWhereInput = {}
+
+            if(search) {
+                filter.name = { contains: search as string }
+                // filter.category = { in: category as any }
+            }
+
+            
+            if(category === "Music" || category === "Sport" || category === "Seminar" || category === "Gallery" || category === "Entertainment") {
+                filter.category = { equals: category }
+            }
+
             const EventData = await prisma.event.findMany({
+                where: filter,
                 include: {
                     city: {
                         include: {
