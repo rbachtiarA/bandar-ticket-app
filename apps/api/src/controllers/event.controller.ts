@@ -229,7 +229,7 @@ export class EventController {
 
             res.status(200).send({
                 status: 'ok',
-                msg: 'event created !',
+                msg: `Success creating event ${eventName}`,
                 eventData
             })
             

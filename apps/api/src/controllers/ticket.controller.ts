@@ -40,7 +40,7 @@ export class TicketController {
 
             return res.status(200).send({
                 status: 'ok',
-                msg: `success creating ${ticketName} for ${eventId}`,
+                msg: `Success creating ${ticketName}`,
                 data
             })
         } catch (error) {

@@ -9,6 +9,7 @@ import { Form, Formik, FormikHelpers } from 'formik';
 import React from 'react'
 import * as yup from 'yup';
 import FormCatergory from './formCategory';
+import { toast } from 'react-toastify';
 
 const createEventSchema = yup.object().shape({
     eventName: yup.string().required("Event must have name"),
@@ -25,10 +26,12 @@ export default function EventFormik({ mainData }: {mainData: {id: number, name:s
     const onCreate = async (data: PostEvent, action: FormikHelpers<PostEvent>) => {
         try {
             const { result, ok } = await postEvent(data)
+            if(!ok) throw result.msg
+            toast.success(result.msg)
             action.resetForm()
         } catch (error) {
+            toast.error(error as string)
             console.log(error);
-            
         }
     }
     const handleFileChange = (event: any, setFieldValue: any) => {

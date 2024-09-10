@@ -51,8 +51,8 @@ export default function EventSwitcher({ description, eventId, ticket }: { descri
                 <div className='flex flex-col gap-4 mt-4'>
                   {
                     ticket.length !==0 && 
-                    ticket.map((ticket) => (
-                      <TicketCard ticket={ticket} />
+                    ticket.map((ticket, idx) => (
+                      <TicketCard key={idx} ticket={ticket} />
                     )) 
                   }
                 </div>
