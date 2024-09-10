@@ -1,8 +1,9 @@
 import { ITicketType } from '@/app/interfaceType'
-import React, { useContext } from 'react'
+import React, { useContext, useRef } from 'react'
 import { toast } from 'react-toastify'
 
-export default function TicketCard({ ticket, isPastEvent }: {ticket: ITicketType, isPastEvent: Boolean}) {
+export default function TicketCard({ ticket, isPastEvent, handleAddCart }: {ticket: ITicketType, isPastEvent: Boolean, handleAddCart:any}) {
+    const quantityRef = useRef<HTMLInputElement>(null)
     const IDR = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'IDR'
@@ -27,7 +28,14 @@ export default function TicketCard({ ticket, isPastEvent }: {ticket: ITicketType
             </div>    
             :
             <div className='w-1/5 flex justify-center items-center'>
-                <button className='btn-primary'>Beli Tiket</button>
+                <input type="number" className='w-10' defaultValue={1} min={1} ref={quantityRef}/>
+                <button 
+                    className='btn-primary' 
+                    onClick={() => {
+                        handleAddCart(Number(quantityRef.current?.value), ticket.id,Number(ticket.price), ticket.price*Number(quantityRef.current?.value))
+                }}>
+                    Beli Tiket
+                </button>
             </div>
         }
     </div>

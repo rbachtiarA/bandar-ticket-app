@@ -67,3 +67,10 @@ export interface PostEvent {
     eventPoster: string
     eventQuota: number
 }
+
+export interface ICart {
+    quantity: number,
+    ticketType: number,
+    price: number,
+    totalPrice: number
+}
