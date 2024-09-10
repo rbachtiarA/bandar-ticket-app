@@ -4,7 +4,7 @@ import TicketForm from '../ticket/ticketForm';
 import { ITicketType } from '@/app/interfaceType';
 import TicketCard from '../ticket/ticketCard';
 
-export default function EventSwitcher({ description, eventId, ticket }: { description: string, eventId: number,ticket: ITicketType[] }) {
+export default function EventSwitcher({ description, eventId, ticket, isPastEvent }: { description: string, eventId: number,ticket: ITicketType[], isPastEvent: Boolean }) {
     const isAdmin = true;
     const [switcher, setSwitcher] = useState('desc')
     const [formType, setFormType] = useState('none')
@@ -20,10 +20,10 @@ export default function EventSwitcher({ description, eventId, ticket }: { descri
     
   return (
     <div className='h-full'>
-            <div className='sticky top-0 flex bg-slate-200 [&_button]:border-x-2 [&_button]:border-black '>
-              <button onClick={() => handleTab('desc')} className='w-1/3 hover:underline'>Description</button>
-              <button onClick={() => handleTab('ticket')} className='w-1/3 hover:underline'>Ticket</button>
-              <button onClick={() => handleTab('Discount')} className='w-1/3 hover:underline'>Discount</button>
+            <div className='sticky top-0 flex bg-slate-400 gap-2 [&_button]:bg-slate-200 [&_button]:py-1'>
+              <button onClick={() => handleTab('desc')} className={`w-1/3 hover:underline ${switcher === 'desc'? 'font-bold pointer-events-none': ''}`}>Description</button>
+              <button onClick={() => handleTab('ticket')} className={`w-1/3 hover:underline ${switcher === 'ticket'? 'font-bold pointer-events-none': ''}`}>Ticket</button>
+              <button onClick={() => handleTab('discount')} className={`w-1/3 hover:underline ${switcher === 'discount'? 'font-bold pointer-events-none': ''}`}>Discount</button>
             </div>
 
             {
@@ -52,7 +52,7 @@ export default function EventSwitcher({ description, eventId, ticket }: { descri
                   {
                     ticket.length !==0 && 
                     ticket.map((ticket, idx) => (
-                      <TicketCard key={idx} ticket={ticket} />
+                      <TicketCard key={idx} ticket={ticket} isPastEvent={isPastEvent}/>
                     )) 
                   }
                 </div>

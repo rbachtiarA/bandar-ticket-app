@@ -4,11 +4,16 @@ import EventSwitcher from './eventSwitcher'
 
 export default function EventDetails({ event, ticket }: {event:IEvent, ticket: ITicketType[]}) {
 
+    const date_now = new Date()
     const date_start = new Date(event.date_start)
     const date_end = new Date(event.date_end)
+    let isPastEvent = false;
+    if(date_start < date_now ) {
+        isPastEvent = true
+    }
+    
   return (
     <div className='flex flex-col w-full lg:w-2/3'>
-        
         <div className='pb-2 mb-2 border-dashed border-b-2'>
             <div>
             <h1 className='font-bold text-xl'>{event.name}</h1>
@@ -38,7 +43,7 @@ export default function EventDetails({ event, ticket }: {event:IEvent, ticket: I
             </div>
         </div>
 
-        <EventSwitcher description={event.description} eventId={event.id} ticket={ticket}/>
+        <EventSwitcher description={event.description} eventId={event.id} ticket={ticket} isPastEvent={isPastEvent}/>
     </div>
   )
 }

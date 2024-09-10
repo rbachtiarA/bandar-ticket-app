@@ -6,11 +6,11 @@ export default function Pagination ({pages, handlePageJump, handlePage}: { pages
         arr.push(i+1)
     }
     return (
-    <div className='[&_button]:btn-pagination flex justify-end gap-4 mt-4'>
+    <div className='[&_button]:btn-pagination flex justify-center items-center gap-4'>
         <button onClick={() => handlePage(-1)}>prev page</button>
         {
             arr.map((val) => (
-                <button onClick={() => handlePageJump(val)}>{val}</button >
+                <button key={val} onClick={() => handlePageJump(val)}>{val}</button >
             ))
         }
         <button onClick={() => handlePage(1)}>next page</button>

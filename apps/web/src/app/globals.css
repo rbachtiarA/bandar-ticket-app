@@ -20,6 +20,10 @@
   .btn-pagination {
     @apply bg-slate-400 px-2 py-1 rounded-md
   }
+
+  .btn-warning {
+    @apply px-4 py-2 rounded-lg bg-red-400 text-gray-700
+  }
 }
 /* 
 .containerScroll-hidden::-webkit-scrollbar {
