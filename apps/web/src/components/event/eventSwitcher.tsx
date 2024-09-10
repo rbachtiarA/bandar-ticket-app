@@ -20,7 +20,7 @@ export default function EventSwitcher({ description, eventId, ticket }: { descri
     
   return (
     <div className='h-full'>
-            <div className='sticky top-0 flex bg-slate-200 '>
+            <div className='sticky top-0 flex bg-slate-200 [&_button]:border-x-2 [&_button]:border-black '>
               <button onClick={() => handleTab('desc')} className='w-1/3 hover:underline'>Description</button>
               <button onClick={() => handleTab('ticket')} className='w-1/3 hover:underline'>Ticket</button>
               <button onClick={() => handleTab('Discount')} className='w-1/3 hover:underline'>Discount</button>

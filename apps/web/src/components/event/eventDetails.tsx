@@ -8,8 +8,8 @@ export default function EventDetails({ event, ticket }: {event:IEvent, ticket: I
     const date_end = new Date(event.date_end)
   return (
     <div className='flex flex-col w-full lg:w-2/3'>
-
-        <div className='p-4'>
+        
+        <div className='pb-2 mb-2 border-dashed border-b-2'>
             <div>
             <h1 className='font-bold text-xl'>{event.name}</h1>
             </div>

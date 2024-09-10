@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Pagination ({pages, handlePageInstant, handlePage}: { pages:number, handlePageInstant:any, handlePage:any }) {
+export default function Pagination ({pages, handlePageJump, handlePage}: { pages:number, handlePageJump:any, handlePage:any }) {
     const arr = []
     for(let i = 0; i < pages; i++) {
         arr.push(i+1)
@@ -10,7 +10,7 @@ export default function Pagination ({pages, handlePageInstant, handlePage}: { pa
         <button onClick={() => handlePage(-1)}>prev page</button>
         {
             arr.map((val) => (
-                <button onClick={() => handlePageInstant(val)}>{val}</button >
+                <button onClick={() => handlePageJump(val)}>{val}</button >
             ))
         }
         <button onClick={() => handlePage(1)}>next page</button>

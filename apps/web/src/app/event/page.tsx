@@ -36,8 +36,7 @@ export default function Page() {
       }
     }
   
-  const handlePageInstant = (val: number) => {
-
+  const handlePageJump = (val: number) => {
     const tempPage = val
 
     if(tempPage < 1) {
@@ -74,47 +73,57 @@ export default function Page() {
   return (
     <section>
         
-        <div className='flex'>
-            <div className='flex flex-col p-4 w-1/4'>
+        <div className='flex flex-col justify-center items-center md:justify-normal md:items-start md:flex-row'>
+            <div className='flex flex-col p-4 md:w-1/4'>
                 <input
                 onChange={handleChange} 
                 ref={searchRef}
+                value={search}
                 type="text" placeholder='search event by name' 
                 className='bg-slate-200 focus:ring-2 rounded-sm py-2 px-4 border-2 border-slate-400'
                 />
                 <div>
-                    <div className='flex flex-col'>
+                    <div className='grid grid-cols-3 w-full text-sm md:text-md'>
                         <div>
-                            <label htmlFor='filterDefault'>Any</label>
                             <input type="radio" name="filterCategory" id='filterDefault' value={''} onChange={(e) => handleChangeRadio(e)}/>
+                            <label htmlFor='filterDefault'>Any</label>
                         </div>
                         <div>
-                            <label htmlFor='filterMusic'>Music</label>
                             <input type="radio" name="filterCategory" id='filterMusic' value={'Music'} onChange={(e) => handleChangeRadio(e)}/>
+                            <label htmlFor='filterMusic'>Music</label>
                         </div>
                         <div>
-                            <label htmlFor='filterSport'>Sport</label>
                             <input type="radio" name="filterCategory" id='filterSport' value={'Sport'} onChange={(e) => handleChangeRadio(e)}/>
+                            <label htmlFor='filterSport'>Sport</label>
                         </div>
                         <div>
-                            <label htmlFor='filterEntertainment'>Entertainment</label>
                             <input type="radio" name="filterCategory" id='filterEntertainment' value={'Entertainment'} onChange={(e) => handleChangeRadio(e)}/>
+                            <label htmlFor='filterEntertainment'>Entertainment</label>
                         </div>
                         <div>
-                            <label htmlFor='filterSeminar'>Seminar</label>
                             <input type="radio" name="filterCategory" id='filterSeminar' value={'Seminar'} onChange={(e) => handleChangeRadio(e)}/>
+                            <label htmlFor='filterSeminar'>Seminar</label>
                         </div>
                         <div>
-                            <label htmlFor='filterGallery'>Gallery</label>
                             <input type="radio" name="filterCategory" id='filterGallery' value={'Gallery'} onChange={(e) => handleChangeRadio(e)}/>
+                            <label htmlFor='filterGallery'>Gallery</label>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <div>
+            <div className='w-full p-4'>
                 <h1 className='text-xl font-semibold text-center'>Events</h1>
-                <div className="grid " style={{gridTemplateColumns: `repeat(4, 250px)`}}>
+                {
+                  (val !== '' || cat !=='') && 
+                  <h2 className='font-bold px-2 '>Search result {val !== ''? ` for "${val}"`: ``}{cat !== ''? ` in "${cat}" category` : ``}</h2>
+                }
+
+                <div>
+                    <Pagination pages={pages} handlePageJump={handlePageJump} handlePage={handlePage}/>
+                </div>
+                
+                <div className="grid justify-center items-center md:grid-cols-[repeat(2,_250px)] xl:grid-cols-[repeat(4,_250px)] md:grid-rows-[repeat(2,_424px)]">
                     {
                     data.slice((page*8)-8, 8*page).map((event: any) => {
                         return (
@@ -130,12 +139,9 @@ export default function Page() {
                         )
                     })
                     }
-
                 </div>
 
-                <div>
-                    <Pagination pages={pages} handlePageInstant={handlePageInstant} handlePage={handlePage}/>
-                </div>
+                
             </div>
         </div>
         

@@ -19,13 +19,14 @@ export default async function page({ params }: { params: { slug: string } }) {
   return (
     <section className='relative'>
       <div className='p-4'>
-        <div className='breadcrumbs'>
-          <BreadCrumbs title={event.name} />
-        </div>
-
         <div className='lg:flex gap-4 h-full lg:h-auto '>
+
           <div className='w-full md:w-[400px]'>
-              <Image
+            <div className='breadcrumbs'>
+              <BreadCrumbs title={event.name} />
+            </div>
+
+            <Image
               src={event.img_poster}
               alt={`poster ${event.name}`}
               width={0}
