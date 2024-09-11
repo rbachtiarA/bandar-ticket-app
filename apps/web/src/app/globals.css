@@ -2,10 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+
 .underline-hover a:hover {
   text-decoration: underline;
   text-decoration-thickness: 2px;
   text-underline-offset: 2px;
+}
+.buttonHide {
+  display: none;
+}
+/* 
+.containerScroll-hidden::-webkit-scrollbar {
+  display: none;
+} */
+
+.containerScroll-hidden {
+  scrollbar-width: none;
 }
 
 
