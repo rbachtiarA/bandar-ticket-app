@@ -2,10 +2,10 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
-export default function EventCard({ eventId, eventImg, eventTitle, eventDate, eventLocation }: { eventId:number, eventImg: string, eventTitle: string, eventDate:Date, eventLocation:string }) {
+export default function EventCard({ eventId, eventSlug, eventImg, eventTitle, eventDate, eventLocation }: { eventId:number, eventSlug:string, eventImg: string, eventTitle: string, eventDate:Date, eventLocation:string }) {
   return (
     
-      <Link href={`/event/${eventId}`} className='hover:shadow-[rgb(0,230,255)_0px_3px_0px_0px]'>
+      <Link href={`/event/${eventSlug}`} className='hover:shadow-[rgb(0,230,255)_0px_3px_0px_0px]'>
         <div
         className='flex flex-col w-[250px] justify-start snap-center
         md:snap-none md:first:ml-[0px] md:last:mr-[0px] px-[10px] py-2'
@@ -25,12 +25,12 @@ export default function EventCard({ eventId, eventImg, eventTitle, eventDate, ev
             <h2 className='font-extrabold'>{eventTitle}</h2>
             <p className=''>
             {
-              eventDate.toLocaleDateString('en-us', {
+              `${eventDate.toLocaleDateString('en-us', {
                 weekday: 'short',
                 day: 'numeric',
                 month: 'short',
                 year: 'numeric'
-              })
+            })} ` 
             }
             </p>
             <p className='text-slate-500 text-sm'>{eventLocation}</p>

@@ -33,5 +33,3 @@ export class SampleController {
     return res.status(201).send(newSampleData);
   }
 }
-
-console.log('Hello')
