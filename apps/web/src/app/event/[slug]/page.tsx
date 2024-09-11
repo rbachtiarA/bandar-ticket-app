@@ -17,7 +17,7 @@ export default async function page({ params }: { params: { slug: string } }) {
   }
 
   return (
-    <section className='relative'>
+    <section className=''>
       <div className='p-4'>
         <div className='lg:flex gap-4 h-full lg:h-auto '>
 

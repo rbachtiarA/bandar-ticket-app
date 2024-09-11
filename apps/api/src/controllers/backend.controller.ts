@@ -2,6 +2,8 @@
 //this router used to add necessery data for exercise
 
 import prisma from "@/prisma";
+import { ICart } from "@/type/interface";
+import { TicketType } from "@prisma/client";
 import { Request, Response } from "express";
 
 export class BackendController {
@@ -79,6 +81,70 @@ export class BackendController {
             })
         }
 
+    }
+
+    async postTransaction(req:Request, res:Response) {
+        try {
+            const { userId, cart }: {userId:number, cart:ICart[]} = req.body
+            //cart : {quantity , ticketTypeId, totalPrice}
+            const dataTickets: {ticketTypeId:number}[] = []
+
+            let totalPrice = 0
+
+            cart.map((item) => {
+                if(Number(item.quantity) == 1) {
+                    dataTickets.push({ticketTypeId: item.ticketTypeId})
+                } else {
+                    for (let i = 0; i < item.quantity; i++) { 
+                        dataTickets.push({ticketTypeId: item.ticketTypeId})
+                    }
+                }
+                totalPrice += item.totalPrice
+            })
+            
+            if(dataTickets.length === 0) throw 'No item in cart'
+            
+            const dataTransaction:any = await prisma.$transaction(async (tx) => {
+                cart.map(async (item) => {
+                    const updatedTicketType = await tx.ticketType.update({
+                        where: {
+                            id: item.ticketTypeId
+                        },
+                        data: {
+                            quota: {
+                                decrement: item.quantity
+                            }
+                        }
+                    });
+                })
+                
+                const successTransaction = await tx.trasactionEvent.create({
+                    data: {
+                        customerId: userId,
+                        totalPrice,
+                        Ticket: {
+                            createMany: {
+                                data: dataTickets
+                            }
+                        }
+                    }
+                })
+                
+                return successTransaction
+            })
+            
+            return res.status(200).send({
+                status: 'ok',
+                msg: 'Transaction Success',
+                dataTransaction
+                
+            }) 
+        } catch (error) {
+            return res.status(400).send({
+                status: 'error',
+                msg: error
+            })            
+        }
     }
 }
 

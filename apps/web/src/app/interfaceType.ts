@@ -70,7 +70,7 @@ export interface PostEvent {
 
 export interface ICart {
     quantity: number,
-    ticketType: number,
+    ticketTypeId: number,
     price: number,
     totalPrice: number
 }

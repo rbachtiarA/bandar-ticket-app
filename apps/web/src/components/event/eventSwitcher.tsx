@@ -5,12 +5,14 @@ import { ICart, ITicketType } from '@/app/interfaceType';
 import TicketCard from '../ticket/ticketCard';
 import { toast } from 'react-toastify';
 import CartCard from '../ticket/cartCard';
+import { getCity, postTransaction } from '@/lib/backend';
 
 export default function EventSwitcher({ description, eventId, ticket, isPastEvent }: { description: string, eventId: number,ticket: ITicketType[], isPastEvent: Boolean }) {
     const isAdmin = true;
     const [switcher, setSwitcher] = useState('desc')
     const [formType, setFormType] = useState('none')
     const [cart, setCart] = useState<ICart[]>([])
+    const userId = 1
     
     const handleTab = (condition: string) => {
         setSwitcher(condition)
@@ -21,40 +23,52 @@ export default function EventSwitcher({ description, eventId, ticket, isPastEven
     const handleAdminFormClose = () => {
       setFormType('none')
     }
-    const handleAddCart = (quantity: number, ticketType: number, price:number, totalPrice: number) => {
-      const itemIdx = cart.findIndex((item) => item.ticketType === ticketType )
+
+    const handleAddCart = (quantity: number, ticketTypeId: number, price:number, totalPrice: number) => {
+      const itemIdx = cart.findIndex((item) => item.ticketTypeId === ticketTypeId )
       
       if(itemIdx !== -1) {
         const newCart = cart
-        newCart[itemIdx] = {quantity: cart[itemIdx].quantity+quantity, ticketType: ticketType, price: price, totalPrice: price*(cart[itemIdx].quantity+quantity)}
+        newCart[itemIdx] = {quantity: cart[itemIdx].quantity+quantity, ticketTypeId: ticketTypeId, price: price, totalPrice: price*(cart[itemIdx].quantity+quantity)}
         setCart(newCart)
       } else {
-        const newItem = {quantity, ticketType, price, totalPrice}
+        const newItem = {quantity, ticketTypeId, price, totalPrice}
         setCart([...cart, newItem])
       }      
-      toast.success(`Add ${quantity} ${ticket.find((t) => t.id === ticketType)?.name} to Cart`)
+      toast.success(`Add ${quantity} ${ticket.find((t) => t.id === ticketTypeId)?.name} to Cart`)
     }
+
     const handleRemoveCart = (quantity:number, ticketType:number) => {
-      const itemIdx = cart.findIndex((item) => item.ticketType === ticketType)
+      const itemIdx = cart.findIndex((item) => item.ticketTypeId === ticketType)
       const newQuantity = cart[itemIdx].quantity - quantity
       
       if(newQuantity < 1) {
-        const newCart = cart.filter((item) => item.ticketType !== ticketType)
+        const newCart = cart.filter((item) => item.ticketTypeId !== ticketType)
         setCart(newCart)
         toast.success(`Remove ${ticket.find((item) => item.id === ticketType)?.name} from Cart`)  
       } else {
         const newCart = cart
-        newCart[itemIdx] = { quantity: newQuantity, ticketType:cart[itemIdx].ticketType, price:cart[itemIdx].price, totalPrice:cart[itemIdx].price*newQuantity }
+        newCart[itemIdx] = { quantity: newQuantity, ticketTypeId:cart[itemIdx].ticketTypeId, price:cart[itemIdx].price, totalPrice:cart[itemIdx].price*newQuantity }
         setCart([...newCart])
         toast.success(`Remove ${quantity} ${ticket.find((item) => item.id === ticketType)?.name} from Cart`)
       }
 
       console.log(cart);
-      
     }
-    useEffect(()=>{
 
-    },[cart])
+    const handleTransaction = async (userId:number, cart:ICart[]) => {
+      try {
+        const postData = {userId, cart}
+        const data = await postTransaction(postData)
+        console.log(data);
+        
+        setCart([])
+        toast.success(data.msg)
+      } catch (error) {
+        toast.error(error as string)
+      }  
+    }
+
   return (
     <div className='h-full'>
             <div className='sticky top-0 flex bg-slate-400 gap-2 [&_button]:bg-slate-200 [&_button]:py-1'>
@@ -108,8 +122,11 @@ export default function EventSwitcher({ description, eventId, ticket, isPastEven
                     {cart.map((cart, idx) => (
                       <CartCard key={idx} ticket={ticket} cart={cart} handleRemoveCart={handleRemoveCart} />
                     ))}
+                    <div className='flex justify-center'>
+                      <button onClick={() => handleTransaction(userId, cart)} className='btn-primary'>Transaksi</button>
+                    </div>
+
                   </div>
-                  
                 }
               </div>
             }

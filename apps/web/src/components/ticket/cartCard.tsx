@@ -10,7 +10,7 @@ export default function cartCard({ cart, ticket, handleRemoveCart }: { cart: ICa
     return (
         <div className='bg-slate-100 flex justify p-2'>
             <div className='w-2/6 flex justify-center items-center p-2'>
-                <h1>{ticket.find((t) => t.id === cart.ticketType)?.name}</h1>
+                <h1>{ticket.find((t) => t.id === cart.ticketTypeId)?.name}</h1>
             </div>
 
             <div className='w-1/6 flex justify-center items-center p-2'>
@@ -25,7 +25,7 @@ export default function cartCard({ cart, ticket, handleRemoveCart }: { cart: ICa
 
             <div className='w-1/6 flex justify-center items-center'>
                 <input type="number" className='w-10' defaultValue={1} min={1} ref={quantityRef}/>
-                <button className='btn-warning' onClick={() => handleRemoveCart(quantityRef.current?.value, cart.ticketType)}> 
+                <button className='btn-warning' onClick={() => handleRemoveCart(quantityRef.current?.value, cart.ticketTypeId)}> 
                     Remove
                 </button>
             </div>

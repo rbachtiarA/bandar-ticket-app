@@ -78,9 +78,12 @@ model TicketType {
 }
 
 model Ticket {
-  id           Int        @id @default(autoincrement())
-  ticketType   TicketType @relation(fields: [ticketTypeId], references: [id])
-  ticketTypeId Int
+  id                Int             @id @default(autoincrement())
+  ticketType        TicketType      @relation(fields: [ticketTypeId], references: [id])
+  ticketTypeId      Int
+  transaction       TrasactionEvent @relation(fields: [trasactionEventId], references: [id])
+  trasactionEventId Int
+  createdAt         DateTime        @default(now())
 }
 
 model DiscountType {
@@ -108,4 +111,12 @@ model Customer {
   id     Int      @id @default(autoincrement())
   name   String
   Review Review[]
+}
+
+model TrasactionEvent {
+  id         Int      @id @default(autoincrement())
+  customerId Int
+  Ticket     Ticket[]
+  totalPrice Int
+  createdAt  DateTime @default(now())
 }
