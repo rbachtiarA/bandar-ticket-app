@@ -102,3 +102,21 @@ model Customer {
   name   String
   Review Review[]
 }
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  referCode String   @unique
+  wallet    Int      @default(0)
+  role      Role     @default(CUSTOMER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+}
+
+enum Role {
+  ADMIN
+  CUSTOMER
+  ORGANIZER
+}
