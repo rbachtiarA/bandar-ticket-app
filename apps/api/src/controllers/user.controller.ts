@@ -1,5 +1,6 @@
 import prisma from '@/prisma';
 import { Request, Response } from 'express';
+import { addMonths } from 'date-fns';
 import { compare, genSalt, hash } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
 
@@ -7,31 +8,34 @@ export class UserController {
   async registerUser(req: Request, res: Response) {
     try {
       const { name, email, password, role, referCode } = req.body;
-      console.log(req.body);
+      console.log(req.body); //for testing
+
+      // add discount to the new user if they use refer code. default, false
+      let discount = false;
+      let discountExpiresAt: Date | null = null;
+
+      // check existing users
+      const existingUser = await prisma.user.findUnique({
+        where: { email },
+      });
+
+      if (existingUser) {
+        return res.status(400).json({
+          status: 'error',
+          msg: 'Email already in use',
+        });
+      }
 
       // using referral code to add 10000 to the referral code user wallet, not the new user
       const newReferCode =
         name.slice(0, 7).toUpperCase() +
         String(Math.floor(Math.random() * 1000000)).padStart(6, '0');
-      
+
       // Hash the password
       const salt = await genSalt(10);
       const hashPassword = await hash(password, salt);
 
-      // 1. Create new user with selected role (default to CUSTOMER if not provided)
-      const newUser = await prisma.user.create({
-        data: {
-          name,
-          email,
-          password: hashPassword,
-          referCode: newReferCode, // Use the generated referCode
-          role: role, 
-          wallet: 0,
-        },
-      });
-
-      // 2. Check if the user was referred by someone and update the referrer's wallet
-      if (referCode && referCode.length !== "") {
+      if (referCode && referCode.length !== '') {
         const referrer = await prisma.user.findUnique({
           where: { referCode },
         });
@@ -40,24 +44,51 @@ export class UserController {
           await prisma.user.update({
             where: { id: referrer.id },
             data: {
-              wallet: referrer.wallet + 10000, // Add 10000 to the referrer's wallet
+              points: referrer.points + 10000, // adding 10k to the refferrer's points
+              lastPointsUpdate: new Date(),
             },
           });
+
+          discount = true;
+          discountExpiresAt = addMonths(new Date(), 3);
         }
       }
+
+      const newUser = await prisma.user.create({
+        data: {
+          name,
+          email,
+          password: hashPassword,
+          referCode: newReferCode, // Use the generated referCode
+          role: role,
+          wallet: 0,
+          discount: discount,
+          discountExpires: discountExpiresAt,
+        },
+      });
 
       res.status(201).send({
         status: 'ok',
         msg: 'user created',
         newUser,
       });
-
     } catch (err) {
       res.status(400).send({
         status: 'error',
-        msg: "SOMETHINGS WRONG",
+        msg: 'SOMETHINGS WRONG',
       });
     }
+  }
+
+  async checkEmail(req: Request, res: Response) {
+    const { email } = req.body;
+    const existingUser = await prisma.user.findUnique({
+      where: { email },
+    });
+    if (existingUser) {
+      return res.json({ exists: true });
+    }
+    return res.json({ exists: false });
   }
 
   async login(req: Request, res: Response) {

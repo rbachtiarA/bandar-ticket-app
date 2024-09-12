@@ -1,5 +1,5 @@
 'use client';
-import { registerUser } from '@/lib/user';
+import { checkEmail, registerUser } from '@/lib/user';
 import { IRegister } from '@/type/user';
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from 'formik';
 import { toast } from 'react-toastify';
@@ -7,7 +7,12 @@ import * as yup from 'yup';
 
 const RegisterSchema = yup.object().shape({
   name: yup.string().required('name required'),
-  email: yup.string().email('invalid email').required('email required'),
+  email: yup.string().email('invalid email').required('email required').test('checkEmail', 'email already in use', async (value) => {
+    if(value){
+      const { exists } = await checkEmail(value);
+      return !exists;
+    }
+    return true;}),
   password: yup
     .string()
     .min(6, 'password must be at least 6 characters')
@@ -19,11 +24,12 @@ const RegisterSchema = yup.object().shape({
 });
 
 export default function RegisterForm() {
-    const onRegister = async (data: IRegister) => {
+    const onRegister = async (data: IRegister, action: FormikHelpers<IRegister>) => {
         try {
           const { result, ok } = await registerUser(data);
           if(!ok) throw result.msg
           toast.success(result.msg);
+          action.resetForm();
           
         } catch (err: any) {
           console.log(err);
@@ -42,9 +48,7 @@ export default function RegisterForm() {
       }}
       validationSchema={RegisterSchema}
       onSubmit={(values, action) => {
-        onRegister(values);
-        //action.resetForm();
-        
+        onRegister(values, action);
       }}
     >
       {() => {

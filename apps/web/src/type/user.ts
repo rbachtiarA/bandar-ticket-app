@@ -2,7 +2,7 @@ export interface IRegister{
     name: string;
     email: string;
     password: string;
-    referCode?: string;
+    referCode: string;
     role: string;
 }
 

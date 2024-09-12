@@ -19,6 +19,7 @@ export class UserRouter{
         this.router.post('/login', this.userController.login)
         this.router.patch('/:id', this.userController.updateUser)
         this.router.delete('/:id', this.userController.deleteUser)
+        this.router.post('/check-email', this.userController.checkEmail)
     }
 
     getRouter(): Router {
