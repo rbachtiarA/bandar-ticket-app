@@ -17,7 +17,7 @@ const LoginSchema = yup.object().shape({
 });
 
 export default function LoginForm() {
-
+  const router = useRouter();
   const onLogin = async (data: ILogin, action: FormikHelpers<ILogin>) => {
     try {
       const { result, ok } = await loginUser(data);
