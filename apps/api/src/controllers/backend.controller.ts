@@ -105,6 +105,14 @@ export class BackendController {
                 })
 
                 await prisma.$transaction(async (tx) => {
+                    const existUserId = await tx.user.findUnique({
+                        where: {
+                            id: userId
+                        }
+                    })
+
+                    if(!existUserId) throw `User is not recognized`
+                    
                     for (const item of cart) {
                         const existingItem = await tx.ticketType.findUnique({
                             where: { id: item.ticketTypeId }
@@ -121,7 +129,7 @@ export class BackendController {
                     
                     await tx.trasactionEvent.create({
                         data: {
-                            customerId: userId,
+                            userId: userId,
                             totalPrice,
                             Ticket: {
                                 createMany: {
