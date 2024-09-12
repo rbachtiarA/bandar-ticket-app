@@ -2,6 +2,7 @@ import { Form, Formik } from "formik";
 import FormikControl from "../formikControl/formikControl";
 import * as yup from 'yup';
 import { postTicketType } from "@/lib/ticket";
+import { toast } from "react-toastify";
 
 const createTicketSchema =  yup.object().shape({
     ticketName: yup.string().required('Ticket should have name'),
@@ -21,10 +22,16 @@ export default function TicketFormik({eventId, handleClose}: {eventId: number, h
           eventId: eventId
         }}
         validationSchema={createTicketSchema}
-        onSubmit={(values, action) => {
-          postTicketType(values)
-          action.resetForm()
-          handleClose()
+        onSubmit={async (values, action) => {
+          try {
+            const {result, ok} = await postTicketType(values)
+            if(!ok) throw result.msg
+            toast.success(result.msg)
+            action.resetForm()
+            handleClose()
+          } catch (error) {
+            toast.error(error as string)
+          }
         }}
         >
           {
