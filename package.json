@@ -39,7 +39,6 @@
   "dependencies": {
     "@types/axios": "^0.14.0",
     "axios": "^1.7.2",
-
     "bcrypt": "^5.1.1",
     "formik": "^2.4.6",
     "jsonwebtoken": "^9.0.2",
@@ -47,9 +46,7 @@
     "node-cron": "^3.0.3",
     "react-toastify": "^10.0.5",
     "wrapper": "^0.1.0",
-
     "use-debounce": "^10.0.3",
-
     "yup": "^1.4.0"
   }
 }

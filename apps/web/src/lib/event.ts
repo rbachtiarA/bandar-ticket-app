@@ -2,10 +2,10 @@
 
 import { PostEvent } from "@/app/interfaceType";
 
-export const getEvents = async (search='', category='') => {
+export const getEvents = async (search='', category='', location='') => {
     // const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}event${search !== ''? `?search=${search}` : ''}${category !== ''}&category=${category}`, {next: { revalidate: 5 }})
     
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}event?search=${search}&category=${category}`, {next: { revalidate: 5 }})
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}event?search=${search}&category=${category}&location=${location}`, {next: { revalidate: 5 }})
     const data = await res.json()    
 
     return { name: 'all event', data: data.result}
@@ -26,7 +26,7 @@ export const getEventUpcoming = async () => {
 }
 
 export const getEventSlug = async (slug: string) => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}event/e/${slug}`, {next: {revalidate: 5}})
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}event/e/${slug}`, {cache: "no-cache"})
     const data = await res.json()
 
     return {name:`event ${slug}`, event: data.event, ticket: data.ticket}

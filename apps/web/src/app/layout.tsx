@@ -21,7 +21,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`relative ${inter.className} bg-white`}>
+      <body className={`relative ${inter.className} bg-white flex flex-col min-h-screen`}>
           <Navbar />
             <main className='pt-[112px]'>
               {children}

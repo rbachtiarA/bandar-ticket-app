@@ -10,21 +10,24 @@ export class EventController {
     async getEvent(req:Request, res:Response) {
         
         try {
-            const { search, category } = req.query
+            const { search, category, location } = req.query
             let filter: Prisma.EventWhereInput = {}
 
             if(search) {
                 filter.name = { contains: search as string }
-                // filter.category = { in: category as any }
             }
-
-            
             if(category === "Music" || category === "Sport" || category === "Seminar" || category === "Gallery" || category === "Entertainment") {
                 filter.category = { equals: category }
+            }
+            if(location) {
+                filter.city = { provinceID: +location }
             }
 
             const EventData = await prisma.event.findMany({
                 where: filter,
+                orderBy: {
+                    date_start: 'desc'
+                },
                 include: {
                     city: {
                         include: {
@@ -229,7 +232,7 @@ export class EventController {
 
             res.status(200).send({
                 status: 'ok',
-                msg: 'event created !',
+                msg: `Success creating event ${eventName}`,
                 eventData
             })
             

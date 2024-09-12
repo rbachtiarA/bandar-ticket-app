@@ -65,15 +65,25 @@ model Event {
 }
 
 model TicketType {
-  id          Int     @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   name        String
   description String?
   price       Int
-  event       Event   @relation(fields: [eventID], references: [id])
+  event       Event    @relation(fields: [eventID], references: [id])
   eventID     Int
   quota       Int
+  ticket      Ticket[]
 
   @@map("ticket_type")
+}
+
+model Ticket {
+  id                Int             @id @default(autoincrement())
+  ticketType        TicketType      @relation(fields: [ticketTypeId], references: [id])
+  ticketTypeId      Int
+  transaction       TrasactionEvent @relation(fields: [trasactionEventId], references: [id])
+  trasactionEventId Int
+  createdAt         DateTime        @default(now())
 }
 
 model DiscountType {
@@ -101,6 +111,14 @@ model Customer {
   id     Int      @id @default(autoincrement())
   name   String
   Review Review[]
+}
+
+model TrasactionEvent {
+  id         Int      @id @default(autoincrement())
+  customerId Int
+  Ticket     Ticket[]
+  totalPrice Int
+  createdAt  DateTime @default(now())
 }
 
 model User {
