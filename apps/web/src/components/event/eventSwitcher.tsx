@@ -24,6 +24,7 @@ export default function EventSwitcher({ description, eventId, ticket, isPastEven
       setFormType('none')
     }
 
+    //handle add cart per quantity
     const handleAddCart = (quantity: number, ticketTypeId: number, price:number, totalPrice: number) => {
       const itemIdx = cart.findIndex((item) => item.ticketTypeId === ticketTypeId )
       
@@ -38,6 +39,7 @@ export default function EventSwitcher({ description, eventId, ticket, isPastEven
       toast.success(`Add ${quantity} ${ticket.find((t) => t.id === ticketTypeId)?.name} to Cart`)
     }
 
+    //handle remove cart per quantity
     const handleRemoveCart = (quantity:number, ticketType:number) => {
       const itemIdx = cart.findIndex((item) => item.ticketTypeId === ticketType)
       const newQuantity = cart[itemIdx].quantity - quantity
@@ -56,16 +58,20 @@ export default function EventSwitcher({ description, eventId, ticket, isPastEven
       console.log(cart);
     }
 
+    //handle transaction, if ticket quota and cart quantity doenst match, error insufficent quantity
     const handleTransaction = async (userId:number, cart:ICart[]) => {
       try {
         const postData = {userId, cart}
         const data = await postTransaction(postData)
+        if(data.status === 'error') throw `${data.msg}`
         console.log(data);
         
         setCart([])
         toast.success(data.msg)
       } catch (error) {
-        toast.error(error as string)
+        toast.error(error as string, {
+          autoClose: 5000
+        })
       }  
     }
 

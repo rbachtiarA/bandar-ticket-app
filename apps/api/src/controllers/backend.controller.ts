@@ -84,67 +84,65 @@ export class BackendController {
     }
 
     async postTransaction(req:Request, res:Response) {
-        try {
-            const { userId, cart }: {userId:number, cart:ICart[]} = req.body
-            //cart : {quantity , ticketTypeId, totalPrice}
-            const dataTickets: {ticketTypeId:number}[] = []
-
-            let totalPrice = 0
-
-            cart.map((item) => {
+        // try {
+            // //cart : {quantity , ticketTypeId, totalPrice}
+            
+            try {
+                const { userId, cart }: {userId:number, cart:ICart[]} = req.body
+                const dataTickets: {ticketTypeId:number}[] = []
+                
+                let totalPrice = 0
+                
+                cart.map((item) => {
                 if(Number(item.quantity) == 1) {
                     dataTickets.push({ticketTypeId: item.ticketTypeId})
                 } else {
                     for (let i = 0; i < item.quantity; i++) { 
-                        dataTickets.push({ticketTypeId: item.ticketTypeId})
+                            dataTickets.push({ticketTypeId: item.ticketTypeId})
+                        }
                     }
-                }
-                totalPrice += item.totalPrice
-            })
-            
-            if(dataTickets.length === 0) throw 'No item in cart'
-            
-            const dataTransaction:any = await prisma.$transaction(async (tx) => {
-                cart.map(async (item) => {
-                    const updatedTicketType = await tx.ticketType.update({
-                        where: {
-                            id: item.ticketTypeId
-                        },
+                    totalPrice += item.totalPrice
+                })
+
+                await prisma.$transaction(async (tx) => {
+                    for (const item of cart) {
+                        const existingItem = await tx.ticketType.findUnique({
+                            where: { id: item.ticketTypeId }
+                        })
+                        if(!existingItem) throw `Ticket not exist on database`
+
+                        if(existingItem.quota - item.quantity < 0) throw `Insufficient quantity for ticket ${existingItem.name}`
+                        
+                        await tx.ticketType.update({
+                            where: { id: item.ticketTypeId},
+                            data: {quota: existingItem.quota - item.quantity}
+                        })
+                    }
+                    
+                    await tx.trasactionEvent.create({
                         data: {
-                            quota: {
-                                decrement: item.quantity
+                            customerId: userId,
+                            totalPrice,
+                            Ticket: {
+                                createMany: {
+                                    data: dataTickets
+                                }
                             }
                         }
-                    });
+                    })
+                    
                 })
-                
-                const successTransaction = await tx.trasactionEvent.create({
-                    data: {
-                        customerId: userId,
-                        totalPrice,
-                        Ticket: {
-                            createMany: {
-                                data: dataTickets
-                            }
-                        }
-                    }
+
+                return res.status(200).send({
+                    status: 'ok',
+                    msg: `Transaction Completed`
                 })
-                
-                return successTransaction
-            })
-            
-            return res.status(200).send({
-                status: 'ok',
-                msg: 'Transaction Success',
-                dataTransaction
-                
-            }) 
-        } catch (error) {
-            return res.status(400).send({
-                status: 'error',
-                msg: error
-            })            
-        }
+            } catch (error) {                
+                return res.status(400).send({
+                    status: 'error',
+                    msg: `${error}`
+                })
+            }
     }
 }
 

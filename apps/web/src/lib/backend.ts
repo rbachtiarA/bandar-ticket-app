@@ -19,6 +19,7 @@ export const postTransaction = async (transaction: {userId: number, cart:ICart[]
         body: JSON.stringify(transaction),
         headers: {"Content-Type":"application/json"}
     })
+    
     const data = await res.json()
 
     return data;
