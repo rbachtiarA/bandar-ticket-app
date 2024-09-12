@@ -21,14 +21,14 @@ model Sample {
 }
 
 model Provinces {
-  id       Int    @id @default(autoincrement())
-  province String @unique
-  cities   City[]
+  id     Int    @id @default(autoincrement())
+  name   String @unique
+  cities City[]
 }
 
 model City {
   id         Int       @id @default(autoincrement())
-  city       String
+  name       String    @unique
   province   Provinces @relation(fields: [provinceID], references: [id])
   provinceID Int
   Event      Event[]
@@ -45,11 +45,15 @@ enum EventCatergory {
 model Event {
   id           Int            @id @default(autoincrement())
   category     EventCatergory
-  name         String
+  name         String         @unique
+  slug         String         @default("slug")
+  description  String?        @db.LongText
   location     String
   city         City           @relation(fields: [cityId], references: [id])
   date_start   DateTime
   date_end     DateTime
+  time_start   String         @default("00:00")
+  time_end     String         @default("00:00")
   img_poster   String
   ticket_type  TicketType[]
   max_quota    Int
@@ -61,11 +65,13 @@ model Event {
 }
 
 model TicketType {
-  id      Int    @id @default(autoincrement())
-  name    String @unique
-  price   Int
-  event   Event  @relation(fields: [eventID], references: [id])
-  eventID Int
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String?
+  price       Int
+  event       Event   @relation(fields: [eventID], references: [id])
+  eventID     Int
+  quota       Int
 
   @@map("ticket_type")
 }

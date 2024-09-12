@@ -1,15 +1,11 @@
-import Image from 'next/image'
-import styles from './page.module.css'
 import CategoriesNav from '@/components/categoriesNav'
-import ConcertHero from '@/components/home/concertHero'
-import Carousel from '@/components/carousel'
 import { ICategory } from './interfaceType'
 import CategoryContainer from '@/components/home/categoryContainer'
-import { getEvents } from '@/lib/event'
+import { getEventCategory, getEvents, getEventUpcoming } from '@/lib/event'
+import { useState } from 'react'
 
 
 export default async function Home() {
-
   const categories: ICategory[] = [
     { 
       name: 'Music Concert',
@@ -107,13 +103,19 @@ export default async function Home() {
      },
   ]
 
-  const allEvent = await getEvents(); 
+  const allEvent = await getEvents();
+  const music = await getEventCategory('Music') 
+  const seminar = await getEventCategory('Seminar')
+  const upcoming = await getEventUpcoming(); 
   
   return (
     <>
       <CategoriesNav />
       {/* <Carousel />     */}
+      <CategoryContainer category={upcoming} />
       <CategoryContainer category={allEvent} />
+      <CategoryContainer category={music} />
+      <CategoryContainer category={seminar} />
     </>
   )
 }

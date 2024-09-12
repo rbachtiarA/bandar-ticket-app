@@ -10,7 +10,27 @@ export class BackendController {
 
         return res.status(200).send({
             status: 'ok',
-            msg: cityData
+            msg: 'get all city',
+            result: cityData
+        })
+    }
+
+    async getProvince(req:Request, res:Response) {
+        const provinceData = await prisma.provinces.findMany({
+            include: {
+                cities: {
+                    select: {
+                        id: true,
+                        name: true
+                    }
+                }
+            }
+        })
+
+        return res.status(200).send({
+            status: 'ok',
+            msg: 'get all provinces',
+            result: provinceData
         })
     }
 
@@ -37,15 +57,15 @@ export class BackendController {
     }
     async postCity(req:Request, res:Response) {
         try {
-            const { city, province } = req.body
+            const { name, province } = req.body
             
             const existProvince = await prisma.provinces.findUnique({
-                where: { province: province }
+                where: { name: province }
             })
 
             if(!existProvince) throw 'Province not Found!'
             const inpData = await prisma.city.create({
-                data: { city, provinceID: existProvince.id }
+                data: { name, provinceID: existProvince.id }
             })
             res.status(200).send({
                 status: 'ok',
