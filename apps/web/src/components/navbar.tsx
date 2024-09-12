@@ -28,8 +28,8 @@ export default function Navbar() {
                     <div className='flex justify-around gap-4 underline-hover'>
                         {/* untuk user */}
                         <Link href={'/'}>Home</Link>
-                        <Link href={'/'}>Login</Link>
-                        <Link href={'/'}>Register</Link>
+                        <Link href={'/login'}>Login</Link>
+                        <Link href={'/register'}>Register</Link>
                     </div>
                 </div>
 

@@ -13,6 +13,7 @@ import { SampleRouter } from './routers/sample.router';
 import { BackendRouter } from './routers/backend.router';
 import path from 'path'
 import { EventRouter } from './routers/event.router';
+import { UserRouter } from './routers/user.routers';
 import { TicketRouter } from './routers/ticket.router';
 export default class App {
   private app: Express;
@@ -25,7 +26,11 @@ export default class App {
   }
 
   private configure(): void {
-    this.app.use(cors());
+    this.app.use(cors({
+      origin: 'http://localhost:3000',
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization']
+    }));
     this.app.use(json());
     this.app.use(urlencoded({ extended: true }));
     this.app.use('/api/public',
@@ -60,7 +65,9 @@ export default class App {
     const sampleRouter = new SampleRouter();
     const backendRouter = new BackendRouter();
     const eventRouter = new EventRouter();
+    const userRouter = new UserRouter();
     const ticketRouter = new TicketRouter()
+    
     this.app.get('/api', (req: Request, res: Response) => {
       res.send(`Hello, Purwadhika Student API!`);
     });
@@ -68,7 +75,9 @@ export default class App {
     this.app.use('/api/samples', sampleRouter.getRouter());
     this.app.use('/api/backend', backendRouter.getRouter());
     this.app.use('/api/event', eventRouter.getRouter());
+    this.app.use('/api/user', userRouter.getRouter());
     this.app.use('/api/ticket', ticketRouter.getRouter())
+
   }
 
   public start(): void {
