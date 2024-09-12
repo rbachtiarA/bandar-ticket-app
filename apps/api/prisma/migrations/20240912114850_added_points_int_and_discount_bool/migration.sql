@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE `user` ADD COLUMN `discount` BOOLEAN NOT NULL DEFAULT false,
+    ADD COLUMN `points` INTEGER NOT NULL DEFAULT 0;
