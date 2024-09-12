@@ -30,7 +30,7 @@ export default function TicketCard({ ticket, isPastEvent, handleAddCart }: {tick
             <div className='w-1/5 flex justify-center items-center'>
                 <input type="number" className='w-10' defaultValue={1} min={1} ref={quantityRef}/>
                 <button 
-                    className='btn-primary' 
+                    className='btn-primary-ry' 
                     onClick={() => {
                         handleAddCart(Number(quantityRef.current?.value), ticket.id,Number(ticket.price), ticket.price*Number(quantityRef.current?.value))
                 }}>

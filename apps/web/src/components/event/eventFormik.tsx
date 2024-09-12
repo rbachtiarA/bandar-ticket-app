@@ -116,7 +116,7 @@ export default function EventFormik({ mainData }: {mainData: {id: number, name:s
                                 </div>
 
                                 <div className='flex justify-center'>
-                                    <button type='submit' className='w-1/2 mt-4 btn-primary'>Submit</button>
+                                    <button type='submit' className='w-1/2 mt-4 btn-primary-ry'>Submit</button>
                                 </div>
                             </Form>
                         )
