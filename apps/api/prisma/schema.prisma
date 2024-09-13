@@ -123,15 +123,19 @@ model TrasactionEvent {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  password  String
-  referCode String   @unique
-  wallet    Int      @default(0)
-  role      Role     @default(CUSTOMER)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt()
+  id               Int       @id @default(autoincrement())
+  name             String
+  email            String    @unique
+  password         String
+  referCode        String    @unique
+  wallet           Int       @default(0)
+  role             Role      @default(CUSTOMER)
+  points           Int       @default(0)
+  lastPointsUpdate DateTime  @default(now())
+  discount         Boolean   @default(false)
+  discountExpires  DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt()
 
   TrasactionEvent TrasactionEvent[]
 }
