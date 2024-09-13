@@ -1,6 +1,6 @@
 
 import EventFormik from '@/components/event/eventFormik'
-import { getCity, getProvince } from '@/lib/backend'
+import { getProvince } from '@/lib/backend'
 import React, { FormEvent } from 'react'
 import { ToastContainer } from 'react-toastify'
 

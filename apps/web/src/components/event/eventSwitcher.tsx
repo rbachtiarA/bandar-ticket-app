@@ -6,13 +6,17 @@ import TicketCard from '../ticket/ticketCard';
 import { toast } from 'react-toastify';
 import CartCard from '../ticket/cartCard';
 import { getCity, postTransaction } from '@/lib/backend';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function EventSwitcher({ description, eventId, ticket, isPastEvent }: { description: string, eventId: number,ticket: ITicketType[], isPastEvent: Boolean }) {
     const isAdmin = true;
-    const [switcher, setSwitcher] = useState('desc')
+    const searchParams = useSearchParams()
+    const queryTabs = searchParams.get('tab')
+    const [switcher, setSwitcher] = useState(queryTabs || 'desc')
     const [formType, setFormType] = useState('none')
     const [cart, setCart] = useState<ICart[]>([])
-    const userId = 1
+    const router = useRouter()
+    const userId = 2
     
     const handleTab = (condition: string) => {
         setSwitcher(condition)
@@ -68,23 +72,30 @@ export default function EventSwitcher({ description, eventId, ticket, isPastEven
         
         setCart([])
         toast.success(data.msg)
+        setSwitcher('ticket')
       } catch (error) {
         toast.error(error as string, {
+          theme: 'colored',
           autoClose: 5000
         })
       }  
     }
 
+    useEffect(() => {
+      router.push(`?tab=${switcher}#tab-section`)
+    },[switcher])
+
   return (
-    <div className='h-full'>
-            <div className='sticky top-0 flex bg-slate-400 gap-2 [&_button]:bg-slate-200 [&_button]:py-1'>
-              <button onClick={() => handleTab('desc')} className={`w-1/3 hover:underline ${switcher === 'desc'? 'font-bold pointer-events-none': ''}`}>Description</button>
-              <button onClick={() => handleTab('ticket')} className={`w-1/3 hover:underline ${switcher === 'ticket'? 'font-bold pointer-events-none': ''}`}>Ticket</button>
-              <button onClick={() => handleTab('discount')} className={`w-1/3 hover:underline ${switcher === 'discount'? 'font-bold pointer-events-none': ''}`}>Discount</button>
-              <button onClick={() => handleTab('cart')} className={`w-1/3 hover:underline ${switcher === 'cart'? 'font-bold pointer-events-none': ''}`}>Cart{cart.length !== 0? `(${cart.length})` : ''}</button>
+    <div className='h-full '>
+            <div className='sticky top-0 gap-1 flex flex-col  md:flex-row bg-slate-400 [&_button]:bg-slate-200 [&_button]:py-1 md:[&_button]:w-1/4' id='tab-section'>
+              <button onClick={() => handleTab('desc')} className={`hover:underline ${switcher === 'desc'? 'font-bold pointer-events-none': ''}`}>Description</button>
+              <button onClick={() => handleTab('ticket')} className={`hover:underline ${switcher === 'ticket'? 'font-bold pointer-events-none': ''}`}>Ticket</button>
+              <button onClick={() => handleTab('discount')} className={`hover:underline ${switcher === 'discount'? 'font-bold pointer-events-none': ''}`}>Discount</button>
+              <button onClick={() => handleTab('cart')} className={`hover:underline ${switcher === 'cart'? 'font-bold pointer-events-none': ''}`}>Cart{cart.length !== 0? `(${cart.length})` : ''}</button>
             </div>
 
-            {
+          <div className='text-sm md:text-md lg:text-lg'>
+          {
             switcher === 'desc' && 
             <div>
               <p>{description}</p>
@@ -97,12 +108,12 @@ export default function EventSwitcher({ description, eventId, ticket, isPastEven
                 {
                   isAdmin && 
                   <div className='flex justify-center w-full my-2'>
-                    <button className='btn-primary' onClick={() => handleAdminForm('ticket')}>Add Ticket Type</button>
+                    <button className='btn-primary-ry' onClick={() => handleAdminForm('ticket')}>Add Ticket Type</button>
                   </div>
                 }
 
                 <div className='w-full border-b-2 border-t-2'>
-                  <p className='text-center font-bold text-lg my-4'>Ticket List</p>
+                  <p className='text-center font-bold my-4'>Ticket List</p>
                 </div>
                 
                 { ticket.length === 0 && <p className='text-red-500'>There is no ticket available on this event right now</p> }
@@ -129,7 +140,7 @@ export default function EventSwitcher({ description, eventId, ticket, isPastEven
                       <CartCard key={idx} ticket={ticket} cart={cart} handleRemoveCart={handleRemoveCart} />
                     ))}
                     <div className='flex justify-center'>
-                      <button onClick={() => handleTransaction(userId, cart)} className='btn-primary'>Transaksi</button>
+                      <button onClick={() => handleTransaction(userId, cart)} className='btn-primary-ry'>Transaksi</button>
                     </div>
 
                   </div>
@@ -147,6 +158,8 @@ export default function EventSwitcher({ description, eventId, ticket, isPastEven
               </h1>
               <p>Cart State: {cart.length}</p>
             </div>
+          </div>
+            
         </div>
   )
 }

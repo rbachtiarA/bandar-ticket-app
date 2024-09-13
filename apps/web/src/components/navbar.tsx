@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import SearchBar from './searchbar'
 
 export default function Navbar() {
   return (
@@ -12,19 +13,7 @@ export default function Navbar() {
 
             <div className='w-4/5'>
                 <div className='flex flex-col-reverse gap-4 md:flex-row justify-center items-center md:mb-4 md:justify-between'>
-                    <div className='w-3/4'>
-                        <form className='relative'>
-                            <input type="search"  className='focus:ring-1 py-2 px-6 outline-none rounded-2xl w-full shadow-sm placeholder:italic' placeholder='search your event here...'/>
-                            <button type='submit' className='absolute top-[8px] right-[12px]'>
-                                <Image
-                                src={'/ico-search.svg'}
-                                alt='search'
-                                width={24}
-                                height={24}
-                                draggable='false' />
-                            </button>
-                        </form>
-                    </div>
+                    <SearchBar />
                     <div className='flex justify-around gap-4 underline-hover'>
                         {/* untuk user */}
                         <Link href={'/'}>Home</Link>

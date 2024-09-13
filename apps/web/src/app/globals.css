@@ -15,7 +15,7 @@
 /* px-4 py-2 rounded-lg bg-cyan-200 hover:text-white hover:bg-cyan-600 */
 @layer components {
   .btn-primary-ry {
-    @apply px-4 py-2 rounded-lg text-black bg-cyan-200 hover:text-white hover:bg-cyan-600
+    @apply px-4 py-2 rounded-lg text-black bg-cyan-200 enabled:hover:text-white enabled:hover:bg-cyan-600 disabled:text-slate-600
   }
 
   .btn-pagination-ry {
