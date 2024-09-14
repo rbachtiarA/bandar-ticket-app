@@ -1,6 +1,6 @@
-import { IEvent, ITicketType } from '@/app/interfaceType'
-import Image from 'next/image'
+import { IEvent } from '@/type/event';
 import EventSwitcher from './eventSwitcher'
+import { ITicketType } from '@/type/ticket';
 
 export default function EventDetails({ event, ticket }: {event:IEvent, ticket: ITicketType[]}) {
 

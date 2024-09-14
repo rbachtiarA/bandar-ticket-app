@@ -1,4 +1,3 @@
-import React from 'react'
 import FormikControl from '../formikControl/formikControl'
 
 export default function FormTime(props: {className: string}) {

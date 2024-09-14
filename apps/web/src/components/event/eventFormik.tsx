@@ -1,5 +1,5 @@
 'use client'
-import { PostEvent } from '@/app/interfaceType';
+import { PostEvent } from '@/type/event';
 import FormDate from '@/components/event/formDate';
 import FormikControl from '@/components/formikControl/formikControl';
 import FormProvinceCity from '@/components/event/formProvinceCity';

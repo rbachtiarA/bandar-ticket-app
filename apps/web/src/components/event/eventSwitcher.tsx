@@ -1,11 +1,12 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import TicketForm from '../ticket/ticketForm';
-import { ICart, ITicketType } from '@/app/interfaceType';
+import { ICart, } from '@/type/cart';
+import { ITicketType } from '@/type/ticket';
 import TicketCard from '../ticket/ticketCard';
 import { toast } from 'react-toastify';
 import CartCard from '../ticket/cartCard';
-import { getCity, postTransaction } from '@/lib/backend';
+import { postTransaction } from '@/lib/backend';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function EventSwitcher({ description, eventId, ticket, isPastEvent }: { description: string, eventId: number,ticket: ITicketType[], isPastEvent: Boolean }) {
@@ -20,6 +21,7 @@ export default function EventSwitcher({ description, eventId, ticket, isPastEven
     
     const handleTab = (condition: string) => {
         setSwitcher(condition)
+        router.push(`?tab=${switcher}#tab-section`)
     }
     const handleAdminForm = (e: any) => {
       setFormType('ticket')
@@ -81,13 +83,13 @@ export default function EventSwitcher({ description, eventId, ticket, isPastEven
       }  
     }
 
-    useEffect(() => {
-      router.push(`?tab=${switcher}#tab-section`)
-    },[switcher])
+    // useEffect(() => {
+    //   // router.push(`?tab=${switcher}#tab-section`)
+    // },[switcher])
 
   return (
-    <div className='h-full '>
-            <div className='sticky top-0 gap-1 flex flex-col  md:flex-row bg-slate-400 [&_button]:bg-slate-200 [&_button]:py-1 md:[&_button]:w-1/4' id='tab-section'>
+    <div className='h-full ' id='tab-section'>
+            <div className='sticky top-0 gap-1 flex flex-col  md:flex-row bg-slate-400 [&_button]:bg-slate-200 [&_button]:py-1 md:[&_button]:w-1/4' >
               <button onClick={() => handleTab('desc')} className={`hover:underline ${switcher === 'desc'? 'font-bold pointer-events-none': ''}`}>Description</button>
               <button onClick={() => handleTab('ticket')} className={`hover:underline ${switcher === 'ticket'? 'font-bold pointer-events-none': ''}`}>Ticket</button>
               <button onClick={() => handleTab('discount')} className={`hover:underline ${switcher === 'discount'? 'font-bold pointer-events-none': ''}`}>Discount</button>

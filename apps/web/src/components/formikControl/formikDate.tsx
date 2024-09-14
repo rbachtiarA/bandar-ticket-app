@@ -1,5 +1,4 @@
 import { ErrorMessage, Field } from 'formik'
-import React from 'react'
 
 export default function FormikDate(props: { name: string, label: string}) {
   const {name, label, ...rest} = props

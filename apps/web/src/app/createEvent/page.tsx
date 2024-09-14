@@ -1,8 +1,6 @@
 
 import EventFormik from '@/components/event/eventFormik'
 import { getProvince } from '@/lib/backend'
-import React, { FormEvent } from 'react'
-import { ToastContainer } from 'react-toastify'
 
 
 export default async function page() {

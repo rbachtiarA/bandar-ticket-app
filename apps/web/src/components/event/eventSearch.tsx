@@ -1,5 +1,5 @@
 'use client'
-import { IProvince } from '@/app/interfaceType'
+import { IProvince } from '@/type/province'
 import EventCard from '@/components/eventCard'
 import FilterCategory from '@/components/filterCategory'
 import FilterProvince from '@/components/filterProvince'

@@ -4,7 +4,7 @@ import Image from 'next/image'
 import React, { useEffect, useRef, useState } from 'react'
 import { useDebounce } from 'use-debounce'
 import SearchbarCard from './searchbarCard'
-import { IEvent } from '@/app/interfaceType'
+import { IEvent } from '@/type/event'
 
 export default function SearchBar() {
     const searchRef = useRef<HTMLInputElement>(null)

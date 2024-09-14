@@ -1,6 +1,5 @@
 'use client'
 import { ErrorMessage, Field } from 'formik'
-import React from 'react'
 
 export default function FormProvinceCity({ mainData, provinceId, handleProvince }: { mainData: { id: number, name: string, cities: { id: number, name: string }[] }[], provinceId: number, handleProvince: any }) {
   return (

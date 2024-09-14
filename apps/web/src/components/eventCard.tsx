@@ -34,6 +34,10 @@ export default function EventCard({ eventId, eventSlug, eventImg, eventTitle, ev
             }
             </p>
             <p className='text-slate-500 text-sm'>{eventLocation}</p>
+
+            <div>
+              
+            </div>
         </div>
       </Link>
   )

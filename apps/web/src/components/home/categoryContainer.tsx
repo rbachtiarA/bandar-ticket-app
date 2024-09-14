@@ -1,8 +1,8 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import EventCard from '../eventCard'
-import { ICategory, IEvent } from '@/app/interfaceType'
+import { IEvent } from '@/type/event'
 import Image from 'next/image'
 
 

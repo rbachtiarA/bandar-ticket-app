@@ -1,4 +1,4 @@
-import { IEvent } from '@/app/interfaceType'
+import { IEvent } from '@/type/event'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'

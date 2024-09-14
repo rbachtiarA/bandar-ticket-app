@@ -1,8 +1,7 @@
 import CategoriesNav from '@/components/categoriesNav'
-import { ICategory } from './interfaceType'
 import CategoryContainer from '@/components/home/categoryContainer'
 import { getEventCategory, getEvents, getEventUpcoming } from '@/lib/event'
-import { useState } from 'react'
+import { ICategory } from '@/type/event';
 
 
 export default async function Home() {
