@@ -62,6 +62,8 @@ model Event {
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt()
   cityId       Int
+  user         User?          @relation(fields: [userId], references: [id])
+  userId       Int?
 }
 
 model TicketType {
@@ -87,12 +89,14 @@ model Ticket {
 }
 
 model DiscountType {
-  id        Int     @id @default(autoincrement())
-  name      String
-  isNominal Boolean
-  discount  Int
-  event     Event   @relation(fields: [eventID], references: [id])
-  eventID   Int
+  id          Int    @id @default(autoincrement())
+  name        String
+  nominal     Int?
+  percent     Int?
+  event       Event  @relation(fields: [eventID], references: [id])
+  eventID     Int
+  minQuantity Int?
+  minPrice    Int?
 }
 
 model Review {
@@ -101,16 +105,10 @@ model Review {
   rating     Int
   event      Event    @relation(fields: [eventID], references: [id])
   eventID    Int
-  customer   Customer @relation(fields: [customerId], references: [id])
+  customer   User     @relation(fields: [customerId], references: [id])
   customerId Int
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt()
-}
-
-model Customer {
-  id     Int      @id @default(autoincrement())
-  name   String
-  Review Review[]
 }
 
 model TrasactionEvent {
@@ -138,6 +136,8 @@ model User {
   updatedAt        DateTime  @updatedAt()
 
   TrasactionEvent TrasactionEvent[]
+  Review          Review[]
+  Event           Event[]
 }
 
 enum Role {
