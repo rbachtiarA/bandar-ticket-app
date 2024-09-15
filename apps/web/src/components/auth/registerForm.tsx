@@ -63,7 +63,7 @@ export default function RegisterForm() {
               </p>
               <div className="mt-10">
                 <label className="block text-sm font-medium leading-6 text-gray-900">
-                  Name
+                  Name:
                 </label>
                 <div className="mb-2">
                   <Field
@@ -80,7 +80,7 @@ export default function RegisterForm() {
               </div>
               <div>
                 <label className="block text-sm font-medium leading-6 text-gray-900">
-                  Email
+                  Email:
                 </label>
                 <div className="mb-2">
                   <Field
@@ -97,7 +97,7 @@ export default function RegisterForm() {
               </div>
               <div>
                 <label className="block text-sm font-medium leading-6 text-gray-900">
-                  Password
+                  Password:
                 </label>
                 <div className="mb-2">
                   <Field
@@ -114,7 +114,7 @@ export default function RegisterForm() {
               </div>
               <div>
                 <label className="block text-sm font-medium leading-6 text-gray-900">
-                  Referral Code
+                  Referral Code:
                 </label>
                 <div className="mb-2">
                   <Field
@@ -131,14 +131,12 @@ export default function RegisterForm() {
               </div>
               <div>
                 <label className="block text-sm font-medium leading-6 text-gray-900">
-                  Role
+                  Type of Account:
                 </label>
                 <div className="mb-2">
                   <Field as="select" name="role" className="block w-full rounded-md border-0 p-1.5 text-black dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                     <option value="CUSTOMER">Customer</option>
                     <option value="ORGANIZER">Organizer</option>
-                    <option value="ADMIN">Admin</option>{' '}
-                    {/* If you allow admin registration */}
                   </Field>
                   <ErrorMessage
                     name="role"

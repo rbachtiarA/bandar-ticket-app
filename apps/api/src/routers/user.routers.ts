@@ -28,6 +28,7 @@ export class UserRouter{
             this.userController.editAvatar
         )
         this.router.patch('/verify', verifyToken, this.userController.verifyEmail)
+        this.router.post('/logout', verifyToken, this.userController.logout)
     }
 
     getRouter(): Router {

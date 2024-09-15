@@ -1,11 +1,12 @@
-import { deleteToken, getToken } from '@/lib/server';
+import { getToken } from '@/lib/server';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
 export default async function Navbar() {
   const token = await getToken();
-  
+
+
   return (
     <nav className="bg-cyan-300 p-4 w-full absolute top-0">
       <div className="flex flex-row items-center">
@@ -36,12 +37,15 @@ export default async function Navbar() {
                 </button>
               </form>
             </div>
-            <div className="flex justify-around gap-4 underline-hover">
+            <div className="flex justify-around gap-2 underline-hover">
               {/* untuk user */}
-              <Link href={'/'}>Home</Link>
-              <div>|</div>
+              <Link href={'/'} className='mr-2 pr-4 border-r-2'>Home</Link>
+              
               {token ? (
-                <div>Logout</div>
+                <div className='flex justify-around gap-2'>
+                  <div>User</div>
+                  <Link href={"/"}>Logout</Link>
+                </div>
               ) : (
                 <div className='flex justify-around gap-2'>
                   <Link href={'/login'}>Login</Link>

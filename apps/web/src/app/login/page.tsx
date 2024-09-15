@@ -1,4 +1,4 @@
-import LoginForm from "@/components/loginForm";
+import LoginForm from "@/components/auth/loginForm";
 import Wrapper from "@/components/wrapper";
 import { Suspense } from "react";
 
