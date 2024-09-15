@@ -37,3 +37,14 @@ export const loginUser = async(data: ILogin) =>{
     const result = await res.json()
     return{result, ok: res.ok}
 }
+
+export const verifyEmail = async (token:string) =>{
+    const res = await fetch('http://localhost:8000/api/user/verify',{
+        method: 'PATCH',
+        headers:{
+            "Authorization": `Bearer ${token}`
+    }})
+    const result = await res.json()
+    return{result, ok: res.ok}
+
+}

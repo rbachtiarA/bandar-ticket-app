@@ -1,5 +1,6 @@
 'use client';
 
+import { createToken } from '@/lib/server';
 import { loginUser } from '@/lib/user';
 
 import { ILogin } from '@/type/user';
@@ -16,13 +17,16 @@ const LoginSchema = yup.object().shape({
 });
 
 export default function LoginForm() {
-
+  const router = useRouter();
+  
   const onLogin = async (data: ILogin, action: FormikHelpers<ILogin>) => {
     try {
       const { result, ok } = await loginUser(data);
       if (!ok) throw result.msg;
       toast.success(result.msg);
       action.resetForm();
+      createToken(result.token);
+      router.push('/');
     } catch (err) {
       console.log(err);
       toast.error(err as string);

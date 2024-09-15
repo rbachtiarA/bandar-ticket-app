@@ -132,6 +132,8 @@ model User {
   lastPointsUpdate DateTime  @default(now())
   discount         Boolean   @default(false)
   discountExpires  DateTime?
+  avatar           String?
+  isVerify         Boolean   @default(false)
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt()
 

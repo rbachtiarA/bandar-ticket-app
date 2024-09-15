@@ -2,8 +2,6 @@
 //this router used to add necessery data for exercise
 
 import prisma from "@/prisma";
-import { ICart } from "@/type/interface";
-import { TicketType } from "@prisma/client";
 import { Request, Response } from "express";
 
 export class BackendController {
@@ -39,7 +37,7 @@ export class BackendController {
     async postProvince(req:Request, res:Response) {
         try {
             const { data } = req.body
-                      
+
 
             const inpData = await prisma.provinces.createMany({
                 data
@@ -48,7 +46,7 @@ export class BackendController {
                 status: 'ok',
                 msg: inpData
             })
-            
+
         } catch (error) {
             res.status(400).send({
                 status: 'error',
@@ -60,7 +58,7 @@ export class BackendController {
     async postCity(req:Request, res:Response) {
         try {
             const { name, province } = req.body
-            
+
             const existProvince = await prisma.provinces.findUnique({
                 where: { name: province }
             })
@@ -73,7 +71,7 @@ export class BackendController {
                 status: 'ok',
                 msg: inpData
             })
-            
+
         } catch (error) {
             res.status(400).send({
                 status: 'error',
