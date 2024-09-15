@@ -30,8 +30,9 @@ export const getEventSlug = async (slug: string) => {
     return {name:`event ${slug}`, event: data.event, ticket: data.ticket}
 }
 
-export const postEvent = async (data: PostEvent) => {
+export const postEvent = async (data: PostEvent, userId:number) => {
     const formData = new FormData();
+    formData.append('userId', `${userId}`)
     formData.append('eventPoster', data.eventPoster)
     formData.append('eventDescription', data.eventDescription)
     formData.append('eventName', data.eventName)

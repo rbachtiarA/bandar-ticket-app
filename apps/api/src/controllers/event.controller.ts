@@ -171,8 +171,18 @@ export class EventController {
                         include: {
                             province: true
                         }
+                    },
+                    user: {
+                        select: {
+                            name: true,
+                        }
+                    },
+                    ticket_type: {
+                        select: { price:true }
                     }
-                }
+
+                },
+                
             })
             
             return res.status(200).send({
@@ -191,6 +201,7 @@ export class EventController {
     async createEventWeb(req:Request, res:Response){
         try {                                 
             const { 
+                userId,
                 eventName,
                 eventCategory,
                 eventDateStart,
@@ -211,6 +222,12 @@ export class EventController {
             })
             
             if(!existCity) throw 'City not found'
+            
+            const existUser = await prisma.user.findUnique({
+                where: { id: +userId }
+            })
+
+            if(!existUser) throw 'User is not recognized'
 
             const eventData = await prisma.event.create({
                 data: {
@@ -225,8 +242,8 @@ export class EventController {
                     time_start: eventTimeStart,
                     time_end: eventTimeEnd,
                     img_poster: imgLink,
-                    max_quota: 1
-                    
+                    max_quota: 1,
+                    userId: +userId
                 }
             })
 

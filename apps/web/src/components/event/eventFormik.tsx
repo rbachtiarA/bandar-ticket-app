@@ -22,10 +22,10 @@ const createEventSchema = yup.object().shape({
     eventQuota: yup.number().min(1, 'Atleast quota need to be 1')
 })
 
-export default function EventFormik({ mainData }: {mainData: {id: number, name:string, cities: { id: number, name: string }[]}[] }) {   
+export default function EventFormik({ mainData, userId }: {mainData: {id: number, name:string, cities: { id: number, name: string }[]}[], userId: number }) {   
     const onCreate = async (data: PostEvent, action: FormikHelpers<PostEvent>) => {
         try {
-            const { result, ok } = await postEvent(data)
+            const { result, ok } = await postEvent(data, userId)
             if(!ok) throw result.msg
             toast.success(result.msg)
             action.resetForm()

@@ -102,7 +102,7 @@ export default async function Home() {
      },
   ]
 
-  const allEvent = await getEvents();
+  // const allEvent = await getEvents();
   const music = await getEventCategory('Music') 
   const seminar = await getEventCategory('Seminar')
   const upcoming = await getEventUpcoming(); 
@@ -112,7 +112,7 @@ export default async function Home() {
       <CategoriesNav />
       {/* <Carousel />     */}
       <CategoryContainer category={upcoming} />
-      <CategoryContainer category={allEvent} />
+      {/* <CategoryContainer category={allEvent} /> */}
       <CategoryContainer category={music} />
       <CategoryContainer category={seminar} />
     </>
