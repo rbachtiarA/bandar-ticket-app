@@ -39,7 +39,7 @@ export default function CategoryContainer({category: {name, data}}: { category: 
           className='grid py-2
           snap-x pl-[calc(50vw-110px)] pr-[calc(50vw-110px)] overflow-x-scroll
           md:snap-none md:px-0 md:scroll-smooth md:overflow-hidden containerScroll-hidden'
-          style={{gridTemplateColumns: `repeat(${data.length}, 250px)`}}>
+          style={{ gridTemplateColumns: `repeat(${data.length || 1}, 250px)` }}>
           
               {data.map((event) => (
                   <EventCard
