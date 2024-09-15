@@ -16,7 +16,7 @@ export class BackendRouter {
         this.router.get('/province', this.backendController.getProvince)
         this.router.post('/province', this.backendController.postProvince)
         this.router.post('/city', this.backendController.postCity)
-        this.router.post('/transaction', this.backendController.postTransaction)
+        //this.router.post('/transaction', this.backendController.postTransaction)
     }
 
     getRouter():Router {

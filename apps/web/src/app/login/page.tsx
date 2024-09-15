@@ -7,7 +7,7 @@ export default function LoginPage () {
         <Wrapper>
             <div className="flex justify-center w-full ">
                 <Suspense>
-                    {/* <LoginForm /> */}
+                    <LoginForm />
                 </Suspense>
             </div>
         </Wrapper>

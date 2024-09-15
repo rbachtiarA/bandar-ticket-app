@@ -3,6 +3,10 @@ import { Request, Response } from 'express';
 import { addMonths } from 'date-fns';
 import { compare, genSalt, hash } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
+import { transporter } from '@/helper/nodemailer';
+import path from 'path';
+import fs from 'fs';
+import Handlebars from 'handlebars';
 
 export class UserController {
   async registerUser(req: Request, res: Response) {
@@ -34,6 +38,8 @@ export class UserController {
       // Hash the password
       const salt = await genSalt(10);
       const hashPassword = await hash(password, salt);
+
+      
 
       if (referCode && referCode.length !== '') {
         const referrer = await prisma.user.findUnique({
@@ -67,6 +73,33 @@ export class UserController {
         },
       });
 
+      //verification token
+      const payload = { id: newUser.id };
+      const token = sign(payload, process.env.SECRET_JWT!, { expiresIn: '10m' });
+
+      // handlebar to make template
+      const templatePath = path.join(
+        __dirname,
+        '../template',
+        'verificationMail.hbs',
+      );
+      const templateSource = fs.readFileSync(templatePath, 'utf-8');
+      const compiledTemplate = Handlebars.compile(templateSource);
+      const html = compiledTemplate({
+        name: newUser.name,
+        link: `http://localhost:3000/verify/${token}`,
+      });
+
+
+      // nodemailer to send mail to new user
+      await transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: newUser.email,
+        subject: 'Welcome to our platform',
+        html: html
+      });
+
+      
       res.status(201).send({
         status: 'ok',
         msg: 'user created',
@@ -91,6 +124,32 @@ export class UserController {
     return res.json({ exists: false });
   }
 
+  async verifyEmail(req: Request, res: Response) {
+    try {
+
+      const user = await prisma.user.findUnique({
+        where: { id: req.user?.id },
+      });
+
+      if (user?.isVerify === true) throw new Error('email already verified');
+
+      await prisma.user.update({
+        data: { isVerify: true },
+        where: { id: req.user?.id },
+      });
+
+      res.status(200).send({
+        status: 'ok',
+        msg: 'email verified',
+      });
+    } catch (err) {
+      res.status(400).send({
+        status: 'error',
+        msg: err instanceof Error ? err.message : 'verification process failed',
+      });
+    }
+  }
+
   async login(req: Request, res: Response) {
     try {
       const { email, password } = req.body;
@@ -101,11 +160,12 @@ export class UserController {
         },
       });
 
-      if (!user) throw 'user not found';
+      if (!user) throw new Error('user not found');
+      if (!user.isVerify) throw new Error('please verify your email first');
 
       const isValidPassword = await compare(password, user.password);
 
-      if (!isValidPassword) throw 'password do not match!!';
+      if (!isValidPassword) throw new Error('password do not match!!');
 
       const payload = { id: user.id, role: user.role };
       const token = sign(payload, process.env.SECRET_JWT!, { expiresIn: '1h' });
@@ -119,7 +179,7 @@ export class UserController {
     } catch (err) {
       res.status(400).send({
         status: 'error',
-        msg: err,
+        msg: err instanceof Error ? err.message : 'login process terminated',
       });
     }
   }
@@ -181,6 +241,32 @@ export class UserController {
       res.status(400).send({
         status: 'error',
         msg: err,
+      });
+    }
+  }
+
+  async editAvatar(req: Request, res: Response) {
+    try {
+      if (!req.file) throw new Error('file not found');
+
+      const link = `http://localhost:8000/api/public/avatar/${req?.file?.filename}`;
+      await prisma.user.update({
+        data: {
+          avatar: link,
+        },
+        where: {
+          id: req.user?.id,
+        },
+      });
+      res.status(200).send({
+        status: 'ok',
+        msg: 'avatar updated',
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(400).send({
+        status: 'err',
+        msg: err instanceof Error ? err.message : 'something went wrong',
       });
     }
   }
