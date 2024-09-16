@@ -202,6 +202,7 @@ export class EventController {
         try {                                 
             const { 
                 userId,
+                userRole,
                 eventName,
                 eventCategory,
                 eventDateStart,
@@ -214,6 +215,8 @@ export class EventController {
                 eventCity,
                 EventPoster
             } = req.body
+
+            if(userRole !== 'ORGANIZER') throw 'User do not have authorized'
             if(!req.file) throw 'No File Uploaded'; 
             const imgLink = `http://localhost:8000/api/public/eventPoster/${req?.file?.filename}`
         

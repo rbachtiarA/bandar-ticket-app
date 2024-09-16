@@ -1,7 +1,5 @@
-//this file need to be removed before development
-//this router used to add necessery data for exercise
-
 import prisma from "@/prisma";
+import { ICart } from "@/type/interface";
 import { Request, Response } from "express";
 
 export class BackendController {
