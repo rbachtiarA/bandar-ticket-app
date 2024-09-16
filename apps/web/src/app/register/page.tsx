@@ -1,4 +1,4 @@
-import RegisterForm from "@/components/registerForm";
+import RegisterForm from "@/components/auth/registerForm";
 import Wrapper from "@/components/wrapper";
   
 export default function RegisterPage() {

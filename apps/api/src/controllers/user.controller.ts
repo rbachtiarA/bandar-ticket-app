@@ -39,7 +39,7 @@ export class UserController {
       const salt = await genSalt(10);
       const hashPassword = await hash(password, salt);
 
-      
+
 
       if (referCode && referCode.length !== '') {
         const referrer = await prisma.user.findUnique({
@@ -99,7 +99,7 @@ export class UserController {
         html: html
       });
 
-      
+
       res.status(201).send({
         status: 'ok',
         msg: 'user created',
@@ -181,6 +181,22 @@ export class UserController {
       res.status(400).send({
         status: 'error',
         msg: err instanceof Error ? err.message : 'login process terminated',
+      });
+    }
+  }
+
+  async logout(req: Request, res: Response) {
+    try {
+      res.clearCookie('token',{
+        httpOnly: true,
+        secure: process.env.LOGOUT === "private",
+        sameSite: 'strict',
+      });
+
+    } catch (err) {
+      res.status(400).send({
+        status: 'error',
+        msg: err instanceof Error ? err.message : 'logout process terminated',
       });
     }
   }

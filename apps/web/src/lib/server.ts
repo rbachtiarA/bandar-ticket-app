@@ -10,8 +10,3 @@ export async function createToken(token: string){
 export async function getToken(){
     return cookies().get('token')?.value
 }
-
-export async function deleteToken(){
-    cookies().delete('token')
-    
-}
