@@ -1,4 +1,4 @@
-import { ILogin, IRegister } from "@/type/user"
+import { ILogin, IRegister, IUser } from "@/type/user"
 
 
 
@@ -38,9 +38,21 @@ export const loginUser = async(data: ILogin) =>{
     return{result, ok: res.ok}
 }
 
+export const getUser = async(data: IUser) =>{
+    const res = await fetch('http://localhost:8000/api/user',{
+        method: 'GET',
+        body: JSON.stringify(data),
+        headers:{
+            "Content-Type": "application/json"
+        }
+    })
+    const result = await res.json()
+    return{result, ok: res.ok}
+}
+
 export const verifyEmail = async (token:string) =>{
     const res = await fetch('http://localhost:8000/api/user/verify',{
-        method: 'PATCH',
+        method: 'POST',
         headers:{
             "Authorization": `Bearer ${token}`
     }})

@@ -75,7 +75,7 @@ export class UserController {
 
       //verification token
       const payload = { id: newUser.id };
-      const token = sign(payload, process.env.SECRET_JWT!, { expiresIn: '10m' });
+      const token = sign(payload, process.env.SECRET_JWT!, { expiresIn: '24h' });
 
       // handlebar to make template
       const templatePath = path.join(
@@ -223,6 +223,28 @@ export class UserController {
       const findUser = await prisma.user.findUnique({
         where: {
           id: parseInt(req.params.id),
+        },
+      });
+
+      res.status(200).send({
+        status: 'ok',
+        msg: 'user found',
+        user: findUser,
+      });
+    } catch (err) {
+      res.status(400).send({
+        status: 'error',
+        msg: err,
+      });
+    }
+  }
+
+  async getUserByEmail(req: Request, res: Response) {
+    try {
+      
+      const findUser = await prisma.user.findUnique({
+        where: {
+          email: req.params.email,
         },
       });
 
