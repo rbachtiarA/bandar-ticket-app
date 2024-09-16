@@ -27,13 +27,15 @@ export default function TicketCard({ ticket, isPastEvent, handleAddCart }: {tick
                 <button className='btn-warning' onClick={handlePastEvent}>Beli Tiket</button>
             </div>    
             :
-            <div className='w-1/5 flex justify-center items-center'>
-                <input type="number" className='w-10' defaultValue={1} min={1} ref={quantityRef}/>
+            <div className='w-1/5 flex flex-col-reverse md:flex-row justify-center items-center'>
+                <input type="number" className='w-10' defaultValue={Math.min(ticket.quota, 1)} min={Math.min(ticket.quota, 1)} max={ticket.quota} ref={quantityRef}/>
                 <button 
-                    className='btn-primary' 
+                    className='btn-primary-ry' 
                     onClick={() => {
-                        handleAddCart(Number(quantityRef.current?.value), ticket.id,Number(ticket.price), ticket.price*Number(quantityRef.current?.value))
-                }}>
+                        if(ticket.quota !== 0) {
+                            handleAddCart(Number(quantityRef.current?.value), ticket.id,Number(ticket.price), ticket.price*Number(quantityRef.current?.value))
+                        }
+                }} disabled={ticket.quota === 0}>
                     Beli Tiket
                 </button>
             </div>

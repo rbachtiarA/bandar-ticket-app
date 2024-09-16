@@ -1,5 +1,5 @@
 'use client'
-import { PostEvent } from '@/app/interfaceType';
+import { PostEvent } from '@/type/event';
 import FormDate from '@/components/event/formDate';
 import FormikControl from '@/components/formikControl/formikControl';
 import FormProvinceCity from '@/components/event/formProvinceCity';
@@ -22,10 +22,10 @@ const createEventSchema = yup.object().shape({
     eventQuota: yup.number().min(1, 'Atleast quota need to be 1')
 })
 
-export default function EventFormik({ mainData }: {mainData: {id: number, name:string, cities: { id: number, name: string }[]}[] }) {   
+export default function EventFormik({ mainData, user }: {mainData: {id: number, name:string, cities: { id: number, name: string }[]}[], user: {  id: number, role: string} }) {   
     const onCreate = async (data: PostEvent, action: FormikHelpers<PostEvent>) => {
         try {
-            const { result, ok } = await postEvent(data)
+            const { result, ok } = await postEvent(data, user)
             if(!ok) throw result.msg
             toast.success(result.msg)
             action.resetForm()
@@ -116,7 +116,7 @@ export default function EventFormik({ mainData }: {mainData: {id: number, name:s
                                 </div>
 
                                 <div className='flex justify-center'>
-                                    <button type='submit' className='w-1/2 mt-4 btn-primary'>Submit</button>
+                                    <button type='submit' className='w-1/2 mt-4 btn-primary-ry'>Submit</button>
                                 </div>
                             </Form>
                         )

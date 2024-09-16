@@ -171,8 +171,18 @@ export class EventController {
                         include: {
                             province: true
                         }
+                    },
+                    user: {
+                        select: {
+                            name: true,
+                        }
+                    },
+                    ticket_type: {
+                        select: { price:true }
                     }
-                }
+
+                },
+                
             })
             
             return res.status(200).send({
@@ -191,6 +201,8 @@ export class EventController {
     async createEventWeb(req:Request, res:Response){
         try {                                 
             const { 
+                userId,
+                userRole,
                 eventName,
                 eventCategory,
                 eventDateStart,
@@ -203,6 +215,8 @@ export class EventController {
                 eventCity,
                 EventPoster
             } = req.body
+
+            if(userRole !== 'ORGANIZER') throw 'User do not have authorized'
             if(!req.file) throw 'No File Uploaded'; 
             const imgLink = `http://localhost:8000/api/public/eventPoster/${req?.file?.filename}`
         
@@ -211,6 +225,12 @@ export class EventController {
             })
             
             if(!existCity) throw 'City not found'
+            
+            const existUser = await prisma.user.findUnique({
+                where: { id: +userId }
+            })
+
+            if(!existUser) throw 'User is not recognized'
 
             const eventData = await prisma.event.create({
                 data: {
@@ -225,8 +245,8 @@ export class EventController {
                     time_start: eventTimeStart,
                     time_end: eventTimeEnd,
                     img_poster: imgLink,
-                    max_quota: 1
-                    
+                    max_quota: 1,
+                    userId: +userId
                 }
             })
 

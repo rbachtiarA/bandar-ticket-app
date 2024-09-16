@@ -8,7 +8,6 @@ import { toast } from "react-toastify"
 
 export default function VerifyPage(){
   const params = useParams<{ token : string }>()
-  console.log(params)
   const onVerify = async () =>{
     try {
       const{result, ok} = await verifyEmail(params.token)
@@ -18,8 +17,9 @@ export default function VerifyPage(){
       toast.error(error as string)
     }
   }
-
+  
   useEffect(() =>{
+    console.log(params)
     onVerify()
   }, [])
   

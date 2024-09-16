@@ -1,4 +1,4 @@
-import { PostTicketType } from "@/app/interfaceType"
+import { PostTicketType } from "@/type/ticket"
 
 export const postTicketType = async (data: PostTicketType) => {
     console.log(data);

@@ -1,8 +1,8 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import EventCard from '../eventCard'
-import { ICategory, IEvent } from '@/app/interfaceType'
+import { IEvent } from '@/type/event'
 import Image from 'next/image'
 
 
@@ -29,6 +29,8 @@ export default function CategoryContainer({category: {name, data}}: { category: 
       }
     }
   }
+  console.log(data);
+  
         
   // section width desktop need to be multiplier of offset handleScroll (ex: handleScroll offset = 200px, container widht should be 200/400/800 px etc ) 
   return (
@@ -50,6 +52,7 @@ export default function CategoryContainer({category: {name, data}}: { category: 
                   eventImg={event.img_poster}
                   eventDate={new Date(event.date_start)}
                   eventLocation={`${event.location}, ${event.city.province.name}`}
+                  userName={`${event.user?.name || `Dummy`}`}
                   />
               ))}
           </div>

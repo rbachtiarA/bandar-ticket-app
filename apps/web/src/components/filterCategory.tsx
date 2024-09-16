@@ -1,6 +1,3 @@
-import { values } from 'cypress/types/lodash'
-import React from 'react'
-
 export default function FilterCategory({ handleChangeRadio, checkCategory }: { handleChangeRadio: any, checkCategory: string }) {
     const category = [
         {value: '', id: 'filterDefault' },

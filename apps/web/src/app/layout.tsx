@@ -21,18 +21,18 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`relative ${inter.className} bg-white flex flex-col min-h-screen`}>
+      <body className={`relative ${inter.className} dark:bg-white flex flex-col min-h-screen`}>
           <Navbar />
-            <main className='pt-[112px]'>
-              {children}
-              <ToastContainer 
-                position="bottom-right"
-                autoClose={5000}
-                closeOnClick
-                draggable
-              />
-            </main>
+          <main className='pt-[112px] flex-1'>
+            {children}
+          </main>
           <Footer />
+          <ToastContainer 
+            position="bottom-right"
+            autoClose={5000}
+            closeOnClick
+            draggable
+          />
       </body>
     </html>
   );

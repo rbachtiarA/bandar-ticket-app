@@ -1,5 +1,5 @@
 'use client'
-import { IProvince } from '@/app/interfaceType'
+import { IProvince } from '@/type/province'
 import React from 'react'
 
 export default function FilterProvince({ provinceData, handleChange, provinceId }: {provinceData: IProvince[], handleChange: any, provinceId:string}) {   

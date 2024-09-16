@@ -1,6 +1,4 @@
-
-
-import { PostEvent } from "@/app/interfaceType";
+import { PostEvent } from "@/type/event";
 
 export const getEvents = async (search='', category='', location='') => {
     // const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}event${search !== ''? `?search=${search}` : ''}${category !== ''}&category=${category}`, {next: { revalidate: 5 }})
@@ -32,8 +30,10 @@ export const getEventSlug = async (slug: string) => {
     return {name:`event ${slug}`, event: data.event, ticket: data.ticket}
 }
 
-export const postEvent = async (data: PostEvent) => {
+export const postEvent = async (data: PostEvent, user: {id: number, role: string}) => {
     const formData = new FormData();
+    formData.append('userId', `${user.id}`)
+    formData.append('userRole', `${user.role}`)
     formData.append('eventPoster', data.eventPoster)
     formData.append('eventDescription', data.eventDescription)
     formData.append('eventName', data.eventName)

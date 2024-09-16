@@ -93,7 +93,7 @@ export class UserController {
 
       // nodemailer to send mail to new user
       await transporter.sendMail({
-        from: process.env.EMAIL_USER,
+        from: process.env.MAIL_USER,
         to: newUser.email,
         subject: 'Welcome to our platform',
         html: html
@@ -108,7 +108,7 @@ export class UserController {
     } catch (err) {
       res.status(400).send({
         status: 'error',
-        msg: 'SOMETHINGS WRONG',
+        msg: `SOMETHINGS WRONG, ${err}` ,
       });
     }
   }
@@ -126,7 +126,8 @@ export class UserController {
 
   async verifyEmail(req: Request, res: Response) {
     try {
-
+      console.log(`INSIDE VERIFY EMAIL`);
+      
       const user = await prisma.user.findUnique({
         where: { id: req.user?.id },
       });

@@ -8,7 +8,11 @@ type IUser ={
 
 export const verifyToken = async(req: Request, res: Response, next: NextFunction) =>{
     try {
+        console.log(`verify token`);
+        
         const token = req.header('Authorization')?.replace('Bearer ', "")
+        console.log(token);
+        
         if(!token) throw "token not found"
 
         const verifiedToken = verify(token, process.env.SECRET_JWT!)

@@ -1,5 +1,5 @@
 'use client'
-import { IProvince } from '@/app/interfaceType'
+import { IProvince } from '@/type/province'
 import EventCard from '@/components/eventCard'
 import FilterCategory from '@/components/filterCategory'
 import FilterProvince from '@/components/filterProvince'
@@ -8,6 +8,7 @@ import { getEvents } from '@/lib/event'
 import { useRouter, useSearchParams } from 'next/navigation'
 import React, { Suspense, useEffect, useRef, useState } from 'react'
 import { useDebounce } from 'use-debounce'
+import { IEvent } from '@/type/event'
 
 export default function EventFilter({provinceData}: { provinceData: IProvince[]}) {
     const searchRef = useRef<HTMLInputElement>(null)
@@ -18,7 +19,7 @@ export default function EventFilter({provinceData}: { provinceData: IProvince[]}
     const [pages, setPages] = useState(1)
     const [page, setPage] = useState(1)
     const [search, setSearch] = useState<string>(querySearch || '')
-    const [data, setData] = useState([])
+    const [data, setData] = useState<IEvent[]>([])
     const [province, setProvince] = useState('')
     const [category, setCategory] = useState<string>(queryCategory || '')
     const [location, setLocation] = useState<string>(queryLocation || '')
@@ -122,9 +123,9 @@ export default function EventFilter({provinceData}: { provinceData: IProvince[]}
 
                         <Pagination pages={pages} handlePageJump={handlePageJump} handlePage={handlePage}/>
                     </div>
-                    <div className="grid md:grid-cols-[repeat(2,_250px)] xl:grid-cols-[repeat(4,_250px)] md:grid-rows-[repeat(2,_424px)]">
+                    <div className="grid md:grid-cols-[repeat(2,_250px)] xl:grid-cols-[repeat(4,_250px)] md:grid-rows-2">
                         {
-                            data.slice((page*8)-8, 8*page).map((event: any) => {
+                            data.slice((page*8)-8, 8*page).map((event) => {
                                 return (
                                     <EventCard
                                         key={event.id}
@@ -134,6 +135,7 @@ export default function EventFilter({provinceData}: { provinceData: IProvince[]}
                                         eventImg={event.img_poster}
                                         eventDate={new Date(event.date_start)}
                                         eventLocation={`${event.location}, ${event.city.province.name}`}
+                                        userName={event.user?.name || 'Dummy'}
                                     />
                                 )
                             })
@@ -147,14 +149,14 @@ export default function EventFilter({provinceData}: { provinceData: IProvince[]}
             </div>
             
             {/* {DEBUG STATE FIELD} */}
-            <div className='flex flex-col'>
+            {/* <div className='flex flex-col'>
             <h1>Debug Search & filter</h1>
             <div>State: "{search}", "{category}", "{province}"</div>
             <div>Pages: {pages}</div>
             <div>Page: {page}</div>
             <div>Debounce: {val}, {cat}, {loc}</div>
             
-            </div>
+            </div> */}
 
             
         </section>

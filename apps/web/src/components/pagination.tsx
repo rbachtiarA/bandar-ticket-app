@@ -6,7 +6,7 @@ export default function Pagination ({pages, handlePageJump, handlePage}: { pages
         arr.push(i+1)
     }
     return (
-    <div className='[&_button]:btn-pagination flex justify-center items-center gap-4'>
+    <div className='[&_button]:btn-pagination-ry flex justify-center items-center gap-4'>
         <button onClick={() => handlePage(-1)}>prev page</button>
         {
             arr.map((val) => (
