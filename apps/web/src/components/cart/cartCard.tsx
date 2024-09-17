@@ -2,7 +2,7 @@ import { ICart } from '@/type/cart'
 import { ITicketType } from '@/type/ticket'
 import React, { useRef } from 'react'
 
-export default function cartCard({ cart, ticket, handleRemoveCart }: { cart: ICart, ticket:ITicketType[], handleRemoveCart: any }) {
+export default function CartCard({ cart, ticket, handleRemoveCart }: { cart: ICart, ticket:ITicketType[], handleRemoveCart: any }) {
     const IDR = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'IDR'

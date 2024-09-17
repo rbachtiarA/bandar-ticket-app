@@ -5,24 +5,30 @@ import { ICart, } from '@/type/cart';
 import { ITicketType } from '@/type/ticket';
 import TicketCard from '../ticket/ticketCard';
 import { toast } from 'react-toastify';
-import CartCard from '../ticket/cartCard';
+import CartCard from '../cart/cartCard';
 import { postTransaction } from '@/lib/backend';
 import { useRouter, useSearchParams } from 'next/navigation';
 import ModalWrapper from '../modal';
 import TicketFormik from '../ticket/ticketFormik';
+import DiscountFormik from '../discount/discountFormik';
+import { IDiscountType } from '@/type/discount';
+import DiscountCard from '../discount/discountCard';
+import CartSwitcher from '../cart/cartSwitcher';
+import DiscountSwitcher from '../discount/discountSwitcher';
+import TicketSwitcher from '../ticket/ticketSwitcher';
 
-export default function EventSwitcher({ description, eventId, ticket, isPastEvent, isAdmin }: { description: string, eventId: number,ticket: ITicketType[], isPastEvent: Boolean, isAdmin:Boolean }) {
+export default function EventSwitcher({ description, eventId, ticket, discount, isPastEvent, isAdmin, user }: { description: string, eventId: number,ticket: ITicketType[], discount:IDiscountType[], isPastEvent: Boolean, isAdmin:Boolean, user:{ id:number, role:string } }) {
     const searchParams = useSearchParams()
     const queryTabs = searchParams.get('tab')
     const [switcher, setSwitcher] = useState(queryTabs || 'desc')
     const [formType, setFormType] = useState('none')
     const [cart, setCart] = useState<ICart[]>([])
     const router = useRouter()
-    const userId = 2
+    console.log(user.id);
     
     const handleTab = (condition: string) => {
         setSwitcher(condition)
-        router.push(`?tab=${switcher}#tab-section`)
+        router.push(`?tab=${condition}#tab-section`)
     }
     const handleAdminForm = (state:string) => {
       setFormType(state)
@@ -66,12 +72,16 @@ export default function EventSwitcher({ description, eventId, ticket, isPastEven
     //handle transaction, if ticket quota and cart quantity doenst match, error insufficent quantity
     const handleTransaction = async (userId:number, cart:ICart[]) => {
       try {
+        console.log(userId);
+        
+        if(!userId) throw 'You need to login before complete this action'
         const postData = {userId, cart}
         const data = await postTransaction(postData)
         if(data.status === 'error') throw `${data.msg}`        
         setCart([])
         toast.success(data.msg)
         setSwitcher('ticket')
+        router.push(`?tab=ticket#tab-section`)
       } catch (error) {
         toast.error(error as string, {
           theme: 'colored',
@@ -99,79 +109,27 @@ export default function EventSwitcher({ description, eventId, ticket, isPastEven
 
           {
             switcher === 'ticket' && 
-            <div>
-                {
-                  isAdmin && 
-                  <div className='flex justify-center w-full my-2'>
-                    <button className='btn-primary-ry' onClick={() => handleAdminForm('ticket')}>Add Ticket Type</button>
-                  </div>
-                }
-
-                <div className='w-full border-b-2 border-t-2'>
-                  <p className='text-center font-bold my-4'>Ticket List</p>
-                </div>
-                
-                { ticket.length === 0 && <p className='text-red-500'>There is no ticket available on this event right now</p> }
-                <div className='flex flex-col gap-4 mt-4'>
-                  {
-                    ticket.length !==0 && 
-                    ticket.map((ticket, idx) => (
-                      <TicketCard key={idx} ticket={ticket} isPastEvent={isPastEvent} handleAddCart={handleAddCart}/>
-                    )) 
-                  }
-                </div>
-            </div>
+            <TicketSwitcher isAdmin={isAdmin} ticket={ticket} isPastEvent={isPastEvent} handleAddCart={handleAddCart} handleAdminForm={handleAdminForm}/>
           }
           {
             switcher === 'discount' &&
-            <div>
-              {
-                isAdmin && 
-                <div className='flex justify-center w-full my-2'>
-                  <button className='btn-primary-ry' onClick={() => handleAdminForm('discount')}>Add Discount Type</button>
-                </div>
-              }
-
-              <div className='w-full border-b-2 border-t-2'>
-                <p className='text-center font-bold my-4'>Discount List</p>
-              </div>
-            </div>
+            <DiscountSwitcher isAdmin={isAdmin} discount={discount} handleAdminForm={handleAdminForm}/>
           }
           {
               switcher === 'cart' && 
-              <div>
-                
-                <div>
-                  <div className='hidden md:grid grid-cols-5 [&_h1]:text-center [&_h1]:font-semibold py-2 border-b-2'>
-                    <h1>Name</h1>
-                    <h1>Ticket Price</h1>
-                    <h1>Quantity</h1>
-                    <h1>Total Price</h1>
-                  </div>
-                  {cart.length === 0 && <p className='text-red-500 p-2 border-y-2'>Cart is empty please choose ticket from ticket tab</p>}
-                  {
-                    cart.length !== 0 && 
-                    <div className='flex flex-col gap-4 mt-4'>
-                      {cart.map((cart, idx) => (
-                        <CartCard key={idx} ticket={ticket} cart={cart} handleRemoveCart={handleRemoveCart} />
-                      ))}
-                      <div className='flex justify-center'>
-                        <button onClick={() => handleTransaction(userId, cart)} className='btn-primary-ry'>Transaksi</button>
-                      </div>
-                    </div>
-                  }
-                </div>
-              </div>
-           }
+              <CartSwitcher cart={cart} ticket={ticket} handleRemoveCart={handleRemoveCart} handleTransaction={handleTransaction} userId={user.id}/>
+          }
 
           {
               isAdmin && formType ==='ticket' && 
-              <TicketForm handleFormClose={handleAdminFormClose} eventId={eventId}/>
+              <ModalWrapper handleClose={handleAdminFormClose} title='Create Ticket'>
+                <TicketFormik eventId={eventId} handleClose={handleAdminFormClose}/>
+              </ModalWrapper>
           }
           {
               isAdmin && formType ==='discount' && 
               <ModalWrapper handleClose={handleAdminFormClose} title='Create Discount'>
-                <TicketFormik handleClose={handleAdminFormClose} eventId={eventId}/>
+                <DiscountFormik handleClose={handleAdminFormClose} eventId={eventId}/>
               </ModalWrapper>
           }
           </div>

@@ -150,11 +150,17 @@ export class EventController {
                     eventID: eventData?.id
                 }
             })
+            const discountData = await prisma.discountType.findMany({
+                where: {
+                    eventID: eventData?.id
+                }
+            })
             return res.status(200).send({
                 status: 'ok',
                 msg: `Get event id ${req.params.id}`,
                 event: eventData,
                 ticket: ticketData,
+                discount: discountData
             })
         } catch (error) {
             res.status(400).send({

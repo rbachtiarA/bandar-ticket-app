@@ -1,4 +1,4 @@
-import { ITicketType } from '@/app/interfaceType'
+import { ITicketType } from '@/type/ticket'
 import React, { useContext, useRef } from 'react'
 import { toast } from 'react-toastify'
 

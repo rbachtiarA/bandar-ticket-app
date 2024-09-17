@@ -2,8 +2,9 @@ import { IEvent } from '@/type/event';
 import EventSwitcher from './eventSwitcher'
 import { ITicketType } from '@/type/ticket';
 import Image from 'next/image';
+import { IDiscountType } from '@/type/discount';
 
-export default function EventDetails({ event, ticket, isAdmin }: {event:IEvent, ticket: ITicketType[], isAdmin: Boolean}) {
+export default function EventDetails({ event, ticket, discount, isAdmin, user }: {event:IEvent, ticket: ITicketType[], discount: IDiscountType[], isAdmin: Boolean, user:{ id:number, role:string }}) {
 
     const date_now = new Date()
     const date_start = new Date(event.date_start)
@@ -56,7 +57,7 @@ export default function EventDetails({ event, ticket, isAdmin }: {event:IEvent, 
             </div>
         </div>
 
-        <EventSwitcher description={event.description} eventId={event.id} ticket={ticket} isPastEvent={isPastEvent} isAdmin={isAdmin}/>
+        <EventSwitcher description={event.description} eventId={event.id} ticket={ticket} discount={discount} isPastEvent={isPastEvent} isAdmin={isAdmin} user={user}/>
     </div>
   )
 }

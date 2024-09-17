@@ -6,23 +6,26 @@ import { getToken } from '@/lib/server';
 import Image from 'next/image';
 
 export default async function page({ params }: { params: { slug: string } }) {
-  const { name, event, ticket } = await getEventSlug(params.slug);
-  console.log(event);
+  const { name, event, ticket, discount } = await getEventSlug(params.slug);
   
   const token = await getToken()
   let isAdmin = false
-  if(token && event.user) {
+  let id, role
+  if(token) {
     const verifiedUser = await verifyRole(token)
+    
     if(verifiedUser.status !== 'error') {
-      isAdmin = (event.user.id === verifiedUser.userId) 
+      if(event.user) isAdmin = (event.user.id === verifiedUser.userId) 
+      id = verifiedUser.userId
+      role = verifiedUser.userRole
     }
-  }
+  } 
 
   if(event === null) {
     return (
-      <section>
-        <div>
-          <h1>ID NOT FOUND</h1>
+      <section className='flex w-full justify-center items-center'>
+        <div className='font-bold text-red-500'>
+          <h1>Event not Found</h1>
         </div>
       </section>
     )
@@ -49,7 +52,7 @@ export default async function page({ params }: { params: { slug: string } }) {
             />
           </div>
           
-          <EventDetails event={event} ticket={ticket} isAdmin={isAdmin}/>
+          <EventDetails event={event} ticket={ticket} discount={discount} isAdmin={isAdmin} user={{id, role}}/>
         </div>       
       </div>
     </section>
