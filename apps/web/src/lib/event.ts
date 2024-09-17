@@ -27,7 +27,7 @@ export const getEventSlug = async (slug: string) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}event/e/${slug}`, {cache: "no-cache"})
     const data = await res.json()
 
-    return {name:`event ${slug}`, event: data.event, ticket: data.ticket}
+    return {name:`event ${slug}`, event: data.event, ticket: data.ticket, availableTicket:data.availableTicket}
 }
 
 export const postEvent = async (data: PostEvent, user: {id: number, role: string}) => {

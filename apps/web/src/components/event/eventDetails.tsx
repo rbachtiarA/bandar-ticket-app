@@ -1,6 +1,7 @@
 import { IEvent } from '@/type/event';
 import EventSwitcher from './eventSwitcher'
 import { ITicketType } from '@/type/ticket';
+import Image from 'next/image';
 
 export default function EventDetails({ event, ticket }: {event:IEvent, ticket: ITicketType[]}) {
 
@@ -18,7 +19,13 @@ export default function EventDetails({ event, ticket }: {event:IEvent, ticket: I
             <div>
             <h1 className='font-bold text-xl'>{event.name}</h1>
             </div>
-            <div>
+            <div className='flex gap-2'>
+                <Image 
+                    src={'/ico-date-event.svg'}
+                    alt={'date icon'}
+                    width={16}
+                    height={16}
+                />
                 <h2>{ date_start.getTime() === date_end.getTime() ?
                 `${date_start.toLocaleDateString('en-us', {
                     weekday: 'short',
@@ -38,7 +45,13 @@ export default function EventDetails({ event, ticket }: {event:IEvent, ticket: I
             })} `
                 }</h2>
             </div>
-            <div>
+            <div className='flex gap-2'>
+                <Image 
+                    src={'/ico-location-event.svg'}
+                    alt='location icon'
+                    width={16}
+                    height={16}
+                />
                 <h2 className='text-slate-600'>{event.location}, {event.city.name}, {event.city.province.name}</h2>
             </div>
         </div>

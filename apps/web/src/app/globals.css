@@ -15,15 +15,19 @@
 /* px-4 py-2 rounded-lg bg-cyan-200 hover:text-white hover:bg-cyan-600 */
 @layer components {
   .btn-primary-ry {
-    @apply px-4 py-2 rounded-lg text-black bg-cyan-200 enabled:hover:text-white enabled:hover:bg-cyan-600 disabled:text-slate-600
+    @apply px-4 py-2 rounded-lg text-black bg-cyan-200 enabled:hover:text-white enabled:hover:bg-cyan-600 disabled:text-slate-600 transition
   }
 
   .btn-pagination-ry {
-    @apply bg-slate-400 px-2 py-1 rounded-md
+    @apply bg-slate-400 px-2 py-1 rounded-md hover:bg-slate-500 transition
   }
 
   .btn-warning-ry {
-    @apply px-4 py-2 rounded-lg bg-red-400 hover:bg-red-500
+    @apply px-2 py-1 md:px-4 md:py-2 rounded-lg bg-red-400 hover:bg-red-500 transition
+  }
+
+  .btn-landpage-ry {
+    @apply py-2 px-4 w-full bg-slate-200 rounded-xl text-center hover:bg-slate-400 hover:text-white transition
   }
 }
 input[type=number]::-webkit-inner-spin-button {

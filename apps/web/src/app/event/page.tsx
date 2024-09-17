@@ -1,4 +1,4 @@
-import EventFilter from '@/components/event/eventSearch'
+import EventFilter from '@/components/event/eventFilter'
 import { getProvince } from '@/lib/backend'
 import { IProvince } from '@/type/province'
 

@@ -64,11 +64,10 @@ export default function EventFilter({provinceData}: { provinceData: IProvince[]}
             setSearch(searchRef.current.value)
         }
     }
-
     const handleResetFilter = () => {
-        setCategory('')
+        setCategory('') 
         setSearch('')
-        setLocation('')
+        setLocation('')                
     }
 
     const getData = async () => {
@@ -87,11 +86,9 @@ export default function EventFilter({provinceData}: { provinceData: IProvince[]}
     }, [val, cat, loc])
 
     return (
-        <section>
-            
-            <div className='flex flex-col justify-center items-center md:justify-normal md:items-start md:flex-row'>
-                {/* {FILTER FIELD} */}
-                <div className='flex flex-col p-4 gap-4 md:w-1/4 bg-slate-50 md:min-h-screen'>
+        <section className='flex flex-col md:flex-row'>
+            {/* {FILTER FIELD} */}
+            <div className='flex flex-col p-4 gap-4 md:w-1/4 bg-slate-50 md:min-h-screen'>
                     <button onClick={handleResetFilter} className='hover:bg-slate-200 px-2 py-1'>Reset Filter</button>
                     <input
                     onChange={handleChange} 
@@ -109,6 +106,8 @@ export default function EventFilter({provinceData}: { provinceData: IProvince[]}
                         <FilterProvince provinceData={provinceData} handleChange={handleChangeLocation} provinceId={queryLocation!}/>
                     </div>
                 </div>
+            <div className='flex flex-col justify-center items-center md:justify-normal md:items-start md:flex-row'>
+                
                 
                 {/* {EVENT RESULT FIELD} */}
                 <div className='w-full flex flex-col items-center justify-center p-4'>
@@ -123,18 +122,18 @@ export default function EventFilter({provinceData}: { provinceData: IProvince[]}
 
                         <Pagination pages={pages} handlePageJump={handlePageJump} handlePage={handlePage}/>
                     </div>
-                    <div className="grid md:grid-cols-[repeat(2,_250px)] xl:grid-cols-[repeat(4,_250px)] md:grid-rows-2">
+                    <div className={`grid md:grid-cols-[repeat(2,_250px)] xl:grid-cols-[repeat(4,_250px)] md:grid-rows-${data.length < 5? `1`: `2`}`}>
                         {
                             data.slice((page*8)-8, 8*page).map((event) => {
                                 return (
                                     <EventCard
-                                        key={event.id}
+                                        key={event.slug}
                                         eventId = {event.id}
                                         eventSlug = {event.slug}
                                         eventTitle={event.name}
                                         eventImg={event.img_poster}
                                         eventDate={new Date(event.date_start)}
-                                        eventLocation={`${event.location}, ${event.city.province.name}`}
+                                        eventLocation={`${event.city.name}, ${event.city.province.name}`}
                                         userName={event.user?.name || 'Dummy'}
                                     />
                                 )

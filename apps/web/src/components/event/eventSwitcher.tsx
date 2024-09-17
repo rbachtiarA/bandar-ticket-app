@@ -8,6 +8,8 @@ import { toast } from 'react-toastify';
 import CartCard from '../ticket/cartCard';
 import { postTransaction } from '@/lib/backend';
 import { useRouter, useSearchParams } from 'next/navigation';
+import ModalWrapper from '../modal';
+import TicketFormik from '../ticket/ticketFormik';
 
 export default function EventSwitcher({ description, eventId, ticket, isPastEvent }: { description: string, eventId: number,ticket: ITicketType[], isPastEvent: Boolean }) {
     const isAdmin = true;
@@ -23,8 +25,8 @@ export default function EventSwitcher({ description, eventId, ticket, isPastEven
         setSwitcher(condition)
         router.push(`?tab=${switcher}#tab-section`)
     }
-    const handleAdminForm = (e: any) => {
-      setFormType('ticket')
+    const handleAdminForm = (state:string) => {
+      setFormType(state)
     }
     const handleAdminFormClose = () => {
       setFormType('none')
@@ -60,8 +62,6 @@ export default function EventSwitcher({ description, eventId, ticket, isPastEven
         setCart([...newCart])
         toast.success(`Remove ${quantity} ${ticket.find((item) => item.id === ticketType)?.name} from Cart`)
       }
-
-      console.log(cart);
     }
 
     //handle transaction, if ticket quota and cart quantity doenst match, error insufficent quantity
@@ -69,9 +69,7 @@ export default function EventSwitcher({ description, eventId, ticket, isPastEven
       try {
         const postData = {userId, cart}
         const data = await postTransaction(postData)
-        if(data.status === 'error') throw `${data.msg}`
-        console.log(data);
-        
+        if(data.status === 'error') throw `${data.msg}`        
         setCart([])
         toast.success(data.msg)
         setSwitcher('ticket')
@@ -83,13 +81,9 @@ export default function EventSwitcher({ description, eventId, ticket, isPastEven
       }  
     }
 
-    // useEffect(() => {
-    //   // router.push(`?tab=${switcher}#tab-section`)
-    // },[switcher])
-
   return (
-    <div className='h-full ' id='tab-section'>
-            <div className='sticky top-0 gap-1 flex flex-col  md:flex-row bg-slate-400 [&_button]:bg-slate-200 [&_button]:py-1 md:[&_button]:w-1/4' >
+    <div className='h-full' id='tab-section'>
+            <div className='sticky top-0 gap-1 flex flex-col mb-2 md:flex-row bg-slate-400 [&_button]:bg-slate-200 [&_button]:py-1 md:[&_button]:w-1/4' >
               <button onClick={() => handleTab('desc')} className={`hover:underline ${switcher === 'desc'? 'font-bold pointer-events-none': ''}`}>Description</button>
               <button onClick={() => handleTab('ticket')} className={`hover:underline ${switcher === 'ticket'? 'font-bold pointer-events-none': ''}`}>Ticket</button>
               <button onClick={() => handleTab('discount')} className={`hover:underline ${switcher === 'discount'? 'font-bold pointer-events-none': ''}`}>Discount</button>
@@ -102,9 +96,9 @@ export default function EventSwitcher({ description, eventId, ticket, isPastEven
             <div>
               <p>{description}</p>
             </div>
-            }
+          }
 
-            {
+          {
             switcher === 'ticket' && 
             <div>
                 {
@@ -128,38 +122,59 @@ export default function EventSwitcher({ description, eventId, ticket, isPastEven
                   }
                 </div>
             </div>
-            }
+          }
+          {
+            switcher === 'discount' &&
+            <div>
+              {
+                isAdmin && 
+                <div className='flex justify-center w-full my-2'>
+                  <button className='btn-primary-ry' onClick={() => handleAdminForm('discount')}>Add Discount Type</button>
+                </div>
+              }
 
-            {
+              <div className='w-full border-b-2 border-t-2'>
+                <p className='text-center font-bold my-4'>Discount List</p>
+              </div>
+            </div>
+          }
+          {
               switcher === 'cart' && 
               <div>
-                {cart.length === 0 && <p className='text-red-500'>Cart is empty please choose ticket from ticket tab</p>}
-                {
-
-                  cart.length !== 0 && 
-                  <div className='flex flex-col gap-4 mt-4'>
-                    {cart.map((cart, idx) => (
-                      <CartCard key={idx} ticket={ticket} cart={cart} handleRemoveCart={handleRemoveCart} />
-                    ))}
-                    <div className='flex justify-center'>
-                      <button onClick={() => handleTransaction(userId, cart)} className='btn-primary-ry'>Transaksi</button>
-                    </div>
-
+                
+                <div>
+                  <div className='hidden md:grid grid-cols-5 [&_h1]:text-center [&_h1]:font-semibold py-2 border-b-2'>
+                    <h1>Name</h1>
+                    <h1>Ticket Price</h1>
+                    <h1>Quantity</h1>
+                    <h1>Total Price</h1>
                   </div>
-                }
+                  {cart.length === 0 && <p className='text-red-500 p-2 border-y-2'>Cart is empty please choose ticket from ticket tab</p>}
+                  {
+                    cart.length !== 0 && 
+                    <div className='flex flex-col gap-4 mt-4'>
+                      {cart.map((cart, idx) => (
+                        <CartCard key={idx} ticket={ticket} cart={cart} handleRemoveCart={handleRemoveCart} />
+                      ))}
+                      <div className='flex justify-center'>
+                        <button onClick={() => handleTransaction(userId, cart)} className='btn-primary-ry'>Transaksi</button>
+                      </div>
+                    </div>
+                  }
+                </div>
               </div>
-            }
+           }
 
-            {
+          {
               isAdmin && formType ==='ticket' && 
               <TicketForm handleFormClose={handleAdminFormClose} eventId={eventId}/>
-            }
-            <div>
-              <h1>
-                debug
-              </h1>
-              <p>Cart State: {cart.length}</p>
-            </div>
+          }
+          {
+              isAdmin && formType ==='discount' && 
+              <ModalWrapper handleClose={handleAdminFormClose} title='Create Discount'>
+                <TicketFormik handleClose={handleAdminFormClose} eventId={eventId}/>
+              </ModalWrapper>
+          }
           </div>
             
         </div>

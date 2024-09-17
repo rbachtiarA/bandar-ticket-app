@@ -4,7 +4,7 @@ import { getEventSlug } from '@/lib/event'
 import Image from 'next/image';
 
 export default async function page({ params }: { params: { slug: string } }) {
-  const { name, event, ticket  } = await getEventSlug(params.slug)
+  const { name, event, ticket  } = await getEventSlug(params.slug);
   
   if(event === null) {
     return (
@@ -18,7 +18,7 @@ export default async function page({ params }: { params: { slug: string } }) {
 
   return (
     <section className=''>
-      <div className='p-4'>
+      <div className='p-1 md:p-4'>
         <div className='lg:flex gap-4 h-full lg:h-auto '>
 
           <div className='w-full md:w-[400px]'>
