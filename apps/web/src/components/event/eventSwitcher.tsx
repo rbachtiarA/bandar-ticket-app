@@ -11,8 +11,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import ModalWrapper from '../modal';
 import TicketFormik from '../ticket/ticketFormik';
 
-export default function EventSwitcher({ description, eventId, ticket, isPastEvent }: { description: string, eventId: number,ticket: ITicketType[], isPastEvent: Boolean }) {
-    const isAdmin = true;
+export default function EventSwitcher({ description, eventId, ticket, isPastEvent, isAdmin }: { description: string, eventId: number,ticket: ITicketType[], isPastEvent: Boolean, isAdmin:Boolean }) {
     const searchParams = useSearchParams()
     const queryTabs = searchParams.get('tab')
     const [switcher, setSwitcher] = useState(queryTabs || 'desc')

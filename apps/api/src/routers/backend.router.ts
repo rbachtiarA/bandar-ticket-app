@@ -1,4 +1,5 @@
 import { BackendController } from "@/controllers/backend.controller";
+import { verifyToken } from "@/middlewares/token";
 import { Router } from "express";
 
 export class BackendRouter {
@@ -17,6 +18,7 @@ export class BackendRouter {
         this.router.post('/province', this.backendController.postProvince)
         this.router.post('/city', this.backendController.postCity)
         this.router.post('/transaction', this.backendController.postTransaction)
+        this.router.post('/checkRole', verifyToken, this.backendController.getRole)
     }
 
     getRouter():Router {

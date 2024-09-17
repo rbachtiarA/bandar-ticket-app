@@ -137,6 +137,11 @@ export class EventController {
                         include: {
                             province: true
                         }
+                    },
+                    user: {
+                        select: {
+                            id: true
+                        }
                     }
                 }                
             })

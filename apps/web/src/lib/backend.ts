@@ -24,3 +24,15 @@ export const postTransaction = async (transaction: {userId: number, cart:ICart[]
 
     return data;
 }
+
+export const verifyRole = async(token: string) => {
+    if(!token) return 'no token';
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}backend/checkRole`, {
+        method: 'POST',
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    })
+    const result = await res.json()
+    return result
+}

@@ -1,11 +1,23 @@
 import BreadCrumbs from '@/components/breadcrumbs';
 import EventDetails from '@/components/event/eventDetails';
+import { verifyRole } from '@/lib/backend';
 import { getEventSlug } from '@/lib/event'
+import { getToken } from '@/lib/server';
 import Image from 'next/image';
 
 export default async function page({ params }: { params: { slug: string } }) {
-  const { name, event, ticket  } = await getEventSlug(params.slug);
+  const { name, event, ticket } = await getEventSlug(params.slug);
+  console.log(event);
   
+  const token = await getToken()
+  let isAdmin = false
+  if(token && event.user) {
+    const verifiedUser = await verifyRole(token)
+    if(verifiedUser.status !== 'error') {
+      isAdmin = (event.user.id === verifiedUser.userId) 
+    }
+  }
+
   if(event === null) {
     return (
       <section>
@@ -37,7 +49,7 @@ export default async function page({ params }: { params: { slug: string } }) {
             />
           </div>
           
-          <EventDetails event={event} ticket={ticket}/>
+          <EventDetails event={event} ticket={ticket} isAdmin={isAdmin}/>
         </div>       
       </div>
     </section>

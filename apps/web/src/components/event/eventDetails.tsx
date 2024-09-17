@@ -3,7 +3,7 @@ import EventSwitcher from './eventSwitcher'
 import { ITicketType } from '@/type/ticket';
 import Image from 'next/image';
 
-export default function EventDetails({ event, ticket }: {event:IEvent, ticket: ITicketType[]}) {
+export default function EventDetails({ event, ticket, isAdmin }: {event:IEvent, ticket: ITicketType[], isAdmin: Boolean}) {
 
     const date_now = new Date()
     const date_start = new Date(event.date_start)
@@ -56,7 +56,7 @@ export default function EventDetails({ event, ticket }: {event:IEvent, ticket: I
             </div>
         </div>
 
-        <EventSwitcher description={event.description} eventId={event.id} ticket={ticket} isPastEvent={isPastEvent}/>
+        <EventSwitcher description={event.description} eventId={event.id} ticket={ticket} isPastEvent={isPastEvent} isAdmin={isAdmin}/>
     </div>
   )
 }
