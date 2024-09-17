@@ -1,10 +1,6 @@
+import { IUser } from "@/type/user";
 import { NextFunction, Request, Response } from "express";
 import { verify } from "jsonwebtoken";
-
-type IUser ={
-    id: number,
-    role: string
-}
 
 export const verifyToken = async(req: Request, res: Response, next: NextFunction) =>{
     try {

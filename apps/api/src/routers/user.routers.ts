@@ -27,8 +27,9 @@ export class UserRouter{
             uploader("avatar", "/avatar").single('avatar'), 
             this.userController.editAvatar
         )
-        this.router.patch('/verify', verifyToken, this.userController.verifyEmail)
+        this.router.post('/verify', verifyToken, this.userController.verifyEmail)
         this.router.post('/logout', verifyToken, this.userController.logout)
+        this.router.get('/', this.userController.getUser)
     }
 
     getRouter(): Router {

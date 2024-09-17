@@ -1,31 +1,37 @@
 'use client'
 
 import { verifyEmail } from "@/lib/user"
-import { useParams } from "next/navigation"
-import { off } from "process"
+import { useParams, useRouter } from "next/navigation"
 import { useEffect } from "react"
 import { toast } from "react-toastify"
 
+
 export default function VerifyPage(){
-  const params = useParams<{ token : string }>()
+  const params = useParams()
+  const token = Array.isArray(params?.token) ? params.token[0] : params?.token;
+  const router = useRouter()
   const onVerify = async () =>{
+    if(!token){
+      toast.error('token not found')
+      return;
+    }
     try {
-      const{result, ok} = await verifyEmail(params.token)
-      if(!off) throw result.msg
+      const{result, ok} = await verifyEmail(token)
+      if(!ok) throw result.msg
       toast.success('Verification Success')
+      router.push('/login')
     } catch (error) {
       toast.error(error as string)
     }
   }
   
   useEffect(() =>{
-    console.log(params)
     onVerify()
-  }, [])
+  }, [token])
   
   return(
     <div className="flex h-full justify-center items-center">
-      <h1>Verification Page</h1>
+      <h1>Verification In Progress</h1>
     </div>
   )
 }
