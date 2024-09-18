@@ -148,5 +148,37 @@ export class BackendController {
                 })
             }
     }
+
+    async getRole(req:Request, res:Response) {
+        try {
+            const userId = req.user?.id
+            const userRole = req.user?.role
+
+            if(userRole === 'CUSTOMER' || userRole === 'ORGANIZER' || userRole === 'ADMIN') {
+                const existUser = await prisma.user.findUnique({
+                    where: {
+                        id: userId,
+                        role: userRole
+                    }
+                })
+                if(!existUser) throw 'Invalid User(id)!'
+
+            } else {
+                throw 'Invalid User(role)!'
+            }
+
+            return res.status(201).send({
+                status: 'ok',
+                msg: 'success role',
+                userId, 
+                userRole 
+            })
+        } catch (error) {
+            return res.status(401).send({
+                status: 'error',
+                msg: error
+            })
+        }
+    }
 }
 

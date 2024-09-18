@@ -19,6 +19,7 @@ export default function EventCard({ eventId, eventSlug, eventImg, eventTitle, ev
                 sizes='100vw'
                 style={{width: '100%', height: '100%'}}
                 className='rounded-md'
+                priority
                 />
             </div>
         

@@ -24,17 +24,18 @@ export class EventController {
             }
 
             const EventData = await prisma.event.findMany({
+                select: { 
+                    name: true, 
+                    slug: true,
+                    date_start: true,
+                    date_end: true, 
+                    city: { include: { province:true } }, 
+                    user: true, 
+                    img_poster:true },
                 where: filter,
                 orderBy: {
                     date_start: 'desc'
                 },
-                include: {
-                    city: {
-                        include: {
-                            province:true
-                        }
-                    }                    
-                }
             })
             
             return res.status(200).send({
@@ -50,6 +51,7 @@ export class EventController {
         }
     }
 
+    //used for adding data via postman
     async createEvent(req:Request, res:Response){
         try {           
             const { 
@@ -126,7 +128,7 @@ export class EventController {
     async getEventSlug(req:Request, res:Response) {
         
         try {
-            const EventData = await prisma.event.findFirst({
+            const eventData = await prisma.event.findFirst({
                 where: {
                     slug: req.params.slug
                 },
@@ -135,19 +137,30 @@ export class EventController {
                         include: {
                             province: true
                         }
+                    },
+                    user: {
+                        select: {
+                            id: true
+                        }
                     }
                 }                
             })
-            const TicketData = await prisma.ticketType.findMany({
+            const ticketData = await prisma.ticketType.findMany({
                 where: {
-                    eventID: EventData?.id
+                    eventID: eventData?.id
+                }
+            })
+            const discountData = await prisma.discountType.findMany({
+                where: {
+                    eventID: eventData?.id
                 }
             })
             return res.status(200).send({
                 status: 'ok',
                 msg: `Get event id ${req.params.id}`,
-                event: EventData,
-                ticket: TicketData
+                event: eventData,
+                ticket: ticketData,
+                discount: discountData
             })
         } catch (error) {
             res.status(400).send({

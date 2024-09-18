@@ -89,14 +89,17 @@ model Ticket {
 }
 
 model DiscountType {
-  id          Int    @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   name        String
+  description String
   nominal     Int?
   percent     Int?
-  event       Event  @relation(fields: [eventID], references: [id])
+  event       Event    @relation(fields: [eventID], references: [id])
   eventID     Int
   minQuantity Int?
   minPrice    Int?
+  limit       Int      @default(0)
+  expiredDate DateTime
 }
 
 model Review {

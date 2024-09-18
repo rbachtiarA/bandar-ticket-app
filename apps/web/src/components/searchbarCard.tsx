@@ -15,7 +15,7 @@ export default function SearchbarCard({ event, handleClickLink }: { event: IEven
         />
         <div>
             <h1 className='font-semibold'>{event.name}</h1>
-            <h2>{event.location}, {event.city.province.name}</h2>
+            <h2>{event.city.name}, {event.city.province.name}</h2>
         </div>
     </Link>
   )
