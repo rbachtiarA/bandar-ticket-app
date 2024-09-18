@@ -68,6 +68,7 @@ export class UserController {
           referCode: newReferCode, // Use the generated referCode
           role: role,
           wallet: 0,
+          avatar: null,
           discount: discount,
           discountExpires: discountExpiresAt,
         },
