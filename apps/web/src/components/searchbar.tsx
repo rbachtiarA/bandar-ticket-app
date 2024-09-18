@@ -35,13 +35,14 @@ export default function SearchBar() {
     }
 
     useEffect(() => {
+       
         if(search.length > 2 ) {
             getData()
         }
     },[val])
 
   return (
-    <div className='w-3/4 relative'>
+    <div className='md:w-3/4 relative'>
         <input 
             type="search"  
             className={`focus:ring-1 py-2 px-6 outline-none rounded-xl ${dropdown? `rounded-bl-none rounded-br-none`: ``} w-full shadow-sm placeholder:italic`} 

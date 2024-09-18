@@ -2,6 +2,7 @@ import { IUser } from '@/type/user';
 import { NextFunction, Request, Response } from 'express';
 import { verify } from 'jsonwebtoken';
 
+
 export const verifyToken = async (
   req: Request,
   res: Response,
@@ -10,6 +11,7 @@ export const verifyToken = async (
   try {
     const token = req.header('Authorization')?.replace('Bearer ', '');
     console.log('Token:', token);
+
 
     if (!token) throw 'token not found';
 
