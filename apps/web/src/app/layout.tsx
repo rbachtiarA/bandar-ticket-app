@@ -5,6 +5,7 @@ import './globals.css';
 import {Navbar} from '@/components/navbar';
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from 'react-toastify';
+import StoreProvider from '@/components/StoreProvider';
 import Footer from '@/components/Footer';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -21,18 +22,22 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`relative ${inter.className} dark:bg-white flex flex-col min-h-screen`}>
-          <Navbar />
-          <main className='pt-[112px] flex-1 mb-4'>
+      <body
+        className={`relative ${inter.className} dark:bg-white flex flex-col min-h-screen`}
+      >
+        <main className="pt-[112px] flex-1">
+          <StoreProvider>
+            <Navbar />
             {children}
-          </main>
-          <Footer />
-          <ToastContainer 
-            position="bottom-right"
-            autoClose={5000}
-            closeOnClick
-            draggable
-          />
+            <Footer />
+            <ToastContainer
+              position="bottom-right"
+              autoClose={5000}
+              closeOnClick
+              draggable
+            />
+          </StoreProvider>
+        </main>
       </body>
     </html>
   );
