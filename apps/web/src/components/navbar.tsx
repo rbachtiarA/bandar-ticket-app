@@ -4,7 +4,6 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import SearchBar from './searchbar';
 import NavLog from './navProfile/navLog';
-import { Chakra_Petch, Poppins } from 'next/font/google';
 import Logo from './logo';
 
 
@@ -39,12 +38,12 @@ export const Navbar = () => {
             </div>
             <div className="flex items-center justify-around lg:justify-evenly w-[30%] md:text-sm lg:text-md lg:[&_div]:gap-2">
               <div className='flex'>
-                <Image src={'/ico-explore.svg'} alt='explore' width={16} height={16} draggable={false}/>
+                <Image src={'/ico-explore.svg'} alt='explore' width={0} height={0} style={{width: '16px', height: '16px'}} draggable={false}/>
                 <Link href={`/event`}>Explore</Link>
               </div>
 
               <div className='flex'>
-                <Image src={`/ico-add-event.svg`} alt='add event' width={16} height={16} draggable={false}/>
+                <Image src={`/ico-add-event.svg`} alt='add event' width={0} height={0} style={{width: '16px', height: '16px'}} draggable={false}/>
                 <Link href={'/createEvent'}>Create Event</Link>
               </div>
             </div>
