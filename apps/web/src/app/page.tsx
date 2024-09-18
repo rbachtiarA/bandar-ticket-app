@@ -24,7 +24,7 @@ export default async function Home() {
   return (
     <>
       <Hero />
-      <CategoriesNav />
+      {/* <CategoriesNav /> */}
       
       {/* <Carousel />     */}
       <CategoryContainer category={upcoming} />

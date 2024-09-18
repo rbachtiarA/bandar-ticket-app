@@ -8,7 +8,7 @@ export default function FilterCategory({ handleChangeRadio, checkCategory }: { h
         {value: 'Gallery', id: 'filterGallery' },
     ] 
   return (
-    <div className='grid grid-cols-3 w-full text-sm md:text-md gap-2'>
+    <div className='grid grid-cols-3 md:grid-cols-2 xl:grid-cols-3 w-full text-sm md:text-md gap-2'>
                       <div>
                           <input type="radio" name="filterCategory" id='filterDefault' value={''} onChange={(e) => handleChangeRadio(e)} checked={checkCategory === ''}/>
                           <label htmlFor='filterDefault'>Any</label>
@@ -23,7 +23,7 @@ export default function FilterCategory({ handleChangeRadio, checkCategory }: { h
                       </div>
                       <div>
                           <input type="radio" name="filterCategory" id='filterEntertainment' value={'Entertainment'} onChange={(e) => handleChangeRadio(e)} checked={checkCategory === 'Entertainment'}/>
-                          <label htmlFor='filterEntertainment'>Entertainment</label>
+                          <label htmlFor='filterEntertainment' className="break-all">Entertainment</label>
                       </div>
                       <div>
                           <input type="radio" name="filterCategory" id='filterSeminar' value={'Seminar'} onChange={(e) => handleChangeRadio(e)} checked={checkCategory === 'Seminar'}/>

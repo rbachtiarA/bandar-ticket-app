@@ -2,8 +2,13 @@
 import EventFormik from '@/components/event/eventFormik'
 import { getProvince, verifyRole } from '@/lib/backend'
 import { getToken } from '@/lib/server'
+import { Metadata } from 'next';
 import Link from 'next/link'
 
+export const metadata: Metadata = {
+  title: 'Create Event | Bandar Tiket',
+  description: 'Bandar tiket e-commerce for buy ticket or share your event to be acknoledge to our visitor',
+};
 
 export default async function page() {
     const province: {id: number, name:string, cities: { id: number, name: string }[]}[] = await getProvince()    

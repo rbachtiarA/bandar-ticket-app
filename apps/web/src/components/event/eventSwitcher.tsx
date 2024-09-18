@@ -92,7 +92,7 @@ export default function EventSwitcher({ description, eventId, ticket, discount, 
 
   return (
     <div className='h-full' id='tab-section'>
-            <div className='sticky top-0 gap-1 flex flex-col mb-2 md:flex-row bg-slate-400 [&_button]:bg-slate-200 [&_button]:py-1 md:[&_button]:w-1/4' >
+            <div className='sticky top-0 z-10 gap-1 flex flex-col mb-2 md:flex-row bg-slate-400 [&_button]:bg-slate-200 [&_button]:py-1 md:[&_button]:w-1/4' >
               <button onClick={() => handleTab('desc')} className={`hover:underline ${switcher === 'desc'? 'font-bold pointer-events-none': ''}`}>Description</button>
               <button onClick={() => handleTab('ticket')} className={`hover:underline ${switcher === 'ticket'? 'font-bold pointer-events-none': ''}`}>Ticket</button>
               <button onClick={() => handleTab('discount')} className={`hover:underline ${switcher === 'discount'? 'font-bold pointer-events-none': ''}`}>Discount</button>

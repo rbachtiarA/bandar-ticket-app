@@ -86,7 +86,7 @@ export default function EventFilter({provinceData}: { provinceData: IProvince[]}
     }, [val, cat, loc])
 
     return (
-        <section className='flex flex-col md:flex-row'>
+        <section className='flex flex-col md:flex-row w-full'>
             {/* {FILTER FIELD} */}
             <div className='flex flex-col p-4 gap-4 md:w-1/4 bg-slate-50 md:min-h-screen'>
                     <button onClick={handleResetFilter} className='hover:bg-slate-200 px-2 py-1'>Reset Filter</button>
@@ -106,13 +106,13 @@ export default function EventFilter({provinceData}: { provinceData: IProvince[]}
                         <FilterProvince provinceData={provinceData} handleChange={handleChangeLocation} provinceId={queryLocation!}/>
                     </div>
                 </div>
-            <div className='flex flex-col justify-center items-center md:justify-normal md:items-start md:flex-row'>
+            <div className='flex flex-col w-full justify-center items-center md:justify-normal md:items-start md:flex-row'>
                 
                 
                 {/* {EVENT RESULT FIELD} */}
-                <div className='flex flex-col items-center justify-center p-4'>
+                <div className='flex flex-col items-center justify-center p-4 w-full'>
                     <h1 className='text-xl font-semibold text-center'>Events</h1>
-                    <div className='flex flex-col gap-2 md:gap-0 md:flex-row md:w-[1000px] items-center justify-between'>
+                    <div className='flex flex-col gap-2 md:gap-0 md:flex-row w-full items-center justify-between'>
                         <div>
                         {
                             (val !== '' || cat !=='') &&
