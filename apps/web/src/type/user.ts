@@ -44,3 +44,5 @@ export interface IBecomeOrganizer{
 }
 
 export type SideBarOption = 'profile' | 'event' | 'ticket' | 'transaction' | 'account' | 'dashboard';
+
+export type OrganizerOption = 'event' | 'attendees' | 'transaction' | 'statistic';
