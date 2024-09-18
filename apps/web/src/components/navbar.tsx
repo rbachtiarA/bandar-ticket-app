@@ -15,7 +15,7 @@ export const Navbar = () => {
         <div className="w-4/5">
           <div className="flex flex-col-reverse gap-4 md:flex-row justify-center items-center md:mb-4 md:justify-between">
             <SearchBar />
-            <div className="flex justify-around gap-2 underline-hover">
+            <div className="flex justify-around gap-2 underline-hover items-center">
               {/* untuk user */}
               <Link href={'/'} className="mr-2 pr-4 border-r-2">
                 Home

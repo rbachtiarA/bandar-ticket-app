@@ -29,7 +29,7 @@ export default function CategoryContainer({category: {name, data}}: { category: 
       }
     }
   }
-  console.log(data);
+  
   
         
   // section width desktop need to be multiplier of offset handleScroll (ex: handleScroll offset = 200px, container widht should be 200/400/800 px etc ) 

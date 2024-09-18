@@ -1,11 +1,14 @@
 'use client';
 
+import { useAppDispatch } from '@/app/redux/hooks';
+import { loginAction } from '@/app/redux/slice/userSlice';
 import { createToken } from '@/lib/server';
 import { loginUser } from '@/lib/user';
 
 import { ILogin } from '@/type/user';
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from 'formik';
 import { useRouter } from 'next/navigation';
+
 import { toast } from 'react-toastify';
 import * as yup from 'yup';
 
@@ -19,6 +22,7 @@ const LoginSchema = yup.object().shape({
 
 export default function LoginForm() {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   
   const onLogin = async (data: ILogin, action: FormikHelpers<ILogin>) => {
     try {
@@ -26,6 +30,7 @@ export default function LoginForm() {
       if (!ok) throw result.msg;
       toast.success(result.msg);
       action.resetForm();
+      dispatch(loginAction(result.user));
       createToken(result.token);
       router.push('/');
     } catch (err) {

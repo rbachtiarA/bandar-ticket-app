@@ -169,7 +169,7 @@ export class UserController {
       if (!isValidPassword) throw new Error('password do not match!!');
 
       const payload = { id: user.id, role: user.role };
-      const token = sign(payload, process.env.SECRET_JWT!, { expiresIn: '1h' });
+      const token = sign(payload, process.env.SECRET_JWT!, { expiresIn: '24h' });
 
       res.status(200).send({
         status: 'ok',
@@ -220,16 +220,22 @@ export class UserController {
 
   async getUserById(req: Request, res: Response) {
     try {
+
+      console.log("Request Headers:", req.headers);
+      console.log("Decoded User from Token:", req.user);
+
+      const userId = req.user?.id;
       const findUser = await prisma.user.findUnique({
         where: {
-          id: parseInt(req.params.id),
+          id: userId,
         },
       });
 
       res.status(200).send({
         status: 'ok',
         msg: 'user found',
-        user: findUser,
+        name: findUser?.name,
+        avatar: findUser?.avatar,
       });
     } catch (err) {
       res.status(400).send({
@@ -261,20 +267,22 @@ export class UserController {
     }
   }
 
-  async updateUser(req: Request, res: Response) {
+  async updateName(req: Request, res: Response) {
     try {
-      const { name, email, password } = req.body;
-      const salt = await genSalt(10);
-      const hashPassword = await hash(password, salt);
+      const { name } = req.body;
+
       const updateUser = await prisma.user.update({
-        where: {
-          id: parseInt(req.params.id),
-        },
         data: {
-          name,
-          email,
-          password: hashPassword,
+          name: name,
         },
+        where: {
+          id: req.user?.id,
+        },
+      });
+
+      res.status(200).send({
+        status: 'ok',
+        msg: 'name updated',
       });
     } catch (err) {
       res.status(400).send({
@@ -284,7 +292,84 @@ export class UserController {
     }
   }
 
-  async editAvatar(req: Request, res: Response) {
+  async updatePassword(req: Request, res: Response) {
+    try {
+      const { password } = req.body;
+
+      const salt = await genSalt(10);
+      const hashPassword = await hash(password, salt);
+
+      await prisma.user.update({
+        data: {
+          password: hashPassword,
+        },
+        where: {
+          id: req.user?.id,
+        },
+      });
+
+      res.status(200).send({
+        status: 'ok',
+        msg: 'password updated',
+      });
+    } catch (err) {
+      res.status(400).send({
+        status: 'error',
+        msg: err,
+      });
+    }
+  }
+
+  async becomeOrganizer(req: Request, res: Response) {
+    try {
+
+      const updateUser = await prisma.user.update({
+        data: {
+          role: "ORGANIZER",
+        },
+        where: {
+          id: req.user?.id,
+        },
+      });
+
+      res.status(200).send({
+        status: 'ok',
+        msg: 'role updated',
+      });
+    } catch (err) {
+      res.status(400).send({
+        status: 'error',
+        msg: err,
+      });
+    }
+  }
+
+  async updateEmail(req: Request, res: Response) {
+    try {
+      const { email } = req.body;
+
+      const updateUser = await prisma.user.update({
+        data: {
+          email: email,
+        },
+        where: {
+          id: req.user?.id,
+        },
+      });
+
+      res.status(200).send({
+        status: 'ok',
+        msg: 'email updated',
+      });
+    } catch (err) {
+      res.status(400).send({
+        status: 'error',
+        msg: err,
+      });
+    }
+  }
+
+  async updateAvatar(req: Request, res: Response) {
     try {
       if (!req.file) throw new Error('file not found');
 
@@ -312,10 +397,10 @@ export class UserController {
 
   async deleteUser(req: Request, res: Response) {
     try {
-      const { email } = req.body;
+      const id = parseInt(req.params.id);
       const deleteUser = await prisma.user.delete({
         where: {
-          email: email,
+          id : id,
         },
       });
 
