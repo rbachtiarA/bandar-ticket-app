@@ -5,7 +5,7 @@ import FormikTextarea from './formikTextarea'
 import FormikTime from './formikTime'
 import FormikNumber from './formikNumber'
 
-export default function FormikControl(props: { control: string, label: string, name: string, className: string, min?: number, placeholder?: string}) {
+export default function FormikControl(props: { control: string, label: string, name: string, className: string, min?: number, max?:number, placeholder?: string}) {
     const { control, ...rest } = props
     switch (control) {
         case 'input': return <FormikInput {...rest} /> 

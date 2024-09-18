@@ -16,6 +16,7 @@ import DiscountCard from '../discount/discountCard';
 import CartSwitcher from '../cart/cartSwitcher';
 import DiscountSwitcher from '../discount/discountSwitcher';
 import TicketSwitcher from '../ticket/ticketSwitcher';
+import ReviewForm from '../review/reviewForm';
 
 export default function EventSwitcher({ description, eventId, ticket, discount, isPastEvent, isAdmin, user }: { description: string, eventId: number,ticket: ITicketType[], discount:IDiscountType[], isPastEvent: Boolean, isAdmin:Boolean, user:{ id:number, role:string } }) {
     const searchParams = useSearchParams()
@@ -104,7 +105,9 @@ export default function EventSwitcher({ description, eventId, ticket, discount, 
             switcher === 'desc' && 
             <div>
               <p>{description}</p>
+              {isPastEvent && <ReviewForm user={user} eventId={eventId}/>}
             </div>
+
           }
 
           {

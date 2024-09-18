@@ -4,7 +4,7 @@ import { Request, Response } from "express";
 export class DiscountController {
     async getDiscountType(req:Request, res:Response) {
         try {
-            const data = prisma.discountType.findMany()
+            const data = await prisma.discountType.findMany()
             return res.status(200).send({
                 status: 'ok',
                 msg: 'Get all discount type',
