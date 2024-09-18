@@ -21,6 +21,7 @@ export default function ReviewFormik({user, eventId}: {user: { id:number, role:s
         validationSchema={createReviewSchema}
         onSubmit={async (values, action) => {
           try {
+            if(!user.id) throw `You need to login`
             const {result, ok} = await postReview(values)
             if(!ok) throw result.msg
             toast.success(result.msg)
