@@ -41,7 +41,7 @@ export default function CategoryContainer({category: {name, data}}: { category: 
   // section width desktop need to be multiplier of offset handleScroll (ex: handleScroll offset = 200px, container widht should be 200/400/800 px etc ) 
   return (
     <section className=''>
-        <div className='relative w-full md:w-[750px] md:mx-auto lg:w-[1000px] flex flex-col overflow-hidden'>
+        <div className='relative w-full md:w-[750px] md:mx-auto lg:w-[1000px] flex flex-col overflow-hidden mt-4'>
           <h1 className='text-lg font-extrabold text-center'>{name}</h1>
             <div ref={containerRef} id='concert-container'
             className='grid py-2

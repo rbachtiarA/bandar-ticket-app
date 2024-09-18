@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
+
 import {Navbar} from '@/components/navbar';
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from 'react-toastify';
+import Footer from '@/components/Footer';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -23,7 +23,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`relative ${inter.className} dark:bg-white flex flex-col min-h-screen`}>
           <Navbar />
-          <main className='pt-[112px] flex-1'>
+          <main className='pt-[112px] flex-1 mb-4'>
             {children}
           </main>
           <Footer />
