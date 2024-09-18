@@ -110,7 +110,7 @@ export default function EventFilter({provinceData}: { provinceData: IProvince[]}
                 
                 
                 {/* {EVENT RESULT FIELD} */}
-                <div className='w-full flex flex-col items-center justify-center p-4'>
+                <div className='flex flex-col items-center justify-center p-4'>
                     <h1 className='text-xl font-semibold text-center'>Events</h1>
                     <div className='flex flex-col gap-2 md:gap-0 md:flex-row md:w-[1000px] items-center justify-between'>
                         <div>

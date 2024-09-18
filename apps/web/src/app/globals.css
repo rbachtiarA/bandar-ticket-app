@@ -18,6 +18,10 @@
     @apply px-4 py-2 rounded-lg text-black bg-cyan-200 enabled:hover:text-white enabled:hover:bg-cyan-600 disabled:text-slate-600 transition
   }
 
+  .btn-secondary-ry {
+    @apply px-4 py-2 rounded-lg text-cyan-100 border-2 border-cyan-200 hover:text-black enabled:hover:bg-cyan-200 disabled:text-slate-600 transition
+  }
+
   .btn-pagination-ry {
     @apply bg-slate-400 px-2 py-1 rounded-md hover:bg-slate-500 transition
   }
