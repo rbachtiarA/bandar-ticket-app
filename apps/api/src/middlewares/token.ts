@@ -7,7 +7,7 @@ export const verifyToken = async(req: Request, res: Response, next: NextFunction
         console.log(`verify token`);
         
         const token = req.header('Authorization')?.replace('Bearer ', "")
-        console.log(token);
+        // console.log(token);
         
         if(!token) throw "token not found"
 

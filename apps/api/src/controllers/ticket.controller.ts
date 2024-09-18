@@ -36,7 +36,6 @@ export class TicketController {
                     eventID: Number(eventId),
                 }
             })
-            console.log(data);
 
             return res.status(200).send({
                 status: 'ok',
