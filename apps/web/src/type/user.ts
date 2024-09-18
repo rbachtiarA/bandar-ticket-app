@@ -12,8 +12,35 @@ export interface ILogin{
 }
 
 export interface IUser{
+    id: number;
     name: string;
     email: string;
     role: string;
+    avatar: string;
+    referCode: string;
+    createdAt: string;
+
     
 }
+
+export interface IEditName{
+    name: string;
+}
+
+export interface IEditPassword{
+    password: string;
+}
+
+export interface IEditEmail{
+    email: string;
+}
+
+export interface IEditAvatar{
+    avatar: string;
+}
+
+export interface IBecomeOrganizer{
+    role: "ORGANIZER";
+}
+
+export type SideBarOption = 'profile' | 'event' | 'ticket' | 'transaction' | 'account' | 'dashboard';

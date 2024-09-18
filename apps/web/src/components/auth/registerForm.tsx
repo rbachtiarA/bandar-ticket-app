@@ -2,6 +2,7 @@
 import { checkEmail, registerUser } from '@/lib/user';
 import { IRegister } from '@/type/user';
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from 'formik';
+import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import * as yup from 'yup';
 
@@ -24,13 +25,14 @@ const RegisterSchema = yup.object().shape({
 });
 
 export default function RegisterForm() {
+  const router = useRouter();
     const onRegister = async (data: IRegister, action: FormikHelpers<IRegister>) => {
         try {
           const { result, ok } = await registerUser(data);
           if(!ok) throw result.msg
           toast.success(result.msg);
           action.resetForm();
-          
+          router.push('/login');
         } catch (err: any) {
           console.log(err);
           toast.error(err as string);
