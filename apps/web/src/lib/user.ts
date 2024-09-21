@@ -57,8 +57,8 @@ export const getUserData = async (token: string) => {
   
 
 export const verifyEmail = async (token:string) =>{
-    const res = await fetch('http://localhost:8000/api/user/verify',{
-        method: 'POST',
+    const res = await fetch(`http://localhost:8000/api/user/verify/${token}`,{
+        method: 'GET',
         headers:{
             "Authorization": `Bearer ${token}`
     }})

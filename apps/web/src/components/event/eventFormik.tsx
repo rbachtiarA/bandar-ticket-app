@@ -26,6 +26,7 @@ export default function EventFormik({ mainData, user }: {mainData: {id: number, 
     const onCreate = async (data: PostEvent, action: FormikHelpers<PostEvent>) => {
         try {
             const { result, ok } = await postEvent(data, user)
+            console.log(data);
             if(!ok) throw result.msg
             toast.success(result.msg)
             action.resetForm()
