@@ -2,7 +2,7 @@ import prisma from '@/prisma';
 import { Request, Response } from 'express';
 import { addMonths } from 'date-fns';
 import { compare, genSalt, hash } from 'bcrypt';
-import { sign } from 'jsonwebtoken';
+import { sign, verify } from 'jsonwebtoken';
 import { transporter } from '@/helper/nodemailer';
 import path from 'path';
 import fs from 'fs';
@@ -39,33 +39,12 @@ export class UserController {
       const salt = await genSalt(10);
       const hashPassword = await hash(password, salt);
 
-
-
-      if (referCode && referCode.length !== '') {
-        const referrer = await prisma.user.findUnique({
-          where: { referCode },
-        });
-
-        if (referrer) {
-          await prisma.user.update({
-            where: { id: referrer.id },
-            data: {
-              points: referrer.points + 10000, // adding 10k to the refferrer's points
-              lastPointsUpdate: new Date(),
-            },
-          });
-
-          discount = true;
-          discountExpiresAt = addMonths(new Date(), 3);
-        }
-      }
-
       const newUser = await prisma.user.create({
         data: {
           name,
           email,
           password: hashPassword,
-          referCode: newReferCode, // Use the generated referCode
+          referCode: newReferCode, //new refer code for new user
           role: role,
           wallet: 0,
           avatar: null,
@@ -75,8 +54,10 @@ export class UserController {
       });
 
       //verification token
-      const payload = { id: newUser.id };
-      const token = sign(payload, process.env.SECRET_JWT!, { expiresIn: '24h' });
+      const payload = { id: newUser.id, referCode: referCode };
+      const token = sign(payload, process.env.SECRET_JWT!, {
+        expiresIn: '24h',
+      });
 
       // handlebar to make template
       const templatePath = path.join(
@@ -91,15 +72,13 @@ export class UserController {
         link: `http://localhost:3000/verify/${token}`,
       });
 
-
       // nodemailer to send mail to new user
       await transporter.sendMail({
         from: process.env.MAIL_USER,
         to: newUser.email,
         subject: 'Welcome to our platform',
-        html: html
+        html: html,
       });
-
 
       res.status(201).send({
         status: 'ok',
@@ -109,7 +88,7 @@ export class UserController {
     } catch (err) {
       res.status(400).send({
         status: 'error',
-        msg: `SOMETHINGS WRONG, ${err}` ,
+        msg: `SOMETHINGS WRONG, ${err}`,
       });
     }
   }
@@ -128,16 +107,37 @@ export class UserController {
   async verifyEmail(req: Request, res: Response) {
     try {
       console.log(`INSIDE VERIFY EMAIL`);
-      
+
+      const decoded = verify(req.params.token, process.env.SECRET_JWT!) as {
+        id: number;
+        referCode: string;
+      };
+
       const user = await prisma.user.findUnique({
-        where: { id: req.user?.id },
+        where: { id: decoded.id },
       });
 
       if (user?.isVerify === true) throw new Error('email already verified');
 
+      if (decoded.referCode && decoded.referCode !== '') {
+        const referrer = await prisma.user.findUnique({
+          where: { referCode: decoded.referCode },
+        });
+
+        if (referrer) {
+          await prisma.user.update({
+            where: { id: referrer.id },
+            data: {
+              points: referrer.points + 10000,
+              lastPointsUpdate: new Date(),
+            },
+          });
+        }
+      }
+
       await prisma.user.update({
         data: { isVerify: true },
-        where: { id: req.user?.id },
+        where: { id: decoded.id },
       });
 
       res.status(200).send({
@@ -170,7 +170,9 @@ export class UserController {
       if (!isValidPassword) throw new Error('password do not match!!');
 
       const payload = { id: user.id, role: user.role };
-      const token = sign(payload, process.env.SECRET_JWT!, { expiresIn: '24h' });
+      const token = sign(payload, process.env.SECRET_JWT!, {
+        expiresIn: '24h',
+      });
 
       res.status(200).send({
         status: 'ok',
@@ -188,12 +190,11 @@ export class UserController {
 
   async logout(req: Request, res: Response) {
     try {
-      res.clearCookie('token',{
+      res.clearCookie('token', {
         httpOnly: true,
-        secure: process.env.LOGOUT === "private",
+        secure: process.env.LOGOUT === 'private',
         sameSite: 'strict',
       });
-
     } catch (err) {
       res.status(400).send({
         status: 'error',
@@ -221,9 +222,8 @@ export class UserController {
 
   async getUserById(req: Request, res: Response) {
     try {
-
-      console.log("Request Headers:", req.headers);
-      console.log("Decoded User from Token:", req.user);
+      console.log('Request Headers:', req.headers);
+      console.log('Decoded User from Token:', req.user);
 
       const userId = req.user?.id;
       const findUser = await prisma.user.findUnique({
@@ -248,7 +248,6 @@ export class UserController {
 
   async getUserByEmail(req: Request, res: Response) {
     try {
-      
       const findUser = await prisma.user.findUnique({
         where: {
           email: req.params.email,
@@ -323,10 +322,9 @@ export class UserController {
 
   async becomeOrganizer(req: Request, res: Response) {
     try {
-
       const updateUser = await prisma.user.update({
         data: {
-          role: "ORGANIZER",
+          role: 'ORGANIZER',
         },
         where: {
           id: req.user?.id,
@@ -401,7 +399,7 @@ export class UserController {
       const id = parseInt(req.params.id);
       const deleteUser = await prisma.user.delete({
         where: {
-          id : id,
+          id: id,
         },
       });
 

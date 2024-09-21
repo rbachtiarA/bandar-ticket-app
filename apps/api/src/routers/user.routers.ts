@@ -30,7 +30,7 @@ export class UserRouter{
             uploader("avatar", "/avatar").single('avatar'), 
             this.userController.updateAvatar
         )
-        this.router.post('/verify', verifyToken, this.userController.verifyEmail)
+        this.router.get('/verify/:token', verifyToken, this.userController.verifyEmail)
         this.router.post('/logout', verifyToken, this.userController.logout)
         this.router.get('/get-user', verifyToken, this.userController.getUserById)
         
