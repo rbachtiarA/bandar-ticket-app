@@ -212,7 +212,9 @@ export class EventController {
     }
     
     async createEventWeb(req:Request, res:Response){
-        try {                                 
+        try {                             
+            // console.log('BackEnd ---');
+                
             const { 
                 userId,
                 userRole,

@@ -29,7 +29,6 @@ export default function RootLayout({
           <StoreProvider>
             <Navbar />
             {children}
-            <Footer />
             <ToastContainer
               position="bottom-right"
               autoClose={5000}
@@ -38,6 +37,7 @@ export default function RootLayout({
             />
           </StoreProvider>
         </main>
+      <Footer />
       </body>
     </html>
   );

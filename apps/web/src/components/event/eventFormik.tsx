@@ -25,6 +25,8 @@ const createEventSchema = yup.object().shape({
 export default function EventFormik({ mainData, user }: {mainData: {id: number, name:string, cities: { id: number, name: string }[]}[], user: {  id: number, role: string} }) {   
     const onCreate = async (data: PostEvent, action: FormikHelpers<PostEvent>) => {
         try {
+            console.log(data);
+            
             const { result, ok } = await postEvent(data, user)
             if(!ok) throw result.msg
             toast.success(result.msg)
