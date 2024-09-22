@@ -33,7 +33,7 @@ export async function generateMetadata(
 }
 
 export default async function page({ params }: { params: { slug: string } }) {
-  const { name, event, ticket, discount } = await getEventSlug(params.slug);
+  const { name, event, ticket, discount, review } = await getEventSlug(params.slug);
   
   const token = await getToken()
   let isAdmin = false
@@ -79,7 +79,7 @@ export default async function page({ params }: { params: { slug: string } }) {
             />
           </div>
           
-          <EventDetails event={event} ticket={ticket} discount={discount} isAdmin={isAdmin} user={{id, role}}/>
+          <EventDetails event={event} ticket={ticket} discount={discount} isAdmin={isAdmin} user={{id, role}} reviews={review}/>
         </div>       
       </div>
     </section>

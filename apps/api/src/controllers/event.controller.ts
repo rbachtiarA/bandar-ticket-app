@@ -142,25 +142,35 @@ export class EventController {
                         select: {
                             id: true
                         }
+                    },
+                    ticket_type: true,
+                    DiscountType: true,
+                    Review: {
+                        include: {
+                            customer: {
+                                select: { name: true, id: true }
+                            }
+                        }
                     }
                 }                
             })
-            const ticketData = await prisma.ticketType.findMany({
-                where: {
-                    eventID: eventData?.id
-                }
-            })
-            const discountData = await prisma.discountType.findMany({
-                where: {
-                    eventID: eventData?.id
-                }
-            })
+            // const ticketData = await prisma.ticketType.findMany({
+            //     where: {
+            //         eventID: eventData?.id
+            //     }
+            // })
+            // const discountData = await prisma.discountType.findMany({
+            //     where: {
+            //         eventID: eventData?.id
+            //     }
+            // })
             return res.status(200).send({
                 status: 'ok',
                 msg: `Get event id ${req.params.id}`,
                 event: eventData,
-                ticket: ticketData,
-                discount: discountData
+                ticket: eventData?.ticket_type,
+                discount: eventData?.DiscountType,
+                review: eventData?.Review
             })
         } catch (error) {
             res.status(400).send({

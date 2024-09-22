@@ -3,8 +3,9 @@ import EventSwitcher from './eventSwitcher'
 import { ITicketType } from '@/type/ticket';
 import Image from 'next/image';
 import { IDiscountType } from '@/type/discount';
+import { IReview } from '@/type/review';
 
-export default function EventDetails({ event, ticket, discount, isAdmin, user }: {event:IEvent, ticket: ITicketType[], discount: IDiscountType[], isAdmin: Boolean, user:{ id:number, role:string }}) {
+export default function EventDetails({ event, ticket, discount, reviews, isAdmin, user }: {event:IEvent, ticket: ITicketType[], discount: IDiscountType[], reviews: IReview[], isAdmin: Boolean, user:{ id:number, role:string }}) {
 
     const date_now = new Date()
     const date_start = new Date(event.date_start)
@@ -57,7 +58,7 @@ export default function EventDetails({ event, ticket, discount, isAdmin, user }:
             </div>
         </div>
 
-        <EventSwitcher description={event.description} eventId={event.id} ticket={ticket} discount={discount} isPastEvent={isPastEvent} isAdmin={isAdmin} user={user}/>
+        <EventSwitcher description={event.description} eventId={event.id} ticket={ticket} reviews={reviews} discount={discount} isPastEvent={isPastEvent} isAdmin={isAdmin} user={user}/>
     </div>
   )
 }

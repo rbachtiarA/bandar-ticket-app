@@ -56,7 +56,7 @@ export default function DiscountFormik({eventId, handleClose}: {eventId: number,
                   <FormikControl control='number' min={0} name='discountLimitPrice' label='Max nominal from discount percent :' placeholder='ex: IDR 100.000 40% discount but max at IDR 30.000' className='w-full bg-slate-200 px-2 py-1'/>
                   <FormikControl control='number' min={0} name='discoutReqQuantity' label='Requirement item quantity:' placeholder='requirements total quantity' className='w-full bg-slate-200 px-2 py-1'/>
                   <FormikControl control='number' min={0} name='discountReqPrice' label='Requirement total price (IDR):' placeholder='requirements total price' className='w-full bg-slate-200 px-2 py-1'/>
-                  <FormikControl control='date' name='discountDateExpire' label='Discount expire time:' placeholder='expire time' className='w-full bg-slate-200 px-2 py-1'/>
+                  <FormikControl control='dateTime' name='discountDateExpire' label='Discount expire time:' placeholder='expire time' className='w-full bg-slate-200 px-2 py-1'/>
                   <div className="flex justify-center">
                     <button type="submit" className="mt-4 px-4 py-2 rounded-lg bg-cyan-200 hover:bg-cyan-600 hover:text-white">Submit</button>
                   </div>
