@@ -1,11 +1,11 @@
 export interface PostDiscountType {
     discountName: string,
     discountDescription: string,
-    discountNominal: number,
-    discountPercent: number,
+    discountCutType: string,
+    discountCut: number,
     discountReqQuantity: number,
     discountReqPrice: number,
-    discountLimitPrice: number,
+    discountLimit: number,
     discountDateExpire: string,
     eventId: number
 }

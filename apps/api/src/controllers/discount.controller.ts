@@ -18,18 +18,19 @@ export class DiscountController {
         }
     }
 
-    async postDiscountType(req:Request, res:Response) {
+    async postDiscount(req:Request, res:Response) {
         try {            
             const {
                 discountName,
-          discountDescription,
-          discountNominal,
-          discountPercent,
-          discountReqQuantity,
-          discountReqPrice,
-          discountLimitPrice,
-          discountDateExpire,
-          eventId
+                discountDescription,
+                discountCode,
+                discountCutType,
+                discountCut,
+                discountReqQuantity,
+                discountReqPrice,
+                discountLimit,
+                discountDateExpire,
+                eventId
             } = req.body
 
             const existEvent = prisma.event.findUnique({
@@ -43,11 +44,12 @@ export class DiscountController {
                 data: {
                     name: discountName,
                     description: discountDescription,
-                    nominal: discountNominal,
-                    percent: discountPercent,
+                    code: discountCode,
+                    cutType: discountCutType,
+                    cut: discountCut,
                     minQuantity: discountReqQuantity,
                     minPrice: discountReqPrice,
-                    limit:discountLimitPrice,
+                    limit:discountLimit,
                     expiredDate:new Date(discountDateExpire),
                     eventID: eventId
                 }

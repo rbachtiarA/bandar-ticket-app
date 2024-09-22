@@ -13,7 +13,7 @@ export class DiscountRouter {
 
     private initializeRoutes(): void {
         this.router.get('/', this.discountController.getDiscountType)
-        this.router.post('/', this.discountController.postDiscountType)
+        this.router.post('/', this.discountController.postDiscount)
     }
 
     getRouter():Router {
