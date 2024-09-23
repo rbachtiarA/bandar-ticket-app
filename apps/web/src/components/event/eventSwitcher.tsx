@@ -21,8 +21,12 @@ import { IUser } from '@/type/user';
 import { getUserData } from '@/lib/user';
 import { getToken } from '@/lib/server';
 import { useAppSelector } from '@/app/redux/hooks';
+import ReviewCard from '../review/reviewCard';
+import ReviewSwitcher from '../review/reviewSwitcher';
+import { IReview } from '@/type/review';
 
-export default function EventSwitcher({ description, eventId, ticket, discount, isPastEvent, isAdmin }: { description: string, eventId: number,ticket: ITicketType[], discount:IDiscountType[], isPastEvent: Boolean, isAdmin:Boolean }) {
+export default function EventSwitcher({ description, eventId, ticket, discount, reviews, isPastEvent, isAdmin, user }: { description: string, eventId: number,ticket: ITicketType[], reviews: IReview[], discount:IDiscountType[], isPastEvent: Boolean, isAdmin:Boolean, user:{ id:number, role:string } }) {
+
     const searchParams = useSearchParams()
     const queryTabs = searchParams.get('tab')
     const [switcher, setSwitcher] = useState(queryTabs || 'desc')
@@ -30,8 +34,13 @@ export default function EventSwitcher({ description, eventId, ticket, discount, 
     const [usePoints, setUsePoints] = useState(false);
     const [cart, setCart] = useState<ICart[]>([])
     const router = useRouter()
+
     const user = useAppSelector((state) => state.author)
   
+
+    const isUserReviewed = reviews.findIndex((review) => review.customer.id === user.id) !== -1     
+    
+
     
     const handleTab = (condition: string) => {
         setSwitcher(condition)
@@ -77,12 +86,15 @@ export default function EventSwitcher({ description, eventId, ticket, discount, 
     }
 
     //handle transaction, if ticket quota and cart quantity doenst match, error insufficent quantity
-    const handleTransaction = async (userId:number, cart:ICart[]) => {
-      try {
-        console.log(userId);
-        
+    const handleTransaction = async (userId:number, cart:ICart[], discount:{ id:number, totalCut:number }) => {
+      try {        
         if(!userId) throw 'You need to login before complete this action'
+
         const postData = {userId, cart, usePoints: false}
+       
+        console.log(postData);
+        
+
         const data = await postTransaction(postData)
         if(data.status === 'error') throw `${data.msg}`        
         setCart([])
@@ -99,11 +111,12 @@ export default function EventSwitcher({ description, eventId, ticket, discount, 
 
   return (
     <div className='h-full' id='tab-section'>
-            <div className='sticky top-0 z-10 gap-1 flex flex-col mb-2 md:flex-row bg-slate-400 [&_button]:bg-slate-200 [&_button]:py-1 md:[&_button]:w-1/4' >
+            <div className='top-0 z-0 gap-1 flex flex-col mb-2 md:flex-row bg-slate-400 [&_button]:bg-slate-200 [&_button]:py-1 md:[&_button]:w-1/4' >
               <button onClick={() => handleTab('desc')} className={`hover:underline ${switcher === 'desc'? 'font-bold pointer-events-none': ''}`}>Description</button>
               <button onClick={() => handleTab('ticket')} className={`hover:underline ${switcher === 'ticket'? 'font-bold pointer-events-none': ''}`}>Ticket</button>
               <button onClick={() => handleTab('discount')} className={`hover:underline ${switcher === 'discount'? 'font-bold pointer-events-none': ''}`}>Discount</button>
               <button onClick={() => handleTab('cart')} className={`hover:underline ${switcher === 'cart'? 'font-bold pointer-events-none': ''}`}>Cart{cart.length !== 0? `(${cart.length})` : ''}</button>
+              <button onClick={() => handleTab('review')} className={`hover:underline ${switcher === 'review'? 'font-bold pointer-events-none': ''}`}>Review</button>
             </div>
 
           <div className='text-sm md:text-md lg:text-lg'>
@@ -111,7 +124,7 @@ export default function EventSwitcher({ description, eventId, ticket, discount, 
             switcher === 'desc' && 
             <div>
               <p>{description}</p>
-              {isPastEvent && <ReviewForm user={user} eventId={eventId}/>}
+              {isPastEvent && <ReviewForm user={user} eventId={eventId} isUserReviewed={isUserReviewed}/>}
             </div>
 
           }
@@ -125,21 +138,27 @@ export default function EventSwitcher({ description, eventId, ticket, discount, 
             <DiscountSwitcher isAdmin={isAdmin} discount={discount} handleAdminForm={handleAdminForm}/>
           }
           {
-              switcher === 'cart' && 
+            switcher === 'cart' && 
               <CartSwitcher cart={cart} ticket={ticket} handleRemoveCart={handleRemoveCart} handleTransaction={handleTransaction} userId={user.id} userPoints={user.points} usePoints={usePoints}/>
-          }
 
-          {
-              isAdmin && formType ==='ticket' && 
-              <ModalWrapper handleClose={handleAdminFormClose} title='Create Ticket'>
-                <TicketFormik eventId={eventId} handleClose={handleAdminFormClose}/>
-              </ModalWrapper>
+            
           }
           {
-              isAdmin && formType ==='discount' && 
-              <ModalWrapper handleClose={handleAdminFormClose} title='Create Discount'>
-                <DiscountFormik handleClose={handleAdminFormClose} eventId={eventId}/>
-              </ModalWrapper>
+            switcher === 'review' && 
+            <ReviewSwitcher reviews={reviews}/>
+
+          }
+          {
+            isAdmin && formType ==='ticket' && 
+            <ModalWrapper handleClose={handleAdminFormClose} title='Create Ticket'>
+              <TicketFormik eventId={eventId} handleClose={handleAdminFormClose}/>
+            </ModalWrapper>
+          }
+          {
+            isAdmin && formType ==='discount' && 
+            <ModalWrapper handleClose={handleAdminFormClose} title='Create Discount'>
+              <DiscountFormik handleClose={handleAdminFormClose} eventId={eventId}/>
+            </ModalWrapper>
           }
           </div>
             

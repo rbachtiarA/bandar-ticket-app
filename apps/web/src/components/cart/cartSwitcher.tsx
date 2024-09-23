@@ -1,7 +1,10 @@
 import { ICart } from "@/type/cart";
 import { ITicketType } from "@/type/ticket";
-import { useMemo, useState } from "react";
 import CartCard from "./cartCard";
+import DiscountCart from "../discount/discountCart";
+import { IDiscountType } from "@/type/discount";
+import { toast } from "react-toastify";
+
 
 export default function CartSwitcher({
   cart,
@@ -20,6 +23,7 @@ export default function CartSwitcher({
   usePoints: boolean;
 }) {
   const [usePoints, setUsePoints] = useState(false);
+  const [discount, setDiscount] = useState<IDiscountType>()
 
   const sumCart = useMemo(() => {
     return cart.reduce((prev, curr) => prev + curr.totalPrice, 0);
@@ -36,6 +40,21 @@ export default function CartSwitcher({
     }
     return sumCart;
   }, [sumCart, usePoints, userPoints]);
+    
+    
+  const discountValid = (discount: IDiscountType) => {    
+    console.log(sumCart <= discount.minPrice);
+    
+    if(totalItemCart < discount.minQuantity) {
+      return toast.error(`need atleast ${discount.minQuantity} ticket in cart`)
+    } else if(sumCart < discount.minPrice){
+      return toast.error(`need atleast ${IDR.format(discount.minPrice)} total price`)
+     } else {
+      setDiscount(discount)
+    }
+      
+  }
+
 
   return (
     <div>
@@ -44,6 +63,7 @@ export default function CartSwitcher({
         <h1>Ticket Price</h1>
         <h1>Quantity</h1>
         <h1>Total Price</h1>
+
       </div>
 
       {cart.length === 0 && (
@@ -89,16 +109,40 @@ export default function CartSwitcher({
                 Discounted Total :{' '}
               </h1>
               <h1>{IDR.format(discountedPrice)}</h1>
+
+        </div>
+        {cart.length === 0 && <p className='text-red-500 p-2 border-y-2'>Cart is empty please choose ticket from ticket tab</p>}
+        {
+        cart.length !== 0 && 
+        <div className='flex flex-col gap-4 mt-4'>
+            {cart.map((cart, idx) => (
+            <CartCard key={idx} ticket={ticket} cart={cart} handleRemoveCart={handleRemoveCart} />
+            ))}
+            <DiscountCart eventId={eventId} discountValid={discountValid}/>
+
+            <div className="flex flex-row md:flex-col">
+              
+              <div className="w-full grid md:grid-cols-5 text-center">
+                <h1 className="md:col-start-3 md:col-end-4 font-bold">All total price : </h1>
+                <h1 className="">{IDR.format(sumCart)}</h1>
+              </div>
+              {
+                discount &&
+                <div className="w-full grid md:grid-cols-5 text-center">
+                  <h1 className="md:col-start-3 md:col-end-4 font-bold">After discount : </h1>
+                  <h1 className="">{IDR.format(sumCart-discountCart)}</h1>
+                  <h1>{`(-${IDR.format(discountCart)})`}</h1>
+                </div>
+              }
+            </div>
+
+            <div className='flex justify-center'>
+            <button onClick={() => handleTransaction(userId, cart, {id: discount?.id || 0, totalCut:discountCart})} className='btn-primary-ry'>Transaksi</button>
+
             </div>
           )}
 
-          <div className="flex justify-center">
-            <button
-              onClick={() => handleTransaction(userId, cart, usePoints)} // Passing usePoints here
-              className="btn-primary-ry"
-            >
-              Transaksi
-            </button>
+          
           </div>
         </div>
       )}
