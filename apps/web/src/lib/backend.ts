@@ -14,7 +14,10 @@ export const getCity = async () => {
     return data.result
 }
 
-export const postTransaction = async (transaction: {userId: number, cart:ICart[], discount:{ id:number, totalCut:number } }) => {
+
+export const postTransaction = async (transaction: {userId: number, cart: ICart[], usePoints: boolean}, discount:{ id:number, totalCut:number }) => {
+
+
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}backend/transaction`, {
         method: "POST",
         body: JSON.stringify(transaction),

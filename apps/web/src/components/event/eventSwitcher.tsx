@@ -17,19 +17,30 @@ import CartSwitcher from '../cart/cartSwitcher';
 import DiscountSwitcher from '../discount/discountSwitcher';
 import TicketSwitcher from '../ticket/ticketSwitcher';
 import ReviewForm from '../review/reviewForm';
+import { IUser } from '@/type/user';
+import { getUserData } from '@/lib/user';
+import { getToken } from '@/lib/server';
+import { useAppSelector } from '@/app/redux/hooks';
 import ReviewCard from '../review/reviewCard';
 import ReviewSwitcher from '../review/reviewSwitcher';
 import { IReview } from '@/type/review';
 
 export default function EventSwitcher({ description, eventId, ticket, discount, reviews, isPastEvent, isAdmin, user }: { description: string, eventId: number,ticket: ITicketType[], reviews: IReview[], discount:IDiscountType[], isPastEvent: Boolean, isAdmin:Boolean, user:{ id:number, role:string } }) {
+
     const searchParams = useSearchParams()
     const queryTabs = searchParams.get('tab')
     const [switcher, setSwitcher] = useState(queryTabs || 'desc')
     const [formType, setFormType] = useState('none')
+    const [usePoints, setUsePoints] = useState(false);
     const [cart, setCart] = useState<ICart[]>([])
     const router = useRouter()
+
+    const user = useAppSelector((state) => state.author)
+  
+
     const isUserReviewed = reviews.findIndex((review) => review.customer.id === user.id) !== -1     
     
+
     
     const handleTab = (condition: string) => {
         setSwitcher(condition)
@@ -78,9 +89,12 @@ export default function EventSwitcher({ description, eventId, ticket, discount, 
     const handleTransaction = async (userId:number, cart:ICart[], discount:{ id:number, totalCut:number }) => {
       try {        
         if(!userId) throw 'You need to login before complete this action'
-        const postData = {userId, cart, discount}        
+
+        const postData = {userId, cart, usePoints: false}
+       
         console.log(postData);
         
+
         const data = await postTransaction(postData)
         if(data.status === 'error') throw `${data.msg}`        
         setCart([])
@@ -125,11 +139,14 @@ export default function EventSwitcher({ description, eventId, ticket, discount, 
           }
           {
             switcher === 'cart' && 
-            <CartSwitcher eventId={eventId} cart={cart} ticket={ticket} handleRemoveCart={handleRemoveCart} handleTransaction={handleTransaction} userId={user.id}/>
+              <CartSwitcher cart={cart} ticket={ticket} handleRemoveCart={handleRemoveCart} handleTransaction={handleTransaction} userId={user.id} userPoints={user.points} usePoints={usePoints}/>
+
+            
           }
           {
             switcher === 'review' && 
             <ReviewSwitcher reviews={reviews}/>
+
           }
           {
             isAdmin && formType ==='ticket' && 

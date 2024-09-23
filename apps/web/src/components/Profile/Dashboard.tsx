@@ -2,6 +2,8 @@
 
 import { OrganizerOption } from '@/type/user';
 import { useState } from 'react';
+import DashboardEvent from './organizerOptions/Events';
+import AttendeesList from './organizerOptions/Attendees';
 
 export default function UserProfile() {
   const [option, setOption] = useState<OrganizerOption>('event');
@@ -30,12 +32,6 @@ export default function UserProfile() {
           </button>
           <button
             className="hover:underline hover:text-white hover:bg-black duration-500 p-2 rounded-full"
-            onClick={() => handleClick('transaction')}
-          >
-            Transaction
-          </button>
-          <button
-            className="hover:underline hover:text-white hover:bg-black duration-500 p-2 rounded-full"
             onClick={() => handleClick('statistic')}
           >
             Statistics
@@ -43,9 +39,8 @@ export default function UserProfile() {
         </div>
         {/*content*/}
         <div className="p-5 h-full w-full">
-          {option === 'event' && <div>Event</div>}
-          {option === 'attendees' && <div>Attendees</div>}
-          {option === 'transaction' && <div>Transaction</div>}
+          {option === 'event' && <DashboardEvent />}
+          {option === 'attendees' && <AttendeesList />}
           {option === 'statistic' && <div>Statistic</div>}
         </div>
       </div>
