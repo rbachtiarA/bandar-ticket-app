@@ -17,15 +17,21 @@ import CartSwitcher from '../cart/cartSwitcher';
 import DiscountSwitcher from '../discount/discountSwitcher';
 import TicketSwitcher from '../ticket/ticketSwitcher';
 import ReviewForm from '../review/reviewForm';
+import { IUser } from '@/type/user';
+import { getUserData } from '@/lib/user';
+import { getToken } from '@/lib/server';
+import { useAppSelector } from '@/app/redux/hooks';
 
-export default function EventSwitcher({ description, eventId, ticket, discount, isPastEvent, isAdmin, user }: { description: string, eventId: number,ticket: ITicketType[], discount:IDiscountType[], isPastEvent: Boolean, isAdmin:Boolean, user:{ id:number, role:string } }) {
+export default function EventSwitcher({ description, eventId, ticket, discount, isPastEvent, isAdmin }: { description: string, eventId: number,ticket: ITicketType[], discount:IDiscountType[], isPastEvent: Boolean, isAdmin:Boolean }) {
     const searchParams = useSearchParams()
     const queryTabs = searchParams.get('tab')
     const [switcher, setSwitcher] = useState(queryTabs || 'desc')
     const [formType, setFormType] = useState('none')
+    const [usePoints, setUsePoints] = useState(false);
     const [cart, setCart] = useState<ICart[]>([])
     const router = useRouter()
-    console.log(user.id);
+    const user = useAppSelector((state) => state.author)
+  
     
     const handleTab = (condition: string) => {
         setSwitcher(condition)
@@ -76,7 +82,7 @@ export default function EventSwitcher({ description, eventId, ticket, discount, 
         console.log(userId);
         
         if(!userId) throw 'You need to login before complete this action'
-        const postData = {userId, cart}
+        const postData = {userId, cart, usePoints: false}
         const data = await postTransaction(postData)
         if(data.status === 'error') throw `${data.msg}`        
         setCart([])
@@ -120,7 +126,7 @@ export default function EventSwitcher({ description, eventId, ticket, discount, 
           }
           {
               switcher === 'cart' && 
-              <CartSwitcher cart={cart} ticket={ticket} handleRemoveCart={handleRemoveCart} handleTransaction={handleTransaction} userId={user.id}/>
+              <CartSwitcher cart={cart} ticket={ticket} handleRemoveCart={handleRemoveCart} handleTransaction={handleTransaction} userId={user.id} userPoints={user.points} usePoints={usePoints}/>
           }
 
           {

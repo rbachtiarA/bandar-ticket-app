@@ -2,7 +2,6 @@ import { IUser } from '@/type/user';
 import { NextFunction, Request, Response } from 'express';
 import { verify } from 'jsonwebtoken';
 
-
 export const verifyToken = async (
   req: Request,
   res: Response,
@@ -11,7 +10,6 @@ export const verifyToken = async (
   try {
     const token = req.header('Authorization')?.replace('Bearer ', '');
     console.log('Token:', token);
-
 
     if (!token) throw 'token not found';
 
@@ -23,6 +21,22 @@ export const verifyToken = async (
     res.status(400).send({
       status: 'this token is invalid',
       msg: err instanceof Error ? err.message : err,
+    });
+  }
+};
+
+export const checkOrganizer = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    if (req.user?.role !== 'ORGANIZER') throw 'you are not organizer';
+    next();
+  } catch (err) {
+    res.status(400).send({
+      status: 'yaint organizer',
+      msg: err,
     });
   }
 };

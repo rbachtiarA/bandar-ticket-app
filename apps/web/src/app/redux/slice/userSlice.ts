@@ -1,4 +1,4 @@
-import { IBecomeOrganizer, IEditEmail, IEditName, IEditPassword, IUser } from "@/type/user";
+import { IBecomeOrganizer, IEditEmail, IEditName, IUser } from "@/type/user";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState: IUser = {
@@ -7,6 +7,7 @@ const initialState: IUser = {
     email: '',
     role: '',
     avatar: '',
+    points: 0,
     referCode: '',
     createdAt: '',
 }
@@ -16,7 +17,7 @@ export const userSlice = createSlice({
     initialState,
     reducers:{
         loginAction: (state, action: PayloadAction<IUser>) => {
-            const { id, name, email, role, avatar, referCode, createdAt } = action.payload
+            const { id, name, email, role, avatar, referCode, points, createdAt } = action.payload
 
             state.id = id
             state.name = name
@@ -24,6 +25,7 @@ export const userSlice = createSlice({
             state.role = role
             state.avatar = avatar
             state.referCode = referCode
+            state.points = points
             state.createdAt = createdAt
         },
         logoutAction: (state) => {
@@ -33,7 +35,9 @@ export const userSlice = createSlice({
             state.role = ''
             state.avatar = ''
             state.referCode = ''
+            state.points = 0
             state.createdAt = ''
+            
         },
         nameAction: (state, action: PayloadAction<IEditName>) =>{
             const {name} = action.payload
@@ -60,7 +64,9 @@ export const userSlice = createSlice({
             state.role = ''
             state.avatar = ''
             state.referCode = ''
+            state.points = 0
             state.createdAt = ''
+            
         }
     }
 })
