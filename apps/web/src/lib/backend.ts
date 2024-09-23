@@ -2,7 +2,7 @@ import { ICart } from "@/type/cart"
 import { IDiscountType } from "@/type/discount"
 
 export const getProvince = async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}backend/province`, {next: {revalidate: 3600}})
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}backend/province`, {next: {revalidate: 1}})
     const data = await res.json()
     
     return data.result

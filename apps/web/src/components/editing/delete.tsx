@@ -2,7 +2,7 @@
 
 import { useAppDispatch, useAppSelector } from "@/app/redux/hooks";
 import { deleteAction } from "@/app/redux/slice/userSlice";
-import { getToken } from "@/lib/server";
+import { deleteToken, getToken } from "@/lib/server";
 import { deleteAccount } from "@/lib/user";
 import { useRouter } from "next/navigation";
 
@@ -19,6 +19,7 @@ export default function DeleteAccount () {
                 String(user.id),
                 token as string,
             );
+            deleteToken();
             if (!ok) throw result.msg;
             dispatch(deleteAction());
     

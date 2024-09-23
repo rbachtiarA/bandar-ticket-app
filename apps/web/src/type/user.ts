@@ -11,6 +11,15 @@ export interface ILogin{
     password: string;
 }
 
+export interface ITransaction{
+    ticket: string;
+    totalPrice: number;
+    createdAt: string;
+}
+
+
+
+
 export interface IUser{
     id: number;
     name: string;
@@ -19,6 +28,9 @@ export interface IUser{
     avatar: string;
     referCode: string;
     createdAt: string;
+    //transactions: ITransaction[];
+    //reviews: IReview[];
+    //events: IEvent[];
 
     
 }
@@ -44,3 +56,5 @@ export interface IBecomeOrganizer{
 }
 
 export type SideBarOption = 'profile' | 'event' | 'ticket' | 'transaction' | 'account' | 'dashboard';
+
+export type OrganizerOption = 'event' | 'attendees' | 'transaction' | 'statistic';
