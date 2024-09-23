@@ -4,6 +4,7 @@ import CartCard from "./cartCard";
 import { useMemo, useState } from "react";
 import DiscountCart from "../discount/discountCart";
 import { IDiscountType } from "@/type/discount";
+import { toast } from "react-toastify";
 
 export default function CartSwitcher({ cart, ticket, userId, handleRemoveCart, handleTransaction, eventId }: { eventId:number, cart:ICart[], ticket:ITicketType[], userId:number, handleRemoveCart:any, handleTransaction:any }) {
   const [discount, setDiscount] = useState<IDiscountType>()
@@ -23,12 +24,26 @@ export default function CartSwitcher({ cart, ticket, userId, handleRemoveCart, h
       return 0
     }
   }, [discount])
+  const totalItemCart = useMemo(() => {
+    return cart.reduce((prev, curr) => prev + curr.quantity, 0)
+  }, [cart])
+
   const IDR = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'IDR'
   })
-  const discountValid = (discount: IDiscountType) => {
-    setDiscount(discount)
+
+  const discountValid = (discount: IDiscountType) => {    
+    console.log(sumCart <= discount.minPrice);
+    
+    if(totalItemCart < discount.minQuantity) {
+      return toast.error(`need atleast ${discount.minQuantity} ticket in cart`)
+    } else if(sumCart < discount.minPrice){
+      return toast.error(`need atleast ${IDR.format(discount.minPrice)} total price`)
+     } else {
+      setDiscount(discount)
+    }
+      
   }
   return (
     <div>
@@ -46,18 +61,22 @@ export default function CartSwitcher({ cart, ticket, userId, handleRemoveCart, h
             <CartCard key={idx} ticket={ticket} cart={cart} handleRemoveCart={handleRemoveCart} />
             ))}
             <DiscountCart eventId={eventId} discountValid={discountValid}/>
-            <div className="w-full grid md:grid-cols-5 text-center">
-              <h1 className="md:col-start-3 md:col-end-4 font-bold">All total price : </h1>
-              <h1 className="">{IDR.format(sumCart)}</h1>
-            </div>
-            {
-              discount &&
+
+            <div className="flex flex-row md:flex-col">
+              
               <div className="w-full grid md:grid-cols-5 text-center">
-                <h1 className="md:col-start-3 md:col-end-4 font-bold">After discount : </h1>
-                <h1 className="">{IDR.format(sumCart-discountCart)}</h1>
-                <h1>{`(-${IDR.format(discountCart)})`}</h1>
+                <h1 className="md:col-start-3 md:col-end-4 font-bold">All total price : </h1>
+                <h1 className="">{IDR.format(sumCart)}</h1>
               </div>
-            }
+              {
+                discount &&
+                <div className="w-full grid md:grid-cols-5 text-center">
+                  <h1 className="md:col-start-3 md:col-end-4 font-bold">After discount : </h1>
+                  <h1 className="">{IDR.format(sumCart-discountCart)}</h1>
+                  <h1>{`(-${IDR.format(discountCart)})`}</h1>
+                </div>
+              }
+            </div>
 
             <div className='flex justify-center'>
             <button onClick={() => handleTransaction(userId, cart, {id: discount?.id || 0, totalCut:discountCart})} className='btn-primary-ry'>Transaksi</button>

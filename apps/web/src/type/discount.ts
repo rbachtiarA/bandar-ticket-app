@@ -17,7 +17,7 @@ export interface IDiscountType {
     cutType: string,
     cut: number,
     eventID: number,
-    minQuantiy:number,
+    minQuantity:number,
     minPrice:number,
     limit: number,
     expiredDate: Date

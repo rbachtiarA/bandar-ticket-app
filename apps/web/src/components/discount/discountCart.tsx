@@ -10,6 +10,10 @@ export default function DiscountCart({ eventId, discountValid }: { eventId: numb
         const discount = await getDiscountByCode(code, eventId)
         setDiscount(discount.result)
     }
+    const mixOnChange = () => {
+        onChange()
+        discountValid(discount)
+    }
 
     const onChange = () => {
         setCode(discountSearch.current?.value!)
