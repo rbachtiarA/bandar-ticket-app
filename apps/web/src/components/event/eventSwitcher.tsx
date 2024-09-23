@@ -75,10 +75,12 @@ export default function EventSwitcher({ description, eventId, ticket, discount, 
     }
 
     //handle transaction, if ticket quota and cart quantity doenst match, error insufficent quantity
-    const handleTransaction = async (userId:number, cart:ICart[]) => {
+    const handleTransaction = async (userId:number, cart:ICart[], discount:{ id:number, totalCut:number }) => {
       try {        
         if(!userId) throw 'You need to login before complete this action'
-        const postData = {userId, cart}
+        const postData = {userId, cart, discount}        
+        console.log(postData);
+        
         const data = await postTransaction(postData)
         if(data.status === 'error') throw `${data.msg}`        
         setCart([])
@@ -123,7 +125,7 @@ export default function EventSwitcher({ description, eventId, ticket, discount, 
           }
           {
             switcher === 'cart' && 
-            <CartSwitcher cart={cart} ticket={ticket} handleRemoveCart={handleRemoveCart} handleTransaction={handleTransaction} userId={user.id}/>
+            <CartSwitcher eventId={eventId} cart={cart} ticket={ticket} handleRemoveCart={handleRemoveCart} handleTransaction={handleTransaction} userId={user.id}/>
           }
           {
             switcher === 'review' && 
