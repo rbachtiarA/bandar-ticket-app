@@ -24,7 +24,8 @@ export class ReviewController {
                 rating,
                 review,
                 userId,
-                eventId
+                eventId,
+                feedback
             } = req.body
 
             const existEvent = await prisma.event.findUnique({
@@ -62,7 +63,8 @@ export class ReviewController {
                     rating: +rating,
                     review: review,
                     eventID: +eventId,
-                    customerId: +userId
+                    customerId: +userId,
+                    feedback: feedback
                 }
             })
 

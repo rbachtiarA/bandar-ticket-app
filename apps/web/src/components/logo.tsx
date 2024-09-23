@@ -13,7 +13,7 @@ export default function Logo() {
           <Link href={'/'} className='flex justify-center items-center gap-2'>
             <div className='relative'>
               <Image
-                src={'./ico-logo.svg'}
+                src={'/ico-logo.svg'}
                 alt='Bandar Tiket'
                 width={40}
                 height={40}

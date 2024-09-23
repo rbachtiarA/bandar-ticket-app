@@ -35,6 +35,7 @@ export default class App {
       methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
       allowedHeaders: ['Content-Type', 'Authorization']
     }));
+    // this.app.use(cors())
     this.app.use(json());
     this.app.use(urlencoded({ extended: true }));
     this.app.use('/api/public',

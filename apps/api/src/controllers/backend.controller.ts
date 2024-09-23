@@ -84,10 +84,10 @@ export class BackendController {
             // //cart : {quantity , ticketTypeId, totalPrice}
             
             try {
-                const { userId, cart }: {userId:number, cart:ICart[]} = req.body
+                const { userId, cart, discount }: {userId:number, cart:ICart[], discount:{ id:number, totalCut:number }} = req.body
                 const dataTickets: {ticketTypeId:number}[] = []
                 
-                let totalPrice = 0
+                let totalPrice = 0                
                 
                 cart.map((item) => {
                 if(Number(item.quantity) == 1) {
@@ -100,6 +100,8 @@ export class BackendController {
                     totalPrice += item.totalPrice
                 })
 
+                totalPrice -= discount.totalCut
+
                 await prisma.$transaction(async (tx) => {
                     const existUserId = await tx.user.findUnique({
                         where: {
@@ -109,6 +111,13 @@ export class BackendController {
 
                     if(!existUserId) throw `User is not recognized`
                     
+                    const existDiscountType = await tx.discountType.findUnique({
+                        where: {
+                            id: +discount.id
+                        }
+                    })
+                    if(!existDiscountType && discount.id !== 0) throw 'Discount is not valid'
+
                     for (const item of cart) {
                         const existingItem = await tx.ticketType.findUnique({
                             where: { id: item.ticketTypeId }
@@ -131,7 +140,8 @@ export class BackendController {
                                 createMany: {
                                     data: dataTickets
                                 }
-                            }
+                            },
+                            discountTypeId: discount.id !== 0? discount.id : null
                         }
                     })
                     
